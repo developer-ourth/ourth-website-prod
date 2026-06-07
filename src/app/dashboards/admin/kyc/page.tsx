@@ -35,8 +35,8 @@ export default function AdminKycPage() {
     try {
       const res = await getKycList(tab === "all" ? undefined : tab);
       setVendors(res.data);
-    } catch {
-      setError("Failed to load KYC queue");
+    } catch (e: unknown) {
+      setError((e as { message?: string })?.message ?? "Failed to load KYC queue");
     } finally {
       setLoading(false);
     }
