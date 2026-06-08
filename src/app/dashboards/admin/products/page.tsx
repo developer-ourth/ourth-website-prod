@@ -2,6 +2,7 @@
 
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { MultiImageUpload } from "@/components/ui/multi-image-upload";
 import {
   getProducts,
   getCategories,
@@ -23,6 +24,7 @@ const EMPTY_FORM: ProductPayload = {
   base_price: 0,
   discounted_price: null,
   primary_image_url: "",
+  secondary_images: [],
   sku: "",
   unit: "piece",
   stock_quantity: 0,
@@ -91,6 +93,7 @@ function ProductsContent() {
       base_price: parseFloat(p.base_price),
       discounted_price: p.discounted_price ? parseFloat(p.discounted_price) : null,
       primary_image_url: p.primary_image_url ?? "",
+      secondary_images: p.secondary_images ?? [],
       sku: p.sku ?? "",
       unit: p.unit,
       stock_quantity: p.stock_quantity,
@@ -107,10 +110,19 @@ function ProductsContent() {
     if (!form.base_price || form.base_price <= 0) { setFormError("Base price must be greater than 0."); return; }
     setSaving(true); setFormError("");
     try {
+      const normalizedSecondaryImages = (form.secondary_images ?? []).filter(
+        (url) => url && url.trim().length > 0 && url !== form.primary_image_url,
+      );
+
+      const payload: ProductPayload = {
+        ...form,
+        secondary_images: Array.from(new Set(normalizedSecondaryImages)),
+      };
+
       if (editId) {
-        await updateProduct(editId, form);
+        await updateProduct(editId, payload);
       } else {
-        await createProduct(form);
+        await createProduct(payload);
       }
       setShowModal(false);
       load();
@@ -282,6 +294,13 @@ function ProductsContent() {
                   value={form.primary_image_url}
                   onChange={(url) => setForm((f) => ({ ...f, primary_image_url: url }))}
                   aspectHint="PNG, JPG, WEBP — max 2 MB"
+                />
+              </Field>
+              <Field label="Additional Product Images">
+                <MultiImageUpload
+                  values={form.secondary_images ?? []}
+                  onChange={(urls) => setForm((f) => ({ ...f, secondary_images: urls }))}
+                  aspectHint="Upload multiple product photos for carousel"
                 />
               </Field>
               <Field label="SKU">

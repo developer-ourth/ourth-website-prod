@@ -418,6 +418,7 @@ export interface MarketProduct {
   base_price: string;
   discounted_price: string | null;
   primary_image_url: string | null;
+  secondary_images: string[];
   unit: string;
   stock_quantity: number;
   weight_grams: number | null;
