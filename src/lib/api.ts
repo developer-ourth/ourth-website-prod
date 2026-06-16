@@ -76,11 +76,10 @@ export function registerApi(
   email: string,
   password: string,
   password_confirmation: string,
-  role: string,
 ) {
   return request<RegisterResponse>("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ name, email, password, password_confirmation, role }),
+    body: JSON.stringify({ name, email, password, password_confirmation }),
   });
 }
 
@@ -96,6 +95,18 @@ export function forgotPasswordApi(email: string) {
   return request<{ success: boolean; message: string }>("/auth/forgot-password", {
     method: "POST",
     body: JSON.stringify({ email }),
+  });
+}
+
+export function resetPasswordApi(
+  token: string,
+  email: string,
+  password: string,
+  password_confirmation: string,
+) {
+  return request<{ success: boolean; message: string }>("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, email, password, password_confirmation }),
   });
 }
 
@@ -160,7 +171,7 @@ export function getConsumerNearbyVendors(userId: number, params: { latitude: num
 }
 
 export function getConsumerRewardsSummary(userId: number) {
-  return request<Record<string, unknown>>(`/dashboard/consumer/${userId}/rewards-summary`);
+  return request<Record<string, unknown>>(`/dashboard/consumer/${userId}/rewards`);
 }
 
 export function getOperationsDashboard() {

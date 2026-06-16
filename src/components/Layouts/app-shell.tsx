@@ -8,7 +8,13 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { useAuth } from "@/contexts/auth-context";
 
 function isAuthRoute(pathname: string): boolean {
-  return pathname === "/login" || pathname.startsWith("/login/") || pathname === "/register";
+  return (
+    pathname === "/login" ||
+    pathname.startsWith("/login/") ||
+    pathname === "/register" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password"
+  );
 }
 
 function isPublicRoute(pathname: string): boolean {

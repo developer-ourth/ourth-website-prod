@@ -1,23 +1,16 @@
 "use client";
 
-import { getRoleConfig, ROLES } from "@/lib/roles";
-import type { UserRole } from "@/lib/roles";
+import { getRoleConfig } from "@/lib/roles";
 import { registerApi, setToken } from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 function RegisterForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { user, isLoading } = useAuth();
 
-  const roleParam = (searchParams.get("role") ?? "consumer") as UserRole;
-  const roleConfig = getRoleConfig(roleParam) ?? getRoleConfig("consumer")!;
-
-  const [selectedRole, setSelectedRole] = useState<UserRole>(
-    roleConfig.role as UserRole,
-  );
+  const roleConfig = getRoleConfig("consumer")!;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +33,7 @@ function RegisterForm() {
     );
   }
 
-  const currentRoleConfig = getRoleConfig(selectedRole)!;
+  const currentRoleConfig = roleConfig;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +55,6 @@ function RegisterForm() {
         email.trim(),
         password,
         confirmPassword,
-        selectedRole,
       );
       setToken(res.data.token);
       // Store user then redirect
@@ -123,24 +115,6 @@ function RegisterForm() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Role selector */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
-                Role / Portal
-              </label>
-              <select
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:bg-gray-dark dark:text-white dark:focus:border-primary"
-              >
-                {ROLES.map((r) => (
-                  <option key={r.role} value={r.role}>
-                    {r.emoji} {r.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div>
               <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
                 Full Name

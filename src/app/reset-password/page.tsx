@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { resetPasswordApi } from "@/lib/api";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -28,25 +29,7 @@ function ResetPasswordForm() {
     setSubmitting(true);
 
     try {
-      const apiBase =
-        process.env.NEXT_PUBLIC_API_URL ??
-        "http://localhost/ourth-app/public/api/v1";
-
-      const res = await fetch(`${apiBase}/auth/reset-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ token, email, password, password_confirmation: passwordConfirmation }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        const messages = data?.errors
-          ? Object.values(data.errors as Record<string, string[]>).flat().join(" ")
-          : data?.message ?? "Password reset failed.";
-        setError(messages);
-        return;
-      }
+      await resetPasswordApi(token, email, password, passwordConfirmation);
 
       setSuccess(true);
       setTimeout(() => router.replace("/login"), 2500);
