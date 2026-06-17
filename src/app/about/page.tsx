@@ -92,7 +92,7 @@ export default function AboutPage() {
           style={{ left: "1002px", top: "213px", width: "639px", height: "577px" }}
         >
           <Image
-            src="/images/about/hoipl-plate-starter.png"
+            src="/images/about/hoipl-plate-starter.webp"
             alt="Leaf tableware"
             fill
             className="object-contain"

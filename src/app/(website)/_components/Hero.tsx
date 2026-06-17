@@ -5,7 +5,7 @@ export default function Hero() {
       style={{
         minHeight: "1184px",
         width: "100%",
-        backgroundImage: "url('/hero-bg.png')",
+        backgroundImage: "url('/hero-bg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
@@ -70,14 +70,14 @@ export default function Hero() {
             <div
               className="relative h-[360px] w-[320px] md:h-[560px] md:w-[640px]"
               style={{
-                backgroundImage: "url('/images/hero/group-28.png')",
+                backgroundImage: "url('/images/hero/group-28.webp')",
                 backgroundSize: "contain",
                 backgroundPosition: "center 62%",
                 backgroundRepeat: "no-repeat",
               }}
             >
               <img
-                src="/images/hero/18-1.png"
+                src="/images/hero/18-1.webp"
                 alt="Leaf bowl"
                 className="absolute left-[4%] top-[-15%] h-[100%] w-[100%] rounded-full object-cover"
                 style={{ animation: "heroSingleImageLoop 8s ease-in-out infinite" }}

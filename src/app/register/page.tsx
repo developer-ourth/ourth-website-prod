@@ -1,6 +1,7 @@
 "use client";
 
 import { getRoleConfig } from "@/lib/roles";
+import type { UserRole } from "@/lib/roles";
 import { registerApi, setToken } from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";

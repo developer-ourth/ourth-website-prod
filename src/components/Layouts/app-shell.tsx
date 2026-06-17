@@ -18,7 +18,15 @@ function isAuthRoute(pathname: string): boolean {
 }
 
 function isPublicRoute(pathname: string): boolean {
-  return pathname === "/" || pathname === "/about" || pathname === "/products" || pathname === "/contact";
+  return (
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname === "/products" ||
+    pathname === "/contact" ||
+    pathname === "/privacy-policy" ||
+    pathname === "/refund" ||
+    pathname === "/terms"
+  );
 }
 
 export function AppShell({ children }: PropsWithChildren) {

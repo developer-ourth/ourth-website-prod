@@ -28,11 +28,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | OURTH-Dashboard",
-    default: "OURTH-Dashboard",
+    template: "%s | Healing OURTH",
+    default: "Healing OURTH — Sustainable Leaf Tableware for a Plastic-Free Future",
   },
   description:
-    "Next.js admin dashboard toolkit with 200+ templates, UI components, and integrations for fast dashboard development.",
+    "OURTH crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic.",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${ibmPlexSans.variable} ${poppins.variable}`}>
         <Providers>
-          <NextTopLoader color="#5750F1" showSpinner={false} />
+          <NextTopLoader color="#1A5C2E" showSpinner={false} />
           <AppShell>{children}</AppShell>
         </Providers>
       </body>
