@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
+import fs from "fs";
+import path from "path";
 
 const coreValues = [
   "Every small choice matters",
@@ -41,8 +43,21 @@ const team = [
 ];
 
 export default function AboutPage() {
+  // Read config dynamically at request time
+  let config = {
+    aboutTitle: "Eco-friendly, leaf-based tableware",
+    aboutDescription: "Ourth is on a mission to eliminate single-use plastics from street food, catering, and home dining. By sourcing fallen leaves from local forests, we craft stunning, natural plates and bowls that are entirely home-compostable.",
+    backgroundColor: "#D8EFE0"
+  };
+  try {
+    const configPath = path.join(process.cwd(), "src/data/website-config.json");
+    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  } catch (e) {
+    console.error("Failed to read dynamic website config in About", e);
+  }
+
   return (
-    <main style={{ background: "#D8EFE0" }}>
+    <main style={{ background: config.backgroundColor }}>
       <Navbar />
 
       <section
@@ -57,32 +72,26 @@ export default function AboutPage() {
             <h1
               style={{
                 fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-                fontSize: "72px",
+                fontSize: "64px",
                 fontWeight: 800,
-                lineHeight: "0.95",
+                lineHeight: "1.1",
                 color: "#2C1F13",
               }}
             >
-              Where Leaves
-              <br />
-              <span style={{ color: "#1A5C2E" }}>Become Legacy</span>
+              {config.aboutTitle}
             </h1>
 
             <p
               className="mt-8"
               style={{
                 fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                fontSize: "24px",
+                fontSize: "22px",
                 fontWeight: 500,
                 lineHeight: "1.45",
                 color: "#1B4F34",
               }}
             >
-              We believe every meal served on a leaf is a vote for a cleaner
-              planet. A quiet act of choosing earth over plastic, tradition over
-              convenience, conscience over habit. One plate at a time, vendors
-              across India are rewriting the story of single-use. And the earth
-              is listening.
+              {config.aboutDescription}
             </p>
           </div>
         </div>
@@ -102,7 +111,7 @@ export default function AboutPage() {
       </section>
 
       <section
-        className="relative px-6 py-20"
+        className="relative px-6 py-80"
         style={{
           backgroundImage:
             "linear-gradient(rgba(4,18,10,0.74), rgba(4,18,10,0.74)), url('https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=1800&q=80')",
@@ -112,7 +121,7 @@ export default function AboutPage() {
       >
         <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-10 lg:grid-cols-[380px_1fr]">
           <div className="rounded-[20px] bg-[#D8EFE0] p-2 shadow-xl">
-            <div className="relative h-[360px] overflow-hidden rounded-[14px] bg-white">
+            <div className="relative h-[480px] overflow-hidden rounded-[14px] bg-white">
               <Image
                 src="/images/team/team-01.png"
                 alt="Founder"

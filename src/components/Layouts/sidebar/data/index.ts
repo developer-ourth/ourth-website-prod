@@ -117,6 +117,14 @@ const ROLE_NAV: Record<UserRole, NavSection[]> = {
       ],
     },
   ],
+  developer: [
+    {
+      label: "DEVELOPER CONTROLS",
+      items: [
+        { title: "Overview / Editor", url: "/dashboards/developer", icon: Icons.HomeIcon, items: [] },
+      ],
+    },
+  ],
 };
 
 export function getNavForRole(role: UserRole): NavSection[] {

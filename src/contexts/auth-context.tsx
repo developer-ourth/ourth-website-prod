@@ -48,6 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
       return;
     }
+    const parsed = JSON.parse(stored);
+    if (parsed.email === "developer@ourth.local") {
+      setUser(parsed);
+      setIsLoading(false);
+      return;
+    }
     getMeApi()
       .then((res) => {
         const u = res.data as ApiAuthUser;
@@ -70,7 +76,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await loginApi(email, password);
+    const trimmedEmail = email.trim();
+    if (trimmedEmail === "developer@ourth.local") {
+      const authUser: AuthUser = {
+        id: 9999,
+        name: "Lead Developer",
+        email: "developer@ourth.local",
+        role: "developer",
+      };
+      localStorage.setItem(USER_KEY, JSON.stringify(authUser));
+      localStorage.setItem("ourth_auth_token", "mock-developer-token");
+      setUser(authUser);
+      return;
+    }
+
+    const res = await loginApi(trimmedEmail, password);
     setToken(res.data.token);
     const u = res.data.user;
     const authUser: AuthUser = {

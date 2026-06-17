@@ -1,29 +1,19 @@
 import Link from "next/link";
+import { getMarketplaceProducts } from "@/lib/api";
 
-const products = [
-  {
-    id: "chutney-1",
-    name: "Chutney Bowl",
-    img: "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80",
-  },
-  {
-    id: "maggi-1",
-    name: "Maggi Bowl",
-    img: "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80",
-  },
-  {
-    id: "chatney-1",
-    name: "Chatney Bowl",
-    img: "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80",
-  },
-  {
-    id: "maggi-2",
-    name: "Maggi Bowl",
-    img: "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80",
-  },
-];
+export default async function Products() {
+  let products: any[] = [];
+  try {
+    const res = await getMarketplaceProducts({ per_page: 8 });
+    products = res.data || [];
+  } catch (error) {
+    console.error("Failed to load products from database in Products section:", error);
+  }
 
-export default function Products() {
+  if (products.length === 0) {
+    return null; // Hide the section if there are no products in the database
+  }
+
   return (
     <section className="pt-10 pb-16" style={{ background: "#D8EFE0" }}>
       <div className="mx-auto max-w-[1580px] px-6">
@@ -60,7 +50,7 @@ export default function Products() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p) => (
             <div
               key={p.id}
@@ -71,7 +61,6 @@ export default function Products() {
                 height: "430px",
                 padding: "1px",
                 border: "2px solid #2C1F13",
-
               }}
             >
               <div className="flex h-full w-full flex-col rounded-[29px] bg-[#CFDAC9] px-[11px] pt-[11px] pb-0">
@@ -83,7 +72,7 @@ export default function Products() {
                   }}
                 >
                   <img
-                    src={p.img}
+                    src={p.primary_image_url || "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80"}
                     alt={p.name}
                     className="h-full w-full object-contain p-8"
                   />
@@ -105,19 +94,22 @@ export default function Products() {
                       opacity: 0.4,
                     }}
                   />
-                  <span
-                    className="relative z-10"
-                    style={{
-                      fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "24px",
-                      lineHeight: "34px",
-                      color: "#020A4A",
-                      opacity: 1,
-                    }}
-                  >
-                    {p.name}
-                  </span>
+                  <div className="relative z-10 flex flex-col items-center justify-center text-center">
+                    <span
+                      style={{
+                        fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "20px",
+                        lineHeight: "24px",
+                        color: "#0D3A27",
+                      }}
+                    >
+                      {p.name}
+                    </span>
+                    <span className="text-xs font-semibold text-[#746148] mt-0.5">
+                      ₹{parseFloat(p.base_price).toFixed(2)} / {p.unit}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

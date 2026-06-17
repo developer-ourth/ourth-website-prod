@@ -6,7 +6,8 @@ export type UserRole =
   | "waste_management"
   | "finance"
   | "admin"
-  | "marketing";
+  | "marketing"
+  | "developer";
 
 export interface RoleConfig {
   role: UserRole;
@@ -81,6 +82,14 @@ export const ROLES: RoleConfig[] = [
     dashboardPath: "/dashboards/marketing",
     color: "bg-pink-600",
     emoji: "📣",
+  },
+  {
+    role: "developer",
+    label: "Developer",
+    description: "Website content editor, live preview and changes",
+    dashboardPath: "/dashboards/developer",
+    color: "bg-teal-700",
+    emoji: "💻",
   },
 ];
 

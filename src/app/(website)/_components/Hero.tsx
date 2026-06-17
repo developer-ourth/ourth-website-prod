@@ -1,4 +1,21 @@
+import fs from "fs";
+import path from "path";
+
 export default function Hero() {
+  // Read config dynamically at request time
+  let config = {
+    heroTitleLine1: "Dining",
+    heroTitleLine2: "From the Earth,",
+    heroTitleLine3: "Back to Earth",
+    heroDescription: "Ourth crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic."
+  };
+  try {
+    const configPath = path.join(process.cwd(), "src/data/website-config.json");
+    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  } catch (e) {
+    console.error("Failed to read dynamic website config in Hero", e);
+  }
+
   return (
     <section
       className="relative flex items-start justify-center pb-0 overflow-visible"
@@ -40,12 +57,12 @@ export default function Hero() {
               }}
             >
               <span style={{ color: "#2C1F13" }}>
-                Dining
+                {config.heroTitleLine1}
                 <br />
-                From the Earth,
+                {config.heroTitleLine2}
               </span>
               <br />
-              <span style={{ color: "#4A3728", fontStyle: "normal" }}>Back to Earth</span>
+              <span style={{ color: "#4A3728", fontStyle: "normal" }}>{config.heroTitleLine3}</span>
             </h1>
 
             <p
@@ -59,9 +76,7 @@ export default function Hero() {
                 maxWidth: "700px",
               }}
             >
-              Ourth crafts bowls, plates and takeaway tableware entirely from
-              natural leaves — giving vendors a beautiful, compostable
-              alternative to plastic.
+              {config.heroDescription}
             </p>
           </div>
 
@@ -89,16 +104,19 @@ export default function Hero() {
 
       {/* Clouds pinned to hero bottom for reliable overlap */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-20 h-[200px] pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none overflow-hidden"
         aria-hidden="true"
       >
-        <img
-          src="/clouds.png"
-          alt=""
-          className="block w-full h-auto -translate-y-[20%]"
-        />
+        <div className="relative w-full">
+          <img
+            src="/clouds.png"
+            alt=""
+            className="block w-full h-auto relative z-10"
+          />
+          {/* Fill transparent gaps below the cloud line */}
+          <div className="absolute bottom-0 left-0 right-0 h-[65%] bg-white z-0" />
+        </div>
       </div>
     </section>
   );
 }
-
