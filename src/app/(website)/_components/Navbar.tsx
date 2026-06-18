@@ -34,14 +34,14 @@ export default function Navbar() {
             Healing Ourth
           </span>
         </Link>
- 
+
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-10 md:flex">
+        <nav className="hidden items-center gap-40 md:flex">
           <Link href="/" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#0D3A27" }} className="hover:opacity-80 transition-opacity">Home</Link>
           <Link href="/about" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">About</Link>
           <Link href="/products" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">Products</Link>
         </nav>
- 
+
         {/* CTA */}
         <div className="hidden md:block">
           <Link

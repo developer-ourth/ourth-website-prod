@@ -20,7 +20,7 @@ export default async function ProductsPage() {
       {/* Top Hero Section */}
       <section className="relative overflow-hidden pt-36 pb-16 bg-[#F5F8F3]">
         {/* Left Curved Shape Backdrop */}
-        <div className="absolute top-0 left-0 h-full w-full lg:w-[45%] bg-[#E2EFE0] rounded-br-[120px] lg:rounded-br-[200px] z-0" />
+        <div className="absolute top-0 left-0 h-[85%] w-full lg:w-[45%] bg-[#E2EFE0] rounded-br-[120px] lg:rounded-br-[200px] z-0" />
 
         <div className="relative z-10 mx-auto max-w-[1580px] px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column Text Content */}
@@ -71,10 +71,10 @@ export default async function ProductsPage() {
           </div>
         </div>
 
-        {/* Partner Catalogue pill badge */}
+        {/* Downlaod Catalogue pill badge */}
         <div className="flex justify-center mt-12 relative z-10">
           <span className="rounded-full bg-[#E2EFE0] border border-[#0D3A27]/20 px-8 py-2.5 text-sm font-bold text-[#0D3A27] shadow-sm">
-            Partner Catalogue
+            Downlaod Catalogue
           </span>
         </div>
       </section>

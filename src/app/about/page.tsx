@@ -64,6 +64,9 @@ export default function AboutPage() {
         className="relative mx-auto overflow-hidden px-6 pb-20 pt-80"
         style={{ width: "1920px", height: "1080px", maxWidth: "100%" }}
       >
+        {/* Left Curved Shape Backdrop */}
+        <div className="absolute top-0 left-0 h-[85%] w-full lg:w-[45%] bg-[#E2EFE0] rounded-br-[120px] lg:rounded-br-[200px] z-0" />
+
         {/* Top Left Image */}
         <div className="absolute left-0 top-0 w-[35%] max-w-[100%] h-[100%] pointer-events-none z-0 select-none hidden md:block">
           <Image
@@ -261,11 +264,11 @@ export default function AboutPage() {
                 </div>
 
                 <div
-                  className="mt-3 rounded-[999px] text-center"
+                  className="mt-3 rounded-[999px] text-center overflow-hidden"
                   style={{
-                    background:
-                      "linear-gradient(90deg, rgba(200,150,60,0.8) 0%, rgba(242,212,138,0.85) 100%)",
-                    border: "1px solid #B28A3F",
+                    backgroundImage: "url('/images/about/Group31.png')",
+                    backgroundSize: "100% 100%",
+                    backgroundPosition: "center",
                   }}
                 >
                   <p
