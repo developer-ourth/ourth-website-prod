@@ -5,13 +5,13 @@ export default function PrivacyPolicyPage() {
   return (
     <main style={{ background: "#D8EFE0" }}>
       <Navbar />
-      
+
       <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="mb-8 text-4xl font-bold text-[#1A5C2E]">Privacy Policy</h1>
-        
+
         <div className="space-y-6 text-lg text-[#2C1F13]">
           <p className="text-base">
-            <strong>Last Updated: June 2024</strong>
+            <strong>Last Updated: June 2026</strong>
           </p>
 
           <div>
@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
           <div>
             <h2 className="mb-3 text-2xl font-semibold text-[#1A5C2E]">1. Information We Collect</h2>
             <p className="mb-3">We may collect information about you in a variety of ways. The information we may collect on the Service includes:</p>
-            
+
             <h3 className="mb-2 font-semibold text-[#2C1F13]">Personal Data:</h3>
             <ul className="mb-3 list-inside list-disc space-y-1 pl-4">
               <li>Name, email address, phone number</li>
@@ -122,14 +122,14 @@ export default function PrivacyPolicyPage() {
               For privacy inquiries or concerns, please contact us at:
             </p>
             <p className="mt-3">
-              <strong>OURTH</strong><br/>
-              Email: privacy@healingourth.com<br/>
+              <strong>OURTH</strong><br />
+              Email: privacy@healingourth.com<br />
               Website: www.healingourth.com
             </p>
           </div>
         </div>
       </section>
-      
+
       <Footer />
     </main>
   );

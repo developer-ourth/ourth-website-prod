@@ -5,13 +5,13 @@ export default function RefundPolicyPage() {
   return (
     <main style={{ background: "#D8EFE0" }}>
       <Navbar />
-      
+
       <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="mb-8 text-4xl font-bold text-[#1A5C2E]">Refund Policy</h1>
-        
+
         <div className="space-y-6 text-lg text-[#2C1F13]">
           <p className="text-base">
-            <strong>Last Updated: June 2024</strong>
+            <strong>Last Updated: June 2026</strong>
           </p>
 
           <div>
@@ -144,9 +144,9 @@ export default function RefundPolicyPage() {
               For return or refund inquiries, please contact our customer support team:
             </p>
             <p className="mt-3">
-              <strong>OURTH Customer Support</strong><br/>
-              Email: support@healingourth.com<br/>
-              Website: www.healingourth.com<br/>
+              <strong>OURTH Customer Support</strong><br />
+              Email: support@healingourth.com<br />
+              Website: www.healingourth.com<br />
               Response time: 24-48 hours
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function RefundPolicyPage() {
           </div>
         </div>
       </section>
-      
+
       <Footer />
     </main>
   );

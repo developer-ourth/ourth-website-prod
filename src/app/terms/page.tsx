@@ -5,13 +5,13 @@ export default function TermsPage() {
   return (
     <main style={{ background: "#D8EFE0" }}>
       <Navbar />
-      
+
       <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="mb-8 text-4xl font-bold text-[#1A5C2E]">Terms of Service</h1>
-        
+
         <div className="space-y-6 text-lg text-[#2C1F13]">
           <p className="text-base">
-            <strong>Last Updated: June 2024</strong>
+            <strong>Last Updated: June 2026</strong>
           </p>
 
           <div>
@@ -114,14 +114,14 @@ export default function TermsPage() {
               For questions regarding these Terms of Service, please contact us at:
             </p>
             <p className="mt-3">
-              <strong>OURTH</strong><br/>
-              Email: support@healingourth.com<br/>
+              <strong>OURTH</strong><br />
+              Email: support@healingourth.com<br />
               Website: www.healingourth.com
             </p>
           </div>
         </div>
       </section>
-      
+
       <Footer />
     </main>
   );
