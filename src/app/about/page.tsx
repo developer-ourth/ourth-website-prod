@@ -70,7 +70,7 @@ export default function AboutPage() {
         {/* Top Left Image */}
         <div className="absolute left-0 top-0 w-[35%] max-w-[100%] h-[100%] pointer-events-none z-0 select-none hidden md:block">
           <Image
-            src="/images/about/about_top.png"
+            src="/images/about/about_top.webp"
             alt="About Graphic"
             fill
             className="object-contain object-left-top"

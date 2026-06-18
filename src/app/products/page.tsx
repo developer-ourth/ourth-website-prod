@@ -73,9 +73,12 @@ export default async function ProductsPage() {
 
         {/* Downlaod Catalogue pill badge */}
         <div className="flex justify-center mt-12 relative z-10">
-          <span className="rounded-full bg-[#E2EFE0] border border-[#0D3A27]/20 px-8 py-2.5 text-sm font-bold text-[#0D3A27] shadow-sm">
+          <a
+            href="#"
+            className="rounded-full bg-[#E2EFE0] border border-[#0D3A27]/20 px-8 py-2.5 text-sm font-bold text-[#0D3A27] shadow-sm hover:bg-[#d0e6cf] focus:outline-none focus:ring-2 focus:ring-[#0D3A27] transition duration-200"
+          >
             Downlaod Catalogue
-          </span>
+          </a>
         </div>
       </section>
 

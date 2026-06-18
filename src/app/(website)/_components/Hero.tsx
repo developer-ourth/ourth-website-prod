@@ -109,7 +109,7 @@ export default function Hero() {
       >
         <div className="relative w-full">
           <img
-            src="/clouds.png"
+            src="/clouds.webp"
             alt=""
             className="block w-full h-auto relative z-10"
           />

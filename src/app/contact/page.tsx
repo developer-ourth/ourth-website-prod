@@ -37,7 +37,7 @@ export default function ContactPage() {
           {/* Tree Image (Left side) - Figma (X: 0, Y: 0, W: 1003, H: 943) */}
           <div className="absolute left-0 top-0 w-[100%] max-w-[100%] h-[100%] pointer-events-none z-10 select-none hidden md:block">
             <Image
-              src="/images/contact/tree.png"
+              src="/images/contact/tree.webp"
               alt="Green Tree"
               fill
               className="object-contain object-left-top"
@@ -48,7 +48,7 @@ export default function ContactPage() {
           {/* Grass Image (Bottom span) */}
           <div className="absolute left-0 right-0 bottom-0 h-[40%] pointer-events-none z-10 select-none">
             <Image
-              src="/images/contact/grass.png"
+              src="/images/contact/grass.webp"
               alt="Lush green grass"
               fill
               className="object-cover object-bottom"
@@ -126,10 +126,11 @@ export default function ContactPage() {
                 {/* Tree sprout / leaf sprout icon at top center */}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="name-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
                       Full Name
                     </label>
                     <input
+                      id="name-input"
                       type="text"
                       required
                       value={name}
@@ -141,10 +142,11 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="phone-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
                       Number
                     </label>
                     <input
+                      id="phone-input"
                       type="tel"
                       required
                       value={phone}
@@ -156,10 +158,11 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="email-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
                       Email
                     </label>
                     <input
+                      id="email-input"
                       type="email"
                       required
                       value={email}

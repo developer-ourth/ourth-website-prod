@@ -36,9 +36,10 @@ export default function BuiltForVendors() {
               style={{ height: "308px" }}
             >
               <img
-                src="/images/home/image1.png"
+                src="/images/home/image1.webp"
                 alt="Food served in leaf bowl"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
             <div
@@ -46,9 +47,10 @@ export default function BuiltForVendors() {
               style={{ height: "441px" }}
             >
               <img
-                src="/images/home/image2.png"
+                src="/images/home/image2.webp"
                 alt="Stack of leaf plates"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>

@@ -39,42 +39,47 @@ export default function NaturesAnswer() {
           {/* Large left image */}
           <div className="overflow-hidden rounded-[30px] flex-shrink-0" style={{ width: "44%" }}>
             <img
-              src="/images/home/image5.png"
+              src="/images/home/image5.webp"
               alt="Traditional Indian food served in leaf bowls"
               className="h-full w-full object-cover"
+              loading="lazy"
             />
           </div>
           {/* Stacked pair */}
           <div className="flex flex-col gap-4 flex-shrink-0" style={{ width: "22%" }}>
             <div className="overflow-hidden rounded-[30px] flex-1" style={{}}>
               <img
-                src="/images/home/image6.png"
+                src="/images/home/image6.webp"
                 alt="Plastic bottles waste"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="overflow-hidden rounded-[30px]" style={{ height: "34%", }}>
               <img
-                src="/images/home/image7.png"
+                src="/images/home/image7.webp"
                 alt="Plastic waste"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>
           {/* Col 3 */}
           <div className="overflow-hidden rounded-[30px] flex-1" style={{}}>
             <img
-              src="/images/home/image8.png"
+              src="/images/home/image8.webp"
               alt="Natural leaves"
               className="h-full w-full object-cover"
+              loading="lazy"
             />
           </div>
           {/* Col 4 */}
           <div className="overflow-hidden rounded-[30px] flex-1" style={{}}>
             <img
-              src="/images/home/image9.png"
+              src="/images/home/image9.webp"
               alt="Eco tableware"
               className="h-full w-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>
