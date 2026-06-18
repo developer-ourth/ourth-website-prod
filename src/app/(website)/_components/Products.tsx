@@ -54,11 +54,11 @@ export default async function Products() {
           {products.map((p) => (
             <div
               key={p.id}
-              className="mx-auto flex w-[270px] flex-col items-center overflow-hidden"
+              className="mx-auto flex w-[350px] flex-col items-center overflow-hidden"
               style={{
                 boxShadow: "0px 4px 4px rgba(0,0,0,0.2)",
                 borderRadius: "30px",
-                height: "430px",
+                height: "450px",
                 padding: "1px",
                 border: "2px solid #2C1F13",
               }}
@@ -67,7 +67,7 @@ export default async function Products() {
                 <div
                   className="w-full overflow-hidden rounded-[27px] flex-shrink-0"
                   style={{
-                    height: "320px",
+                    height: "260px",
                     background: "#EDE8DC",
                   }}
                 >
@@ -79,10 +79,10 @@ export default async function Products() {
                 </div>
 
                 <div
-                  className="relative mt-auto flex w-[calc(100%+22px)] items-center justify-center -mx-[11px]"
+                  className="relative mt-auto flex w-[calc(100%+22px)] items-center justify-center -mx-[11px] px-3 py-4"
                   style={{
                     borderRadius: "20px 20px 29px 29px",
-                    height: "80px",
+                    minHeight: "130px",
                     flexShrink: 0,
                   }}
                 >
@@ -94,20 +94,17 @@ export default async function Products() {
                       opacity: 0.4,
                     }}
                   />
-                  <div className="relative z-10 flex flex-col items-center justify-center text-center">
+                  <div className="relative z-10 flex flex-col items-center justify-center text-center px-2">
                     <span
                       style={{
                         fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
                         fontWeight: 600,
-                        fontSize: "20px",
-                        lineHeight: "24px",
+                        fontSize: "16px",
+                        lineHeight: "20px",
                         color: "#0D3A27",
                       }}
                     >
                       {p.name}
-                    </span>
-                    <span className="text-xs font-semibold text-[#746148] mt-0.5">
-                      ₹{parseFloat(p.base_price).toFixed(2)} / {p.unit}
                     </span>
                   </div>
                 </div>
