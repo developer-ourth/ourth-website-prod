@@ -1,20 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import fs from "fs";
-import path from "path";
+import websiteConfig from "../../../data/website-config.json";
 
 export default function Footer() {
-  // Read config dynamically at request time
-  let config = {
+  const config = websiteConfig || {
     contactEmail: "support@healingourth.com",
     footerTagline: "for a plastic-free future."
   };
-  try {
-    const configPath = path.join(process.cwd(), "src/data/website-config.json");
-    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  } catch (e) {
-    console.error("Failed to read dynamic website config in Footer", e);
-  }
 
   return (
     <footer className="relative overflow-hidden bg-[#B8DEC4] text-[#2C1F13]">

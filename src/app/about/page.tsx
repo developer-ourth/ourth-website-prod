@@ -57,15 +57,25 @@ export default function AboutPage() {
   }
 
   return (
-    <main style={{ background: config.backgroundColor }}>
+    <main style={{ background: config.backgroundColor }} className="relative">
       <Navbar />
 
       <section
         className="relative mx-auto overflow-hidden px-6 pb-20 pt-80"
         style={{ width: "1920px", height: "1080px", maxWidth: "100%" }}
       >
+        {/* Top Left Image */}
+        <div className="absolute left-0 top-0 w-[35%] max-w-[100%] h-[100%] pointer-events-none z-0 select-none hidden md:block">
+          <Image
+            src="/images/about/about_top.png"
+            alt="About Graphic"
+            fill
+            className="object-contain object-left-top"
+            priority
+          />
+        </div>
         <div
-          className="absolute w-full max-w-[1580px]"
+          className="absolute w-full max-w-[1580px] z-20"
           style={{ left: "280px", top: "250px" }}
         >
           <div className="max-w-[680px]">
