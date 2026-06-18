@@ -33,20 +33,20 @@ export default function BuiltForVendors() {
           <div className="flex flex-col gap-4 p-8 md:w-[38%] flex-shrink-0">
             <div
               className="w-full overflow-hidden rounded-[30px] flex-shrink-0 md:w-[489px]"
-              style={{ height: "308px", boxShadow: "0px 4px 4px rgba(0,0,0,0.2)" }}
+              style={{ height: "308px" }}
             >
               <img
-                src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80"
+                src="/images/home/image1.png"
                 alt="Food served in leaf bowl"
                 className="h-full w-full object-cover"
               />
             </div>
             <div
               className="w-full overflow-hidden rounded-[30px] flex-shrink-0 md:w-[489px]"
-              style={{ height: "441px", boxShadow: "0px 4px 4px rgba(0,0,0,0.2)" }}
+              style={{ height: "441px" }}
             >
               <img
-                src="https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=600&q=80"
+                src="/images/home/image2.png"
                 alt="Stack of leaf plates"
                 className="h-full w-full object-cover"
               />

@@ -11,7 +11,7 @@ export default function Navbar() {
     <div className="absolute top-5 left-0 right-0 z-50 px-6">
       {/* Floating pill navbar */}
       <header
-        className="mx-auto flex h-[100px] max-w-[1580px] items-center justify-between rounded-[30px] px-8 md:px-12"
+        className="mx-auto flex h-[75px] max-w-[1580px] items-center justify-between rounded-[22px] px-8 md:px-12"
         style={{
           background: "rgba(237, 232, 220, 0.70)",
           backdropFilter: "blur(16px)",
@@ -21,10 +21,10 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Healing Ourth" width={44} height={44} className="object-contain" style={{ width: "auto", height: "80px" }} />
+          <Image src="/logo.png" alt="Healing Ourth" width={38} height={38} className="object-contain" style={{ width: "auto", height: "48px" }} />
           <span
             style={{
-              fontSize: "40px",
+              fontSize: "28px",
               fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
               fontWeight: 700,
               color: "#0D3A27",
@@ -34,28 +34,28 @@ export default function Navbar() {
             Healing Ourth
           </span>
         </Link>
-
+ 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-10 md:flex">
-          <Link href="/" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "24px", fontWeight: 600, color: "#0D3A27" }} className="hover:opacity-80 transition-opacity">Home</Link>
-          <Link href="/about" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "24px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">About</Link>
-          <Link href="/products" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "24px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">Products</Link>
+          <Link href="/" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#0D3A27" }} className="hover:opacity-80 transition-opacity">Home</Link>
+          <Link href="/about" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">About</Link>
+          <Link href="/products" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">Products</Link>
         </nav>
-
+ 
         {/* CTA */}
         <div className="hidden md:block">
           <Link
             href="/contact"
-            className="flex items-center justify-center rounded-[30px] px-6 py-3 hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center rounded-[20px] px-6 py-2.5 hover:opacity-90 transition-opacity"
             style={{
               background: "#25784C",
               boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
               fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-              fontSize: "24px",
+              fontSize: "18px",
               fontWeight: 600,
               color: "#D8EFE0",
-              minWidth: "216px",
-              height: "54px",
+              minWidth: "160px",
+              height: "44px",
             }}
           >
             Get in touch

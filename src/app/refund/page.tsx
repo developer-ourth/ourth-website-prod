@@ -6,7 +6,7 @@ export default function RefundPolicyPage() {
     <main style={{ background: "#D8EFE0" }}>
       <Navbar />
 
-      <section className="mx-auto max-w-4xl px-6 py-20">
+      <section className="mx-auto max-w-4xl px-6 pt-36 pb-20">
         <h1 className="mb-8 text-4xl font-bold text-[#1A5C2E]">Refund Policy</h1>
 
         <div className="space-y-6 text-lg text-[#2C1F13]">

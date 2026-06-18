@@ -81,7 +81,7 @@ export default async function ProductsPage() {
 
       {/* Product List Section */}
       <section
-        className="relative py-16 px-4 sm:px-8 space-y-16 overflow-hidden">
+        className="relative py-16 px-8 lg:px-16 space-y-16 overflow-hidden">
         {products.length === 0 ? (
           <div className="mx-auto max-w-[1280px] text-center p-16 bg-white/70 rounded-3xl border border-[#DCE9D4]">
             <p className="text-lg font-medium text-[#0D3A27]">No products available in the database catalogue at the moment.</p>
@@ -93,7 +93,7 @@ export default async function ProductsPage() {
             return (
               <div
                 key={product.id}
-                className="relative max-w-[1440px] mx-auto px-4 sm:px-8 py-8">
+                className="relative max-w-[1580px] mx-auto px-4 sm:px-8 py-8">
                 {/* Product Card Container */}
                 <div
                   className={`flex flex-col lg:flex-row items-center justify-between gap-12 rounded-[50px] border border-white/40 p-12 md:p-16 lg:p-20 shadow-[0_24px_70px_rgba(44,74,26,0.08)] overflow-hidden relative z-20 ${isEvenRow ? "lg:flex-row-reverse" : ""
