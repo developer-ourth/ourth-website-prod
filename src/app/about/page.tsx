@@ -290,7 +290,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-24">
+      {/* <section className="px-6 pb-24">
         <div className="mx-auto w-full max-w-[1420px]">
           <h3
             className="mb-10 text-center"
@@ -374,7 +374,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </main>
