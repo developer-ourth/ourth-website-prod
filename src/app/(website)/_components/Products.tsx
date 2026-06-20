@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getMarketplaceProducts } from "@/lib/api";
+import { getMarketplaceProducts, getProductImageUrl } from "@/lib/api";
 
 export default async function Products() {
   let products: any[] = [];
@@ -72,7 +72,7 @@ export default async function Products() {
                   }}
                 >
                   <img
-                    src={p.primary_image_url || "https://images.unsplash.com/photo-1606914469633-bd07b15e8f33?w=700&q=80"}
+                    src={getProductImageUrl(p.primary_image_url, p.name)}
                     alt={p.name}
                     className="h-full w-full object-contain p-8"
                   />

@@ -3,6 +3,7 @@ import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
 import { getMarketplaceProducts } from "@/lib/api";
 import Image from "next/image";
+import ProductCard from "./ProductCard";
 
 export default async function ProductsPage() {
   let products: any[] = [];
@@ -90,85 +91,9 @@ export default async function ProductsPage() {
             <p className="text-lg font-medium text-[#0D3A27]">No products available in the database catalogue at the moment.</p>
           </div>
         ) : (
-          products.map((product: any, index: number) => {
-            const isEvenRow = index % 2 === 1; // 0-indexed: index 0 is first row (odd), index 1 is second row (even)
-
-            return (
-              <div
-                key={product.id}
-                className="relative max-w-[1580px] mx-auto px-4 sm:px-8 py-8">
-                {/* Product Card Container */}
-                <div
-                  className={`flex flex-col lg:flex-row items-center justify-between gap-12 rounded-[50px] border border-white/40 p-12 md:p-16 lg:p-20 shadow-[0_24px_70px_rgba(44,74,26,0.08)] overflow-hidden relative z-20 ${isEvenRow ? "lg:flex-row-reverse" : ""
-                    }`}
-                  style={
-                    isEvenRow
-                      ? {
-                        background: "rgba(226, 239, 220, 0.45)",
-                        backdropFilter: "blur(16px)",
-                        WebkitBackdropFilter: "blur(16px)",
-                      }
-                      : {
-                        backgroundImage: "url('/images/decor/background.webp')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backdropFilter: "blur(4px)",
-                        WebkitBackdropFilter: "blur(4px)",
-                      }
-                  }
-                >
-                  {/* Flanking Palm/Monstera Leaves Overlay inside the card container */}
-                  {isEvenRow && (
-                    <>
-                      <div className="absolute left-0 top-0 bottom-0 w-[360px] pointer-events-none z-0 select-none">
-                        <Image
-                          src="/images/decor/leaf_left.webp"
-                          alt=""
-                          fill
-                          className="object-contain object-left opacity-90"
-                        />
-                      </div>
-                      <div className="absolute right-0 top-0 bottom-0 w-[360px] pointer-events-none z-0 select-none">
-                        <Image
-                          src="/images/decor/leaf_right.webp"
-                          alt=""
-                          fill
-                          className="object-contain object-right opacity-90"
-                        />
-                      </div>
-                    </>
-                  )}
-
-                  {/* Left Column Content card */}
-                  <div className="w-full lg:w-[45%] flex justify-center relative z-10">
-                    <div className="w-full max-w-[440px] bg-[#FAF7F2] rounded-[36px] p-10 sm:p-12 lg:p-14 shadow-[0_15px_35px_rgba(44,74,26,0.06)] space-y-6 flex flex-col justify-center min-h-[380px]">
-                      <h2 className="text-4xl sm:text-5xl font-black text-[#2C1F13] tracking-tight">
-                        {product.category?.name || "Bowls"}
-                      </h2>
-                      <h3 className="text-xl sm:text-2xl font-bold text-[#2C1F13] opacity-90">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm leading-relaxed text-[#2C1F13]/75 max-w-sm">
-                        {product.description || "Every bowl, plate and tray is pressed from natural leaves, heat-treated for strength, and certified food-safe."}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Right Column Product Image */}
-                  <div className="w-full lg:w-[50%] flex justify-center relative z-10">
-                    <div className="relative h-[360px] w-full max-w-[560px] sm:h-[440px] lg:h-[500px]">
-                      <img
-                        src={product.primary_image_url || "/images/decor/product_stack.webp"}
-                        alt={product.name}
-                        className="h-full w-full object-contain transform hover:scale-105 transition duration-500"
-                        style={{ filter: "drop-shadow(0px 16px 32px rgba(44, 74, 26, 0.12))" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })
+          products.map((product: any, index: number) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))
         )}
       </section>
 

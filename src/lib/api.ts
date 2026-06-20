@@ -76,10 +76,11 @@ export function registerApi(
   email: string,
   password: string,
   password_confirmation: string,
+  phone?: string,
 ) {
   return request<RegisterResponse>("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ name, email, password, password_confirmation }),
+    body: JSON.stringify({ name, email, password, password_confirmation, phone }),
   });
 }
 
@@ -550,4 +551,156 @@ export async function uploadImage(file: File): Promise<string> {
 
   const json = await res.json();
   return json.url as string;
+}
+
+// ── Cart ─────────────────────────────────────────────────────────────────────
+
+export interface CartItem {
+  id: number;
+  cart_id: number;
+  product_id: number;
+  product_pack_id?: number | null;
+  quantity: number;
+  unit_price: string;
+  total_price: string;
+  product?: Pick<MarketProduct, "id" | "name" | "primary_image_url" | "base_price" | "discounted_price">;
+  productPack?: ProductPack | null;
+}
+
+export interface Cart {
+  id: number;
+  user_id: number;
+  vendor_id: number;
+  status: string;
+  total_amount: string;
+  total_items: number;
+  items: CartItem[];
+}
+
+export function getCart() {
+  return request<{ success: boolean; data: Cart }>("/me/cart");
+}
+
+export function addCartItem(productId: number, quantity = 1, productPackId?: number | null) {
+  return request<{ success: boolean; data: Cart }>("/me/cart/items", {
+    method: "POST",
+    body: JSON.stringify({ product_id: productId, quantity, product_pack_id: productPackId }),
+  });
+}
+
+export function updateCartItem(itemId: number, quantity: number) {
+  return request<{ success: boolean; data: Cart }>(`/me/cart/items/${itemId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ quantity }),
+  });
+}
+
+export function removeCartItem(itemId: number) {
+  return request<{ success: boolean; message: string }>(`/me/cart/items/${itemId}`, {
+    method: "DELETE",
+  });
+}
+
+export function clearCart() {
+  return request<{ success: boolean; message: string }>("/me/cart", {
+    method: "DELETE",
+  });
+}
+
+// ── Addresses ────────────────────────────────────────────────────────────────
+
+export interface UserAddress {
+  id: number;
+  name: string;
+  address_line1: string;
+  address_line2: string | null;
+  city: string | null;
+  state: string | null;
+  postal_code: string | null;
+  mobile: string | null;
+  is_default: boolean;
+}
+
+export function getAddresses() {
+  return request<{ success: boolean; data: UserAddress[] }>("/me/addresses");
+}
+
+export function createAddress(payload: {
+  name: string;
+  address_line1: string;
+  address_line2?: string | null;
+  city: string;
+  state: string;
+  postal_code: string;
+  mobile: string;
+  is_default?: boolean;
+}) {
+  return request<{ success: boolean; data: UserAddress }>("/me/addresses", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// ── Orders ───────────────────────────────────────────────────────────────────
+
+export interface OrderPayload {
+  delivery_address_line1: string;
+  delivery_address_line2?: string | null;
+  delivery_city: string;
+  delivery_state: string;
+  delivery_postal_code: string;
+  delivery_phone: string;
+  payment_method: "cod" | "online" | "upi" | "card";
+  notes?: string;
+}
+
+export function placeOrder(payload: OrderPayload) {
+  return request<{ success: boolean; data: any }>("/me/orders", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// ── Product Image URL Resolver ───────────────────────────────────────────────
+
+export function getProductImageUrl(url: string | null | undefined, productName?: string): string {
+  if (!url) return "/images/decor/product_stack.webp";
+  
+  if (url.includes("laravel.cloud")) {
+    const name = productName?.toLowerCase() || "";
+    if (name.includes("large") || name.includes("plates large")) {
+      return "/images/product/product-01.png";
+    }
+    if (name.includes("plates")) {
+      return "/images/product/product-01.png";
+    }
+    if (name.includes("platter")) {
+      return "/images/product/product-02.png";
+    }
+    if (name.includes("cutlery")) {
+      return "/images/product/product-03.png";
+    }
+    if (name.includes("bowl")) {
+      return "/images/product/product-04.png";
+    }
+    
+    // Fallback based on filename signatures
+    if (url.includes("1craTqQwaGKbMjlcG9HZUYAwF6dD6BNKLs1VLCRC")) {
+      return "/images/product/product-01.png";
+    }
+    if (url.includes("PUniHjDQnOQpjd2cswk7zalQpPk9MGq6PaGqbemj")) {
+      return "/images/product/product-02.png";
+    }
+    if (url.includes("bsUTtj6q5vhLUanJfXRSPzjs860PaO2NodMMWbet")) {
+      return "/images/product/product-03.png";
+    }
+    if (url.includes("EAJOnPRpnAgBoKY7cjlkuS2lt7FufJC9kQdt1njP")) {
+      return "/images/product/product-04.png";
+    }
+    if (url.includes("fuhB1ZrAmW9gGUw0FPGM1IS470l2dSU8Sb9tJZvC")) {
+      return "/images/product/product-01.png";
+    }
+  }
+  
+  return url;
 }

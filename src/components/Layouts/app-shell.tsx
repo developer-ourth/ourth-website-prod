@@ -13,7 +13,9 @@ function isAuthRoute(pathname: string): boolean {
     pathname.startsWith("/login/") ||
     pathname === "/register" ||
     pathname === "/forgot-password" ||
-    pathname === "/reset-password"
+    pathname === "/reset-password" ||
+    pathname === "/client/login" ||
+    pathname === "/client/register"
   );
 }
 
@@ -25,7 +27,8 @@ function isPublicRoute(pathname: string): boolean {
     pathname === "/contact" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund" ||
-    pathname === "/terms"
+    pathname === "/terms" ||
+    pathname === "/cart"
   );
 }
 

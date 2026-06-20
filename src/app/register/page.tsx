@@ -14,6 +14,7 @@ function RegisterForm() {
   const roleConfig = getRoleConfig("consumer")!;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -56,6 +57,7 @@ function RegisterForm() {
         email.trim(),
         password,
         confirmPassword,
+        phone.trim() || undefined,
       );
       setToken(res.data.token);
       // Store user then redirect
@@ -142,6 +144,19 @@ function RegisterForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
+                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+                Mobile Number (optional)
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 9876543210"
                 className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
               />
             </div>

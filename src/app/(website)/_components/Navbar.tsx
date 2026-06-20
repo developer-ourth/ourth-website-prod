@@ -3,9 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "@/contexts/cart-context";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { cart } = useCart();
+  const cartCount = cart?.total_items ?? 0;
 
   return (
     <div className="absolute top-5 left-0 right-0 z-50 px-6">
@@ -36,10 +39,18 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-40 md:flex">
+        <nav className="hidden items-center gap-20 md:flex">
           <Link href="/" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#0D3A27" }} className="hover:opacity-80 transition-opacity">Home</Link>
           <Link href="/about" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">About</Link>
           <Link href="/products" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity">Products</Link>
+          <Link href="/cart" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", fontSize: "18px", fontWeight: 600, color: "#2C1F13" }} className="hover:opacity-80 transition-opacity flex items-center gap-1.5">
+            Cart
+            {cartCount > 0 && (
+              <span className="inline-flex items-center justify-center bg-[#25784C] text-[#D8EFE0] text-xs font-extrabold rounded-full h-5 w-5">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </nav>
 
         {/* CTA */}
@@ -92,6 +103,14 @@ export default function Navbar() {
             <Link href="/" className="text-sm font-medium text-[#2C4A1A]" onClick={() => setOpen(false)}>Home</Link>
             <Link href="/about" className="text-sm font-medium text-[#2C4A1A]/70" onClick={() => setOpen(false)}>About</Link>
             <Link href="/products" className="text-sm font-medium text-[#2C4A1A]/70" onClick={() => setOpen(false)}>Products</Link>
+            <Link href="/cart" className="text-sm font-medium text-[#2C4A1A]/70 flex items-center gap-1.5" onClick={() => setOpen(false)}>
+              Cart
+              {cartCount > 0 && (
+                <span className="inline-flex items-center justify-center bg-[#25784C] text-[#D8EFE0] text-xs font-extrabold rounded-full h-4 w-4">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <Link
               href="/contact"
               className="w-fit rounded-full bg-[#2C4A1A] px-5 py-2 text-sm font-semibold text-white"
