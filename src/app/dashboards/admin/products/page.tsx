@@ -31,6 +31,7 @@ const EMPTY_FORM: ProductPayload = {
   weight_grams: null,
   is_active: true,
   is_featured: false,
+  packs: [],
 };
 
 export default function AdminProductsPage() {
@@ -100,6 +101,15 @@ function ProductsContent() {
       weight_grams: p.weight_grams,
       is_active: p.is_active,
       is_featured: p.is_featured,
+      packs: p.packs ? p.packs.map(pack => ({
+        id: pack.id,
+        name: pack.name,
+        base_price: parseFloat(pack.base_price),
+        discounted_price: pack.discounted_price ? parseFloat(pack.discounted_price) : null,
+        sku: pack.sku ?? "",
+        stock_quantity: pack.stock_quantity,
+        is_active: pack.is_active,
+      })) : [],
     });
     setFormError("");
     setShowModal(true);
@@ -303,6 +313,116 @@ function ProductsContent() {
                   aspectHint="Upload multiple product photos for carousel"
                 />
               </Field>
+              {/* Packs Section */}
+              <div className="border-t border-stroke pt-4 dark:border-dark-3">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">Pack Sizes (Variants)</h3>
+                  <button
+                    type="button"
+                    onClick={() => setForm((f) => ({
+                      ...f,
+                      packs: [...(f.packs ?? []), { name: "", base_price: 0, discounted_price: null, sku: "", stock_quantity: 0, is_active: true }]
+                    }))}
+                    className="rounded bg-primary/15 px-2..5 py-1 text-xs font-semibold text-primary hover:bg-primary/25 transition-all"
+                  >
+                    + Add Pack Size
+                  </button>
+                </div>
+                
+                <div className="space-y-3 max-h-[250px] overflow-y-auto pr-1">
+                  {(form.packs ?? []).map((pack, idx) => (
+                    <div key={idx} className="rounded-lg border border-stroke p-3 dark:border-dark-3 bg-gray-50 dark:bg-dark-2">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs font-bold text-gray-500">Pack #{idx + 1}</span>
+                        <button
+                          type="button"
+                          onClick={() => setForm((f) => {
+                            const newPacks = [...(f.packs ?? [])];
+                            newPacks.splice(idx, 1);
+                            return { ...f, packs: newPacks };
+                          })}
+                          className="text-xs font-medium text-red-500 hover:text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        <Field label="Pack Name *">
+                          <input
+                            value={pack.name}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], name: e.target.value };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                            placeholder="e.g. Pack of 3"
+                          />
+                        </Field>
+                        <Field label="Pack SKU">
+                          <input
+                            value={pack.sku ?? ""}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], sku: e.target.value };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                            placeholder="Optional"
+                          />
+                        </Field>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2">
+                        <Field label="Base Price (₹) *">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={pack.base_price}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], base_price: parseFloat(e.target.value) || 0 };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                          />
+                        </Field>
+                        <Field label="Sale Price (₹)">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={pack.discounted_price ?? ""}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], discounted_price: e.target.value ? parseFloat(e.target.value) : null };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                            placeholder="Optional"
+                          />
+                        </Field>
+                        <Field label="Stock">
+                          <input
+                            type="number"
+                            min="0"
+                            value={pack.stock_quantity ?? 0}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], stock_quantity: parseInt(e.target.value) || 0 };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <Field label="SKU">
                 <input value={form.sku} onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))} className={inputCls} placeholder="Auto-generated if empty" />
               </Field>

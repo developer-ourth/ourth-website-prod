@@ -419,6 +419,27 @@ export function deleteCategory(id: number) {
 
 // ── Marketplace — Products ───────────────────────────────────────────────────
 
+export interface ProductPack {
+  id: number;
+  product_id: number;
+  name: string;
+  base_price: string;
+  discounted_price: string | null;
+  sku: string | null;
+  stock_quantity: number;
+  is_active: boolean;
+}
+
+export interface ProductPackPayload {
+  id?: number;
+  name: string;
+  base_price: number;
+  discounted_price?: number | null;
+  sku?: string;
+  stock_quantity?: number;
+  is_active?: boolean;
+}
+
 export interface MarketProduct {
   id: number;
   name: string;
@@ -435,6 +456,7 @@ export interface MarketProduct {
   weight_grams: number | null;
   is_active: boolean;
   is_featured: boolean;
+  packs?: ProductPack[];
   created_at: string;
 }
 
@@ -452,6 +474,7 @@ export interface ProductPayload {
   weight_grams?: number | null;
   is_active?: boolean;
   is_featured?: boolean;
+  packs?: ProductPackPayload[];
 }
 
 export interface ProductListResponse {
