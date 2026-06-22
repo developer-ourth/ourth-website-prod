@@ -441,6 +441,9 @@ export interface ProductPack {
   name: string;
   base_price: string;
   discounted_price: string | null;
+  wholesale_price: string | null;
+  wholesale_discounted_price: string | null;
+  min_order_quantity: number | null;
   sku: string | null;
   stock_quantity: number;
   is_active: boolean;
@@ -451,6 +454,9 @@ export interface ProductPackPayload {
   name: string;
   base_price: number;
   discounted_price?: number | null;
+  wholesale_price?: number | null;
+  wholesale_discounted_price?: number | null;
+  min_order_quantity?: number | null;
   sku?: string;
   stock_quantity?: number;
   is_active?: boolean;
@@ -466,6 +472,7 @@ export interface MarketProduct {
   base_price: string;
   discounted_price: string | null;
   wholesale_price: string | null;
+  wholesale_discounted_price: string | null;
   min_order_quantity: number;
   primary_image_url: string | null;
   secondary_images: string[];
@@ -485,6 +492,7 @@ export interface ProductPayload {
   base_price: number;
   discounted_price?: number | null;
   wholesale_price?: number | null;
+  wholesale_discounted_price?: number | null;
   min_order_quantity?: number;
   primary_image_url?: string;
   secondary_images?: string[];

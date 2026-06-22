@@ -24,6 +24,7 @@ const EMPTY_FORM: ProductPayload = {
   base_price: 0,
   discounted_price: null,
   wholesale_price: null,
+  wholesale_discounted_price: null,
   min_order_quantity: 1,
   primary_image_url: "",
   secondary_images: [],
@@ -96,6 +97,7 @@ function ProductsContent() {
       base_price: parseFloat(p.base_price),
       discounted_price: p.discounted_price ? parseFloat(p.discounted_price) : null,
       wholesale_price: p.wholesale_price ? parseFloat(p.wholesale_price) : null,
+      wholesale_discounted_price: p.wholesale_discounted_price ? parseFloat(p.wholesale_discounted_price) : null,
       min_order_quantity: p.min_order_quantity ?? 1,
       primary_image_url: p.primary_image_url ?? "",
       secondary_images: p.secondary_images ?? [],
@@ -110,6 +112,9 @@ function ProductsContent() {
         name: pack.name,
         base_price: parseFloat(pack.base_price),
         discounted_price: pack.discounted_price ? parseFloat(pack.discounted_price) : null,
+        wholesale_price: pack.wholesale_price ? parseFloat(pack.wholesale_price) : null,
+        wholesale_discounted_price: pack.wholesale_discounted_price ? parseFloat(pack.wholesale_discounted_price) : null,
+        min_order_quantity: pack.min_order_quantity ?? 1,
         sku: pack.sku ?? "",
         stock_quantity: pack.stock_quantity,
         is_active: pack.is_active,
@@ -233,7 +238,11 @@ function ProductsContent() {
                   </div>
                   {p.wholesale_price && (
                     <div className="text-xs text-blue-600 dark:text-blue-400 font-normal">
-                      B2B: ₹{parseFloat(p.wholesale_price).toFixed(2)} (Min: {p.min_order_quantity})
+                      B2B: ₹{parseFloat(p.wholesale_price).toFixed(2)}
+                      {p.wholesale_discounted_price && (
+                        <span className="ml-1 text-xs text-green-600">→ ₹{parseFloat(p.wholesale_discounted_price).toFixed(2)}</span>
+                      )}
+                      {" "}(Min: {p.min_order_quantity})
                     </div>
                   )}
                 </td>
@@ -302,12 +311,15 @@ function ProductsContent() {
                   <input type="number" min="0" step="0.01" value={form.discounted_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, discounted_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional" />
                 </Field>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <Field label="B2B Wholesale Price (₹)">
-                  <input type="number" min="0" step="0.01" value={form.wholesale_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, wholesale_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional (B2B)" />
+                  <input type="number" min="0" step="0.01" value={form.wholesale_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, wholesale_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional" />
+                </Field>
+                <Field label="B2B Sale Price (₹)">
+                  <input type="number" min="0" step="0.01" value={form.wholesale_discounted_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, wholesale_discounted_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional" />
                 </Field>
                 <Field label="B2B Min Order Quantity">
-                  <input type="number" min="1" value={form.min_order_quantity ?? ""} onChange={(e) => setForm((f) => ({ ...f, min_order_quantity: e.target.value ? parseInt(e.target.value) : undefined }))} className={inputCls} placeholder="Optional (B2B)" />
+                  <input type="number" min="1" value={form.min_order_quantity ?? ""} onChange={(e) => setForm((f) => ({ ...f, min_order_quantity: e.target.value ? parseInt(e.target.value) : undefined }))} className={inputCls} placeholder="Optional" />
                 </Field>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -340,7 +352,7 @@ function ProductsContent() {
                     type="button"
                     onClick={() => setForm((f) => ({
                       ...f,
-                      packs: [...(f.packs ?? []), { name: "", base_price: 0, discounted_price: null, sku: "", stock_quantity: 0, is_active: true }]
+                      packs: [...(f.packs ?? []), { name: "", base_price: 0, discounted_price: null, wholesale_price: null, wholesale_discounted_price: null, min_order_quantity: 1, sku: "", stock_quantity: 0, is_active: true }]
                     }))}
                     className="rounded bg-primary/15 px-2..5 py-1 text-xs font-semibold text-primary hover:bg-primary/25 transition-all"
                   >
@@ -431,6 +443,52 @@ function ProductsContent() {
                             onChange={(e) => setForm((f) => {
                               const newPacks = [...(f.packs ?? [])];
                               newPacks[idx] = { ...newPacks[idx], stock_quantity: parseInt(e.target.value) || 0 };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                          />
+                        </Field>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 mt-2">
+                        <Field label="B2B Wholesale Price (₹)">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={pack.wholesale_price ?? ""}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], wholesale_price: e.target.value ? parseFloat(e.target.value) : null };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                            placeholder="Optional"
+                          />
+                        </Field>
+                        <Field label="B2B Sale Price (₹)">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={pack.wholesale_discounted_price ?? ""}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], wholesale_discounted_price: e.target.value ? parseFloat(e.target.value) : null };
+                              return { ...f, packs: newPacks };
+                            })}
+                            className={inputCls}
+                            placeholder="Optional"
+                          />
+                        </Field>
+                        <Field label="B2B Min Order Qty">
+                          <input
+                            type="number"
+                            min="1"
+                            value={pack.min_order_quantity ?? 1}
+                            onChange={(e) => setForm((f) => {
+                              const newPacks = [...(f.packs ?? [])];
+                              newPacks[idx] = { ...newPacks[idx], min_order_quantity: parseInt(e.target.value) || 1 };
                               return { ...f, packs: newPacks };
                             })}
                             className={inputCls}

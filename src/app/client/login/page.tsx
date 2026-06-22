@@ -87,15 +87,14 @@ export default function ClientLoginPage() {
                   className="mb-2 block text-xs font-bold text-black uppercase tracking-wider pl-1"
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
-                  Email Address
+                  Email Address or Mobile Number
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder="you@example.com or +91 9876543210"
                   className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 />
