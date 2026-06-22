@@ -116,19 +116,21 @@ export default function Products() {
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {/* Image (198px x 198px centered) */}
-                    <div className="w-full h-[198px] bg-transparent flex items-center justify-center overflow-hidden">
+                    <Link href={`/products/${p.id}`} className="w-full h-[198px] bg-transparent flex items-center justify-center overflow-hidden hover:opacity-90 block">
                       <img
                         src={getProductImageUrl(p.primary_image_url, p.name)}
                         alt={p.name}
                         className="w-[198px] h-[198px] object-contain"
                       />
-                    </div>
+                    </Link>
 
                     {/* Title & Details */}
                     <div className="flex flex-col mt-2">
-                      <span className="text-black text-[24px] font-medium leading-[34px] truncate">
-                        {p.name}
-                      </span>
+                      <Link href={`/products/${p.id}`} className="hover:underline">
+                        <span className="text-black text-[24px] font-medium leading-[34px] truncate block">
+                          {p.name}
+                        </span>
+                      </Link>
                       <span className="text-black text-[24px] font-normal leading-[34px]">
                         Pack of {p.min_order_quantity > 1 ? p.min_order_quantity : 10}
                       </span>
@@ -184,19 +186,21 @@ export default function Products() {
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {/* Image (Centered, max 100px height for mobile cards) */}
-                    <div className="w-full h-[110px] bg-transparent flex items-center justify-center overflow-hidden">
+                    <Link href={`/products/${p.id}`} className="w-full h-[110px] bg-transparent flex items-center justify-center overflow-hidden hover:opacity-90 block">
                       <img
                         src={getProductImageUrl(p.primary_image_url, p.name)}
                         alt={p.name}
                         className="w-[100px] h-[100px] object-contain"
                       />
-                    </div>
+                    </Link>
 
                     {/* Title & Details */}
                     <div className="flex flex-col mt-1">
-                      <span className="text-black text-base md:text-lg font-bold truncate">
-                        {p.name}
-                      </span>
+                      <Link href={`/products/${p.id}`} className="hover:underline">
+                        <span className="text-black text-base md:text-lg font-bold truncate block">
+                          {p.name}
+                        </span>
+                      </Link>
                       <span className="text-black text-xs md:text-sm opacity-80">
                         Pack of {p.min_order_quantity > 1 ? p.min_order_quantity : 10}
                       </span>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
@@ -106,9 +107,11 @@ export default function ProductCard({ product, index }: { product: any; index: n
               <h2 className="text-4xl sm:text-5xl font-black text-[#2C1F13] tracking-tight">
                 {product.category?.name || "Bowls"}
               </h2>
-              <h3 className="text-xl sm:text-2xl font-bold text-[#2C1F13] opacity-90 mt-1">
-                {product.name}
-              </h3>
+              <Link href={`/products/${product.id}`} className="hover:opacity-85 transition-opacity">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#2C1F13] opacity-90 mt-1">
+                  {product.name}
+                </h3>
+              </Link>
             </div>
             
             <p className="text-sm leading-relaxed text-[#2C1F13]/75 max-w-sm">
@@ -178,16 +181,15 @@ export default function ProductCard({ product, index }: { product: any; index: n
           </div>
         </div>
 
-        {/* Right Column Product Image */}
         <div className="w-full lg:w-[50%] flex justify-center relative z-10">
-          <div className="relative h-[360px] w-full max-w-[560px] sm:h-[440px] lg:h-[500px]">
+          <Link href={`/products/${product.id}`} className="relative h-[360px] w-full max-w-[560px] sm:h-[440px] lg:h-[500px]">
             <img
               src={getProductImageUrl(product.primary_image_url, product.name)}
               alt={product.name}
               className="h-full w-full object-contain transform hover:scale-105 transition duration-500"
               style={{ filter: "drop-shadow(0px 16px 32px rgba(44, 74, 26, 0.12))" }}
             />
-          </div>
+          </Link>
         </div>
       </div>
     </div>

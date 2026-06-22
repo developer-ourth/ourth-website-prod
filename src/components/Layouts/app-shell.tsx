@@ -24,6 +24,7 @@ function isPublicRoute(pathname: string): boolean {
     pathname === "/" ||
     pathname === "/about" ||
     pathname === "/products" ||
+    pathname.startsWith("/products/") ||
     pathname === "/contact" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund" ||

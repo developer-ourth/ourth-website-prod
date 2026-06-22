@@ -479,6 +479,7 @@ export interface MarketProduct {
   unit: string;
   stock_quantity: number;
   weight_grams: number | null;
+  dimensions_cm: { length?: number; width?: number; height?: number } | null;
   is_active: boolean;
   is_featured: boolean;
   packs?: ProductPack[];
@@ -500,6 +501,7 @@ export interface ProductPayload {
   unit?: string;
   stock_quantity?: number;
   weight_grams?: number | null;
+  dimensions_cm?: { length?: number; width?: number; height?: number } | null;
   is_active?: boolean;
   is_featured?: boolean;
   packs?: ProductPackPayload[];

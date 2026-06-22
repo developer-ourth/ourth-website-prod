@@ -36,28 +36,28 @@ export default function Navbar() {
         {/* Center: Category Navigation Pills */}
         <nav className="hidden items-center gap-4 lg:flex">
           <Link
-            href="/products?category=plates"
+            href="/products"
             className="inline-flex w-[165px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black text-[24px] font-normal text-black bg-transparent hover:bg-[#E8F0D8] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Shop
           </Link>
           <Link
-            href="/products?category=bowls"
+            href="/about"
             className="inline-flex w-[165px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black text-[24px] font-normal text-black bg-transparent hover:bg-[#E8F0D8] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             About
           </Link>
           <Link
-            href="/products?category=platters"
+            href="/products"
             className="inline-flex w-[165px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black text-[24px] font-normal text-black bg-transparent hover:bg-[#E8F0D8] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Products
           </Link>
           <Link
-            href="/products?category=cutlery"
+            href="/contact"
             className="inline-flex w-[181px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black text-[24px] font-normal text-black bg-transparent hover:bg-[#E8F0D8] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
@@ -126,28 +126,28 @@ export default function Navbar() {
         <div className="mt-4 flex flex-col gap-3 rounded-2xl border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_#000000] lg:hidden">
           <nav className="flex flex-col gap-2.5">
             <Link
-              href="/products?category=plates"
+              href="/products"
               className="text-sm font-bold text-black hover:underline"
               onClick={() => setOpen(false)}
             >
               ✦ Shop
             </Link>
             <Link
-              href="/products?category=bowls"
+              href="/about"
               className="text-sm font-bold text-black hover:underline"
               onClick={() => setOpen(false)}
             >
               ✦ About
             </Link>
             <Link
-              href="/products?category=platters"
+              href="/products"
               className="text-sm font-bold text-black hover:underline"
               onClick={() => setOpen(false)}
             >
               ✦ Products
             </Link>
             <Link
-              href="/products?category=cutlery"
+              href="/contact"
               className="text-sm font-bold text-black hover:underline"
               onClick={() => setOpen(false)}
             >
