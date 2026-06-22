@@ -27,7 +27,7 @@ export default function ClientRegisterPage() {
   useEffect(() => {
     if (!isLoading && user) {
       if (user.role === "consumer") {
-        router.replace("/products");
+        router.replace("/client/dashboard");
       } else {
         const config = getRoleConfig(user.role);
         router.replace(config?.dashboardPath ?? "/dashboards/admin");
@@ -35,7 +35,7 @@ export default function ClientRegisterPage() {
     }
   }, [user, isLoading, router]);
 
-  if (isLoading) {
+  if (isLoading || user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#FBEFC9]">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />

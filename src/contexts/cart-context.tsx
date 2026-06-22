@@ -30,11 +30,12 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchCart = useCallback(async () => {
+    if (authLoading) return;
     if (!user) {
       setCart(null);
       return;
@@ -48,11 +49,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, authLoading]);
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    if (!authLoading) {
+      fetchCart();
+    }
+  }, [authLoading, fetchCart]);
 
   const addToCart = useCallback(
     async (productId: number, quantity = 1, packId: number | null = null) => {

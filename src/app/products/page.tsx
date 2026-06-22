@@ -33,70 +33,68 @@ export default async function ProductsPage({
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F8F3]">
-      <Navbar />
+    <main className="min-h-screen bg-[#E8F0D8]">
 
       {/* Top Hero Section */}
-      <section className="relative overflow-hidden pt-36 pb-16 bg-[#F5F8F3]">
+      <section className="relative overflow-hidden pt-36 lg:pt-[140px] pb-16 bg-transparent">
         {/* Left Curved Shape Backdrop */}
-        <div className="absolute top-0 left-0 h-[85%] w-full lg:w-[45%] bg-[#E2EFE0] rounded-br-[120px] lg:rounded-br-[200px] z-0" />
+        <div className="absolute w-[1162px] h-[1200px] bg-[#FBEFC9] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[300px] -top-[304px] -left-[283px] z-0" />
 
-        <div className="relative z-10 mx-auto max-w-[1580px] px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="relative z-10 mx-auto max-w-[1625px] px-8 lg:px-[146px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column Text Content */}
-          <div className="lg:col-span-5 space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#0D3A27]">
-              Ourth Tableware
-            </p>
+          <div className="lg:col-span-6 space-y-6">
             <h1
-              className="text-[#0D3A27] font-extrabold text-5xl sm:text-6xl leading-[1.1]"
+              className="text-[#5E3A16] font-bold text-5xl sm:text-[72px] leading-[62px] sm:leading-[80px] tracking-tight"
               style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}
             >
-              Tableware that <br />
-              <span className="italic font-serif font-light text-emerald-800">grows from</span> <br />
-              the ground
+              Tableware that<br />
+              <span className="text-[#4C7A1A] italic">grows from</span><br />
+              <span className="text-[#4C7A1A] italic">the ground</span>
             </h1>
-            <p className="text-[#2C1F13]/85 text-base leading-relaxed max-w-md">
+            <p className="text-[#4C7A1A] text-[24px] leading-[38px] font-bold max-w-xl" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
               Every bowl, plate and tray is pressed from natural leaves, heat-treated for strength, and certified food-safe.
             </p>
 
             {/* Stats Row */}
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#0D3A27]/10 max-w-md">
-              <div>
-                <span className="block text-3xl font-extrabold text-[#0D3A27]">10+</span>
-                <span className="text-xs text-[#2C1F13]/70 font-semibold mt-1 block">Product Types</span>
+            <div className="flex gap-16 pt-6 max-w-xl">
+              <div className="text-center">
+                <span className="block text-[24px] font-bold text-[#5E3A16]">12+</span>
+                <span className="text-[24px] text-[#4C7A1A] font-normal mt-1 block leading-[28px]">Product<br />Types</span>
               </div>
-              <div>
-                <span className="block text-3xl font-extrabold text-[#0D3A27]">1</span>
-                <span className="text-xs text-[#2C1F13]/70 font-semibold mt-1 block">Leaf Sourced</span>
+              <div className="text-center">
+                <span className="block text-[24px] font-bold text-[#5E3A16]">3</span>
+                <span className="text-[24px] text-[#4C7A1A] font-normal mt-1 block leading-[28px]">Leaf<br />Materials</span>
               </div>
-              <div>
-                <span className="block text-3xl font-extrabold text-[#0D3A27]">100%</span>
-                <span className="text-xs text-[#2C1F13]/70 font-semibold mt-1 block">Compostable</span>
+              <div className="text-center">
+                <span className="block text-[24px] font-bold text-[#5E3A16]">100%</span>
+                <span className="text-[24px] text-[#4C7A1A] font-normal mt-1 block leading-[28px] whitespace-nowrap">Compostable</span>
               </div>
             </div>
           </div>
 
           {/* Right Column Product Stack Image */}
-          <div className="lg:col-span-7 flex justify-center lg:justify-end relative">
-            <div className="relative h-[340px] w-full max-w-[620px] sm:h-[460px] lg:h-[560px]">
+          <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
+            <div className="relative h-[550px] w-full max-w-[780px]">
               <Image
                 src="/images/decor/product_stack.webp"
                 alt="Healing Ourth leafware products collection"
                 fill
                 className="object-contain"
+                sizes="(max-w-[1024px]) 100vw, 780px"
                 priority
               />
             </div>
           </div>
         </div>
 
-        {/* Downlaod Catalogue pill badge */}
-        <div className="flex justify-center mt-12 relative z-10">
+        {/* Download Catalogue pill badge */}
+        <div className="flex justify-center mt-36 relative z-10">
           <a
             href="#"
-            className="rounded-full bg-[#E2EFE0] border border-[#0D3A27]/20 px-8 py-2.5 text-sm font-bold text-[#0D3A27] shadow-sm hover:bg-[#d0e6cf] focus:outline-none focus:ring-2 focus:ring-[#0D3A27] transition duration-200"
+            className="w-[370px] h-[60px] rounded-[30px] bg-[#FAF8F3] border-[1.5px] border-black text-[#5E3A16] font-normal text-[24px] flex items-center justify-center shadow-sm hover:opacity-90 transition duration-200"
+            style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
-            Downlaod Catalogue
+            Download Catalogue
           </a>
         </div>
       </section>
@@ -114,8 +112,7 @@ export default async function ProductsPage({
           ))
         )}
       </section>
-
-      <Footer />
     </main>
   );
 }
+

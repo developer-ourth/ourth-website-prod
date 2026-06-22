@@ -25,13 +25,11 @@ export default function LandingPage() {
 
   return (
     <main className="relative min-h-screen" style={{ background: config.backgroundColor }}>
-      <Navbar />
       <Hero />
       {config.showNaturesAnswer && <NaturesAnswer />}
       {config.showProducts && <Products />}
       <BrandsAndTestimonials />
       {config.showBuiltForVendors && <BuiltForVendors />}
-      <Footer />
     </main>
   );
 }

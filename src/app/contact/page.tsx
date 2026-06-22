@@ -25,7 +25,6 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#F5F8F3] flex flex-col justify-between">
       <div>
-        <Navbar />
 
         {/* Top Sky Section (Contains Tree, Grass, and Title) */}
         <section
@@ -202,7 +201,6 @@ export default function ContactPage() {
         </section>
       </div>
 
-      <Footer />
     </main>
   );
 }

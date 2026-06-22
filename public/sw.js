@@ -4,7 +4,7 @@ const ASSETS = [
   "/about",
   "/products",
   "/manifest.json",
-  "/images/logo/logo.webp"
+  "/images/logo/logo.svg"
 ];
 
 self.addEventListener("install", (e) => {

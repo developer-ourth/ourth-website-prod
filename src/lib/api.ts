@@ -592,7 +592,7 @@ export interface CartItem {
   quantity: number;
   unit_price: string;
   total_price: string;
-  product?: Pick<MarketProduct, "id" | "name" | "primary_image_url" | "base_price" | "discounted_price" | "wholesale_price" | "min_order_quantity">;
+  product?: Pick<MarketProduct, "id" | "name" | "primary_image_url" | "base_price" | "discounted_price" | "wholesale_price" | "min_order_quantity" | "category">;
   productPack?: ProductPack | null;
 }
 
@@ -761,5 +761,55 @@ export function uploadKycDocumentFileApi(
     }
     return res.json() as Promise<{ success: boolean; data: any }>;
   });
+}
+
+export interface ProductReview {
+  id: number;
+  ratable_type: string;
+  ratable_id: number;
+  reviewer_id: number;
+  rating: number;
+  review: string | null;
+  review_photos: string[] | null;
+  created_at: string;
+  reviewer?: {
+    id: number;
+    name: string;
+  };
+}
+
+export function getProductRatings(productId: number) {
+  return request<{ success: boolean; data: ProductReview[] }>(`/products/${productId}/ratings`);
+}
+
+export function submitProductRating(productId: number, rating: number, review?: string) {
+  return request<{ success: boolean; data: ProductReview }>("/me/ratings", {
+    method: "POST",
+    body: JSON.stringify({
+      ratable_type: "product",
+      ratable_id: productId,
+      rating,
+      review,
+    }),
+  });
+}
+
+export function getProfileApi() {
+  return request<{ success: boolean; data: any }>("/me/profile");
+}
+
+export function updateProfileApi(data: any) {
+  return request<{ success: boolean; data: any }>("/me/profile", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export function getConsumerOrdersApi() {
+  return request<{ success: boolean; data: any[] }>("/me/orders");
+}
+
+export function getConsumerWishlistApi() {
+  return request<{ success: boolean; data: any[] }>("/me/wishlist");
 }
 

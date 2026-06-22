@@ -4,7 +4,6 @@ import Footer from "@/app/(website)/_components/Footer";
 export default function PrivacyPolicyPage() {
   return (
     <main style={{ background: "#D8EFE0" }}>
-      <Navbar />
 
       <section className="mx-auto max-w-4xl px-6 pt-36 pb-20">
         <h1 className="mb-8 text-4xl font-bold text-[#1A5C2E]">Privacy Policy</h1>
@@ -130,7 +129,6 @@ export default function PrivacyPolicyPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

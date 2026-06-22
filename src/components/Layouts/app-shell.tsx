@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import { useAuth } from "@/contexts/auth-context";
+import Navbar from "@/app/(website)/_components/Navbar";
+import Footer from "@/app/(website)/_components/Footer";
 
 function isAuthRoute(pathname: string): boolean {
   return (
@@ -29,8 +31,17 @@ function isPublicRoute(pathname: string): boolean {
     pathname === "/privacy-policy" ||
     pathname === "/refund" ||
     pathname === "/terms" ||
-    pathname === "/cart"
+    pathname === "/cart" ||
+    pathname === "/client/dashboard"
   );
+}
+
+function getPublicRouteBg(pathname: string): string {
+  if (pathname === "/about" || pathname === "/cart") return "bg-[#FBEFC9]";
+  if (pathname === "/products") return "bg-[#E8F0D8]";
+  if (pathname.startsWith("/products/") || pathname === "/client/dashboard") return "bg-[#DCEEFB]";
+  if (pathname === "/contact") return "bg-[#9BDFF2]";
+  return "bg-[#D8EFE0]"; // Default landing page bg
 }
 
 export function AppShell({ children }: PropsWithChildren) {
@@ -44,7 +55,18 @@ export function AppShell({ children }: PropsWithChildren) {
     }
   }, [user, isLoading, pathname, router]);
 
-  if (isAuthRoute(pathname) || isPublicRoute(pathname)) {
+  if (isPublicRoute(pathname)) {
+    const bgClass = getPublicRouteBg(pathname);
+    return (
+      <div className={`flex flex-col min-h-screen ${bgClass}`}>
+        <Navbar />
+        <div className="flex-grow">{children}</div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (isAuthRoute(pathname)) {
     return <>{children}</>;
   }
 

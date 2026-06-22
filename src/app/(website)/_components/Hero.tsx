@@ -9,7 +9,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-transparent pt-12 pb-0 overflow-hidden relative">
+    <section className="bg-transparent pt-36 lg:pt-[140px] pb-0 overflow-hidden relative">
       {/* Hero content grid */}
       <div className="mx-auto max-w-[1625px] px-4 lg:px-[52px] py-10 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

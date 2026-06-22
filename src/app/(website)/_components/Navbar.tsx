@@ -14,7 +14,7 @@ export default function Navbar() {
   const cartCount = cart?.total_items ?? 0;
 
   return (
-    <div className="w-full bg-transparent lg:sticky lg:top-0 z-50 px-4 lg:px-8">
+    <div className="w-full bg-transparent absolute top-0 left-0 right-0 z-50 px-4 lg:px-8">
       <header className="mx-auto flex h-[70px] lg:h-[95px] max-w-[1625px] items-center justify-between bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] px-4 lg:px-8 mt-[18px] box-sizing-border-box">
         {/* Left: Brand Identity */}
         <Link href="/" className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export default function Navbar() {
 
           {/* Sign in Button */}
           <Link
-            href={user ? (user.role === "consumer" ? "/products" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
+            href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
             className="inline-flex w-[146px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#76A52E] text-[24px] font-normal text-[#FAF8F3] hover:opacity-90 transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
@@ -164,7 +164,7 @@ export default function Navbar() {
               Cart ({cartCount})
             </Link>
             <Link
-              href={user ? (user.role === "consumer" ? "/products" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
+              href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
               onClick={() => setOpen(false)}
               className="flex-1 flex items-center justify-center rounded-xl bg-[#76A52E] py-2 text-sm font-bold text-white border border-black"
             >

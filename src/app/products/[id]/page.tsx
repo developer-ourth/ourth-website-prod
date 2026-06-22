@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
-import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct } from "@/lib/api";
+import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct, getProductRatings, submitProductRating, type ProductReview } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 
@@ -29,6 +29,48 @@ export default function ProductDetailsPage() {
   const [adding, setAdding] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  // Reviews State
+  const [reviews, setReviews] = useState<ProductReview[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [newReviewText, setNewReviewText] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  const loadReviews = useCallback(() => {
+    if (!productId) return;
+    setReviewsLoading(true);
+    getProductRatings(productId)
+      .then((res) => {
+        setReviews(res.data ?? []);
+      })
+      .catch((err) => console.error("Failed to load reviews:", err))
+      .finally(() => setReviewsLoading(false));
+  }, [productId]);
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) {
+      router.push("/client/login");
+      return;
+    }
+    if (newRating < 1 || newRating > 5) {
+      alert("Please select a rating between 1 and 5 stars.");
+      return;
+    }
+    setSubmittingReview(true);
+    try {
+      await submitProductRating(productId, newRating, newReviewText);
+      setNewReviewText("");
+      setNewRating(5);
+      loadReviews();
+      alert("Review submitted successfully!");
+    } catch (err: any) {
+      alert(err?.message ?? "Failed to submit review.");
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
   // Load product and trending products
   useEffect(() => {
     if (!productId) return;
@@ -38,7 +80,7 @@ export default function ProductDetailsPage() {
         const prod = res.data;
         setProduct(prod);
         setSelectedImage(prod.primary_image_url || "");
-        
+
         // Default to first active pack if available
         if (prod.packs && prod.packs.length > 0) {
           const firstPack = prod.packs.find((p) => p.is_active) || prod.packs[0];
@@ -53,7 +95,9 @@ export default function ProductDetailsPage() {
         setTrending((res.data ?? []).filter((p) => p.id !== productId).slice(0, 4));
       })
       .catch((err) => console.error("Failed to load trending products:", err));
-  }, [productId]);
+
+    loadReviews();
+  }, [productId, loadReviews]);
 
   // Adjust quantity based on B2B min order quantity
   const minQty = isB2B ? (product?.min_order_quantity ?? 1) : 1;
@@ -125,8 +169,8 @@ export default function ProductDetailsPage() {
   const selectedPack = product.packs?.find((p) => p.id === selectedPackId);
 
   // Price resolution
-  const activeBasePrice = selectedPack 
-    ? parseFloat(selectedPack.base_price) 
+  const activeBasePrice = selectedPack
+    ? parseFloat(selectedPack.base_price)
     : (isB2B && product.wholesale_price ? parseFloat(product.wholesale_price) : parseFloat(product.base_price));
 
   const activeSalePrice = selectedPack
@@ -134,35 +178,33 @@ export default function ProductDetailsPage() {
     : (isB2B && product.wholesale_discounted_price ? parseFloat(product.wholesale_discounted_price) : (product.discounted_price ? parseFloat(product.discounted_price) : null));
 
   return (
-    <main className="min-h-screen bg-[#EAF3FA] flex flex-col justify-between">
-      <Navbar />
+    <main className="min-h-screen bg-[#DCEEFB] flex flex-col justify-between">
 
-      <div className="flex-grow max-w-[1625px] mx-auto px-4 lg:px-[52px] pt-36 pb-20 w-full">
+      <div className="flex-grow max-w-[1625px] mx-auto px-4 lg:px-[146px] pt-36 pb-20 w-full">
         {/* Main Product Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-transparent">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-transparent mt-10">
+
           {/* Left Column: Image Gallery */}
           <div className="lg:col-span-6 flex flex-col items-center">
             {/* Main Preview */}
-            <div className="w-full max-w-[580px] aspect-square relative bg-[#FAF8F3] border-[1.5px] border-black rounded-[5px] shadow-[4px_4px_0px_#000000] overflow-hidden flex items-center justify-center p-4">
+            <div className="w-full max-w-[795px] h-[450px] md:h-[717px] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-4">
               <img
                 src={getProductImageUrl(selectedImage || product.primary_image_url, product.name)}
                 alt={product.name}
                 className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300"
               />
             </div>
-            
+
             {/* Thumbnails Row */}
-            <div className="flex gap-4 mt-6 w-full max-w-[580px] justify-start overflow-x-auto py-1">
+            <div className="flex gap-4 mt-6 w-full max-w-[795px] justify-start overflow-x-auto py-1">
               {[product.primary_image_url, ...(product.secondary_images ?? [])].filter(Boolean).map((imgUrl, idx) => {
                 const isActive = selectedImage === imgUrl;
                 return (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl!)}
-                    className={`w-[100px] h-[100px] aspect-square relative bg-[#FAF8F3] border-[1.5px] rounded-[5px] overflow-hidden flex items-center justify-center p-2 transition-all ${
-                      isActive ? "border-black shadow-[2px_2px_0px_#000000]" : "border-black/35 hover:border-black"
-                    }`}
+                    className={`w-[120px] md:w-[247px] h-[100px] md:h-[222px] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all ${isActive ? "ring-2 ring-[#103F5E]" : "hover:opacity-90"
+                      }`}
                   >
                     <img
                       src={getProductImageUrl(imgUrl!, product.name)}
@@ -177,92 +219,95 @@ export default function ProductDetailsPage() {
 
           {/* Right Column: Product Specs & Actions */}
           <div className="lg:col-span-6 space-y-6 flex flex-col justify-start">
-            
+
             {/* Rating Stars */}
             <div className="flex items-center gap-2">
-              <div className="flex text-[#76A52E] text-2xl">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span className="text-gray-300">★</span>
+              <div className="flex text-[#C7E08E] text-2xl">
+                {[1, 2, 3, 4, 5].map((star) => {
+                  const avgRound = reviews.length > 0
+                    ? Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length)
+                    : 0;
+                  return (
+                    <span key={star} className={star <= avgRound ? "text-[#C7E08E]" : "text-gray-300"}>
+                      ★
+                    </span>
+                  );
+                })}
               </div>
-              <span className="text-sm font-semibold text-[#103F5E]">4/5</span>
-              <span className="text-sm text-gray-500 font-medium">(2,999 reviews)</span>
+              <span className="text-[20px] font-normal text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                {reviews.length > 0
+                  ? `${(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}/5`
+                  : "0/5"}
+              </span>
+              <span className="text-[20px] text-black font-normal border-b border-dashed border-black pb-0.5" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                ({reviews.length} {reviews.length === 1 ? "review" : "reviews"})
+              </span>
             </div>
 
             {/* Badge capsule */}
             <div
-              className="inline-flex w-fit px-6 h-[38px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] text-sm font-normal text-black shadow-[1px_1px_0px_0px_#000000]"
+              className="inline-flex w-[395px] max-w-full h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] font-normal text-black"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               Decomposeable and Eco-friendly
             </div>
 
             {/* Title */}
-            <h1 
-              className="text-4xl lg:text-[48px] font-bold text-[#5E3A16] leading-tight"
+            <h1
+              className="text-4xl lg:text-[48px] font-bold text-black leading-tight"
               style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
             >
               {product.name}
             </h1>
 
             {/* Description list / details */}
-            <div className="space-y-3 text-sm text-[#103F5E] leading-relaxed max-w-xl font-medium">
+            <div className="space-y-3 text-[24px] text-black leading-relaxed max-w-2xl font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
               <p>{product.description || "Pressed entirely from natural leaves, this organic tableware is heat-treated for strength and certified food-safe. A beautiful, compostable alternative to paper and plastic."}</p>
-              <ul className="list-disc pl-5 space-y-1 text-xs text-[#103F5E]/80">
-                <li>Microwave Safe & Leak Proof</li>
-                <li>Made from eco-friendly sugarcane/natural fibers</li>
-                <li>100% natural, biodegradable, and compostable</li>
-              </ul>
             </div>
 
             {/* Price Display */}
-            <div className="pt-4 border-t border-black/10 flex items-baseline gap-3">
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block">Price:</span>
+            <div className="pt-4 flex items-center gap-3">
               <div className="flex items-center gap-2">
                 {activeSalePrice ? (
                   <>
-                    <span className="text-3xl font-black text-[#0D3A27]">
+                    <span className="text-[36px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       ₹{activeSalePrice.toFixed(2)}
                     </span>
-                    <span className="text-lg text-gray-400 line-through font-bold">
+                    <span className="text-xl text-gray-500 line-through font-bold">
                       ₹{activeBasePrice.toFixed(2)}
                     </span>
                   </>
                 ) : (
-                  <span className="text-3xl font-black text-[#0D3A27]">
+                  <span className="text-[36px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                     ₹{activeBasePrice.toFixed(2)}
                   </span>
                 )}
-                <span className="text-sm font-bold text-gray-600">
+                <span className="text-[24px] text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   {selectedPack ? `per ${selectedPack.name}` : `per ${product.unit}`}
                 </span>
-                {isB2B && !selectedPack && (
-                  <span className="text-[10px] bg-[#25784C]/10 text-[#25784C] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
-                    B2B Wholesale
-                  </span>
-                )}
               </div>
             </div>
 
             {/* Pack Size Selector */}
             {product.packs && product.packs.length > 0 && (
               <div className="space-y-3 pt-2">
-                <label className="text-xs font-bold text-black uppercase tracking-wider block">
+                <label className="text-[24px] font-normal text-black block" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   Select Pack Size:
                 </label>
                 <div className="flex flex-wrap gap-3">
                   {product.packs.map((pack) => {
                     const isSelected = pack.id === selectedPackId;
-                    const packPrice = pack.discounted_price ? parseFloat(pack.discounted_price) : parseFloat(pack.base_price);
                     return (
                       <button
                         key={pack.id}
                         onClick={() => setSelectedPackId(pack.id)}
-                        className={`px-6 py-2.5 rounded-[5px] text-sm font-bold border-[1.5px] transition duration-200 ${
-                          isSelected
-                            ? "bg-[#E3F0F9] text-[#0D3A27] border-black shadow-[2px_2px_0px_#000000]"
-                            : "bg-[#FAF8F3] text-black border-black/35 hover:border-black hover:bg-[#FAF8F3]/90"
-                        }`}
+                        className={`w-[233px] h-[60px] rounded-[5px] text-[24px] font-normal border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition duration-200 ${isSelected
+                          ? "bg-[#9FD4F2] text-black"
+                          : "bg-[#FAF8F3] text-black hover:bg-[#FAF8F3]/90"
+                          }`}
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
-                        {pack.name} (₹{packPrice.toFixed(2)})
+                        {pack.name}
                       </button>
                     );
                   })}
@@ -271,26 +316,24 @@ export default function ProductDetailsPage() {
             )}
 
             {/* Actions: Qty + Cart + Buy */}
-            <div className="pt-4 border-t border-black/10 space-y-4 max-w-md">
-              <div className="flex gap-4 items-center">
+            <div className="pt-4 space-y-4 w-full">
+              <div className="flex flex-wrap gap-4 items-center">
                 {/* Quantity selector */}
-                <div className="flex items-center border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] shadow-[2px_2px_0px_#000000] h-[48px] px-3">
+                <div className="flex items-center justify-between w-[176px] h-[47px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-4">
                   <button
                     onClick={() => setQuantity(q => Math.max(minQty, q - 1))}
-                    className="text-lg font-bold px-2 text-[#0D3A27] hover:scale-110 active:scale-95 transition"
+                    className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
+                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     -
                   </button>
-                  <input
-                    type="number"
-                    min={minQty}
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(minQty, parseInt(e.target.value) || minQty))}
-                    className="w-12 text-center bg-transparent outline-none font-bold text-sm text-black"
-                  />
+                  <span className="text-[30px] font-normal text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                    {quantity}
+                  </span>
                   <button
                     onClick={() => setQuantity(q => q + 1)}
-                    className="text-lg font-bold px-2 text-[#0D3A27] hover:scale-110 active:scale-95 transition"
+                    className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
+                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     +
                   </button>
@@ -300,11 +343,8 @@ export default function ProductDetailsPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={adding}
-                  className={`flex-grow h-[48px] rounded-[5px] font-bold border-[1.5px] border-black transition shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] ${
-                    success
-                      ? "bg-green-600 text-white"
-                      : "bg-[#103F5E] text-white hover:opacity-95"
-                  }`}
+                  className={`w-[319px] lg:w-[445px] h-[47px] rounded-[30px] font-semibold border-[1.5px] border-black text-[24px] text-white flex items-center justify-center shadow-[0px_4px_4px_rgba(0,0,0,0.25)] bg-[#103F5E] hover:opacity-95 transition`}
+                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
                   {adding ? "Adding..." : success ? "✓ Added!" : "Add to Cart"}
                 </button>
@@ -313,13 +353,14 @@ export default function ProductDetailsPage() {
               {/* Buy Now */}
               <button
                 onClick={handleBuyNow}
-                className="w-full h-[48px] rounded-[5px] bg-[#76A52E] hover:bg-[#659124] text-white font-bold border-[1.5px] border-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition"
+                className="w-full lg:w-[640px] h-[47px] rounded-[30px] bg-[#5CB6E8] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[24px] flex items-center justify-center"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 Buy Now
               </button>
 
               {isB2B && minQty > 1 && (
-                <p className="text-xs text-[#25784C] font-semibold mt-1">
+                <p className="text-sm text-[#103F5E] font-semibold mt-1">
                   * Note: As a B2B vendor, a minimum order quantity of {minQty} applies.
                 </p>
               )}
@@ -330,39 +371,36 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* Tab Selection Section */}
-        <div className="mt-16 border-b border-black/10">
-          <div className="flex gap-8 justify-start text-lg font-bold text-gray-400">
+        <div className="mt-16 border-b border-[#444444] relative">
+          <div className="flex gap-16 justify-center text-[24px] text-[#444444] font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
             <button
               onClick={() => setActiveTab("description")}
-              className={`pb-3 relative transition-all ${
-                activeTab === "description" ? "text-[#5E3A16]" : "hover:text-[#5E3A16]/70"
-              }`}
+              className={`pb-3 relative transition-all ${activeTab === "description" ? "text-black font-semibold" : "hover:text-black/70"
+                }`}
             >
               Description
               {activeTab === "description" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#5E3A16] rounded-t" />
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
               )}
             </button>
             <button
               onClick={() => setActiveTab("info")}
-              className={`pb-3 relative transition-all ${
-                activeTab === "info" ? "text-[#5E3A16]" : "hover:text-[#5E3A16]/70"
-              }`}
+              className={`pb-3 relative transition-all ${activeTab === "info" ? "text-black font-semibold" : "hover:text-black/70"
+                }`}
             >
               Additional Information
               {activeTab === "info" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#5E3A16] rounded-t" />
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
               )}
             </button>
             <button
               onClick={() => setActiveTab("reviews")}
-              className={`pb-3 relative transition-all ${
-                activeTab === "reviews" ? "text-[#5E3A16]" : "hover:text-[#5E3A16]/70"
-              }`}
+              className={`pb-3 relative transition-all ${activeTab === "reviews" ? "text-black font-semibold" : "hover:text-black/70"
+                }`}
             >
               Reviews
               {activeTab === "reviews" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#5E3A16] rounded-t" />
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
               )}
             </button>
           </div>
@@ -371,26 +409,26 @@ export default function ProductDetailsPage() {
         {/* Tab Contents */}
         <div className="py-8">
           {activeTab === "description" && (
-            <div className="text-[#103F5E] text-sm leading-relaxed max-w-3xl">
+            <div className="text-black text-[24px] leading-relaxed max-w-4xl mx-auto text-center" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
               <p>{product.description || "This product is made from 100% natural dried fallen leaves. Chemical-free, compostable, microwave safe, and extremely durable. Perfect for serving hot and cold food at events, caterings, and fast food joints."}</p>
             </div>
           )}
 
           {activeTab === "info" && (
-            <div className="max-w-[700px] border-[1.5px] border-black rounded-[5px] overflow-hidden shadow-[3px_3px_0px_#000000] bg-[#FAF8F3]">
-              <div className="grid grid-cols-3 border-b border-black">
-                <div className="col-span-1 bg-[#E3F0F9] border-r border-black p-3 font-bold text-sm text-[#0D3A27]">
+            <div className="w-full max-w-[1251px] h-auto border-[1.5px] border-black rounded-[5px] overflow-hidden bg-transparent mx-auto">
+              <div className="grid grid-cols-2 border-b border-black">
+                <div className="p-6 font-normal text-[24px] text-black border-r border-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   Dimensions
                 </div>
-                <div className="col-span-2 p-3 text-sm text-[#103F5E] font-medium">
-                  {product.dimensions_cm ? `${product.dimensions_cm.length ?? 23}x${product.dimensions_cm.width ?? 23}` : "23x23 cm"}
+                <div className="p-6 text-[24px] text-black font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                  {product.dimensions_cm ? `${product.dimensions_cm.length ?? 23}x${product.dimensions_cm.width ?? 23}` : "23x23"}
                 </div>
               </div>
-              <div className="grid grid-cols-3">
-                <div className="col-span-1 bg-[#E3F0F9] border-r border-black p-3 font-bold text-sm text-[#0D3A27]">
+              <div className="grid grid-cols-2">
+                <div className="p-6 font-normal text-[24px] text-black border-r border-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   Weight
                 </div>
-                <div className="col-span-2 p-3 text-sm text-[#103F5E] font-medium">
+                <div className="p-6 text-[24px] text-black font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   {product.weight_grams ? `${product.weight_grams}g` : "23g"}
                 </div>
               </div>
@@ -398,32 +436,150 @@ export default function ProductDetailsPage() {
           )}
 
           {activeTab === "reviews" && (
-            <div className="space-y-4 max-w-xl">
-              <div className="border border-black/10 p-4 rounded-lg bg-white/70">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-[#5E3A16] text-sm">Sahil S.</span>
-                  <span className="text-xs text-gray-400">1 day ago</span>
-                </div>
-                <div className="text-yellow-500 text-xs mt-1">★★★★★</div>
-                <p className="text-xs text-[#103F5E] mt-2 font-medium">Extremely high quality bowls! Very study and looked amazing at our garden party.</p>
+            <div className="space-y-10 max-w-[1251px] mx-auto w-full">
+              {/* Reviews List */}
+              <div className="space-y-6">
+                {reviewsLoading ? (
+                  <div className="flex justify-center py-10">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
+                  </div>
+                ) : reviews.length === 0 ? (
+                  <div className="border-[1.5px] border-black rounded-[5px] p-10 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-center">
+                    <p className="text-black text-[24px] font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      No reviews yet for this product. Be the first to share your experience!
+                    </p>
+                  </div>
+                ) : (
+                  reviews.map((r) => (
+                    <div
+                      key={r.id}
+                      className="border-[1.5px] border-black rounded-[5px] p-6 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full flex flex-col justify-start gap-4"
+                    >
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <div className="flex items-center gap-4">
+                          <span
+                            className="font-semibold text-black text-[24px]"
+                            style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                          >
+                            {r.reviewer?.name || "Verified Customer"}
+                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <div className="flex text-[#C7E08E] text-[28px] leading-none">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <span key={star} className={star <= r.rating ? "text-[#C7E08E]" : "text-gray-300"}>
+                                  ★
+                                </span>
+                              ))}
+                            </div>
+                            <span
+                              className="text-[20px] text-gray-500 font-normal mt-1"
+                              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                            >
+                              {r.rating}/5
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-[18px] text-gray-500" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                          {new Date(r.created_at).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      {r.review && (
+                        <p
+                          className="text-black text-[24px] leading-[34px] font-normal"
+                          style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                        >
+                          "{r.review}"
+                        </p>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
-              <div className="border border-black/10 p-4 rounded-lg bg-white/70">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-[#5E3A16] text-sm">Deepak K.</span>
-                  <span className="text-xs text-gray-400">3 days ago</span>
-                </div>
-                <div className="text-yellow-500 text-xs mt-1">★★★★☆</div>
-                <p className="text-xs text-[#103F5E] mt-2 font-medium">Excellent eco-friendly choice. They handled hot food without any issue.</p>
+
+              {/* Review Submission Form */}
+              <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full">
+                <h3
+                  className="text-[32px] font-bold text-black mb-6"
+                  style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+                >
+                  Write a Review
+                </h3>
+
+                {user ? (
+                  <form onSubmit={handleSubmitReview} className="space-y-6">
+                    <div>
+                      <label className="block text-[22px] font-medium text-black mb-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                        Your Rating
+                      </label>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            type="button"
+                            key={star}
+                            onClick={() => setNewRating(star)}
+                            className="text-[40px] leading-none transition-transform hover:scale-110 active:scale-95"
+                          >
+                            <span className={star <= newRating ? "text-[#C7E08E]" : "text-gray-300"}>
+                              ★
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[22px] font-medium text-black mb-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                        Your Review
+                      </label>
+                      <textarea
+                        value={newReviewText}
+                        onChange={(e) => setNewReviewText(e.target.value)}
+                        placeholder="Share your thoughts about this product..."
+                        rows={4}
+                        className="w-full p-4 border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] text-black text-[20px] focus:outline-none focus:ring-2 focus:ring-[#103F5E] shadow-inner"
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={submittingReview}
+                      className="w-full md:w-[240px] h-[54px] rounded-[30px] bg-[#103F5E] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[22px] flex items-center justify-center"
+                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    >
+                      {submittingReview ? "Submitting..." : "Submit Review"}
+                    </button>
+                  </form>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-[22px] text-gray-700 mb-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      You must be logged in to post a review.
+                    </p>
+                    <Link
+                      href="/client/login"
+                      className="inline-flex items-center justify-center px-8 py-3 rounded-[30px] bg-[#5CB6E8] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[20px]"
+                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    >
+                      Log In
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           )}
+
+
         </div>
 
         {/* Trending Products Section */}
         {trending.length > 0 && (
           <div className="mt-16 pt-12 border-t border-black/10">
-            <h2 
-              className="text-3xl font-bold text-[#5E3A16] mb-8"
+            <h2
+              className="text-[48px] font-semibold text-[#103F5E] mb-8"
               style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
             >
               Trending Products
@@ -432,29 +588,31 @@ export default function ProductDetailsPage() {
               {trending.map((p) => {
                 const pPrice = p.discounted_price ? parseFloat(p.discounted_price) : parseFloat(p.base_price);
                 return (
-                  <Link 
+                  <Link
                     key={p.id}
                     href={`/products/${p.id}`}
-                    className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-4 shadow-[4px_4px_0px_#000000] flex flex-col justify-between hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_#000000] transition-all select-none"
+                    className="w-full max-w-[294px] min-h-[433px] rounded-[5px] border-[1.5px] border-black bg-[#C7E08E] p-6 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex flex-col justify-between hover:translate-y-[-2px] transition-all select-none"
                   >
                     <div>
                       {/* Product Thumbnail */}
-                      <div className="w-full aspect-square relative bg-white border border-black/10 rounded-[5px] overflow-hidden mb-4 flex items-center justify-center p-2">
+                      <div className="w-[198px] h-[179px] mx-auto relative bg-white border border-black rounded-[5px] overflow-hidden mb-4 flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
                         <img
                           src={getProductImageUrl(p.primary_image_url, p.name)}
                           alt={p.name}
                           className="max-h-full max-w-full object-contain"
                         />
                       </div>
-                      <h3 className="font-bold text-[#5E3A16] text-sm line-clamp-1">{p.name}</h3>
-                      <p className="text-xs text-gray-500 font-semibold mt-1">Pack of 10</p>
+                      <h3 className="font-medium text-black text-[24px] leading-[34px] line-clamp-1" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{p.name}</h3>
+                      <p className="text-[24px] text-black font-normal mt-1" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Pack of 10</p>
                     </div>
-                    
-                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-black/5">
-                      <span className="font-bold text-black text-sm">₹{pPrice.toFixed(2)}</span>
-                      <span className="text-xs bg-[#76A52E] text-white px-3 py-1.5 rounded-[30px] border border-black shadow-[1px_1px_0px_#000000] font-bold">
-                        Add
-                      </span>
+
+                    <div className="mt-4 pt-3 border-t border-black">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-black text-[24px]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{pPrice.toFixed(2)}</span>
+                        <span className="w-[122px] h-[32px] rounded-[30px] bg-[#FAF8F3] border-[1.5px] border-black text-black font-normal text-[24px] flex items-center justify-center shadow-[2px_2px_0px_#000000]">
+                          Add
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 );
@@ -464,29 +622,17 @@ export default function ProductDetailsPage() {
         )}
 
         {/* Decorative Snack Banner */}
-        <div className="mt-16 w-full h-[180px] sm:h-[240px] rounded-[5px] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] bg-pink-100 overflow-hidden relative select-none">
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-200 to-pink-300 opacity-60" />
-          <div className="relative z-10 flex h-full items-center justify-between px-8 md:px-16">
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-pink-700 uppercase tracking-widest block">Snack & Dine</span>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#5E3A16]">Delicious snacks fit perfectly on leafware!</h3>
-              <p className="text-sm text-[#103F5E] max-w-md font-medium">Ourth tablewares are completely food safe, microwaveable, and leak-proof for all foods.</p>
-            </div>
-            {/* Visual food illustration container */}
-            <div className="hidden md:flex gap-4 transform translate-y-6">
-              <div className="bg-white/80 p-3 rounded-lg border border-black shadow-[2px_2px_0px_#000000] w-[120px] text-center text-xs font-bold text-[#5E3A16]">
-                🍪 Cookies
-              </div>
-              <div className="bg-white/80 p-3 rounded-lg border border-black shadow-[2px_2px_0px_#000000] w-[120px] text-center text-xs font-bold text-[#5E3A16]">
-                🍟 Chips
-              </div>
-            </div>
-          </div>
+        <div className="mt-16 w-full max-w-[960px] mx-auto h-[338px] rounded-[5px] border-[1.5px] border-black overflow-hidden relative select-none shadow-[4px_4px_0px_#000000]">
+          <img
+            src="/images/Healing_ourth_advertisment.png"
+            alt="Healing Ourth Advertisement"
+            className="w-full h-full object-cover"
+          />
         </div>
 
       </div>
 
-      <Footer />
     </main>
   );
 }
+

@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Navbar from "@/app/(website)/_components/Navbar";
-import Footer from "@/app/(website)/_components/Footer";
 
 const coreValues = [
   "Every small choice matters",
@@ -41,82 +39,7 @@ const teamLandscape = [
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen bg-[#FBEFC9] overflow-x-hidden">
-
-      {/* Custom responsive Navbar wrapper */}
-      <div className="w-full max-w-[1625px] mx-auto px-4 md:px-8 mt-[18px]">
-        <div className="bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] h-[95px] flex items-center justify-between px-6 lg:px-12 w-full">
-
-          {/* Logo & Brand Name */}
-          <a href="/" className="flex items-center gap-4 hover:opacity-95 transition-opacity">
-            <div className="relative w-[50px] h-[50px] md:w-[70px] md:h-[70px] drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]">
-              <Image
-                src="/logo.png"
-                alt="Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-            <span
-              className="text-[#0D3A27] font-bold text-2xl md:text-[36px] leading-tight flex items-center"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Healing Ourth
-            </span>
-          </a>
-
-          {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
-            <a
-              href="/"
-              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Shop
-            </a>
-            <a
-              href="/about"
-              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              About
-            </a>
-            <a
-              href="/products"
-              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Products
-            </a>
-            <a
-              href="/contact"
-              className="w-[130px] xl:w-[181px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Get in touch
-            </a>
-          </nav>
-
-          {/* Actions */}
-          <div className="flex items-center gap-4 md:gap-6">
-            {/* Cart Icon */}
-            <a href="/cart" className="relative w-[36px] h-[36px] md:w-[40px] md:h-[44px] flex items-center justify-center hover:scale-105 transition-all" aria-label="Cart">
-              <svg className="w-8 h-8 md:w-10 md:h-10 text-black" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.116 60.116 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-              </svg>
-            </a>
-            <a
-              href="/login"
-              className="w-[100px] md:w-[146px] h-[40px] md:h-[47px] bg-[#76A52E] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-base md:text-[24px] font-normal text-[#FAF8F3] hover:opacity-90 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.15)]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Sign in
-            </a>
-          </div>
-
-        </div>
-      </div>
+    <main className="relative min-h-screen bg-[#FBEFC9] overflow-x-hidden pt-[18px]">
 
       {/* 1. Where Leaves Become Legacy */}
       <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] pt-16 lg:pt-28 pb-16">
@@ -166,7 +89,7 @@ export default function AboutPage() {
           <div className="w-full lg:w-[504px] flex flex-col justify-center">
             <div className="relative w-full aspect-[504/623] rounded-[5px] border-[1.5px] border-black bg-white overflow-hidden shadow-[4px_4px_0px_#000000]">
               <Image
-                src="/images/team/team-01.png"
+                src="/images/team/content.png"
                 alt="Founder of Ourth"
                 fill
                 className="object-cover object-top"
@@ -240,12 +163,12 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 justify-items-center">
           {standFor.map((item, idx) => (
-            <div key={idx} className="w-full max-w-[320px] relative flex flex-col items-center group mb-8">
+            <div key={idx} className="w-full max-w-[320px] relative flex flex-col items-center group mb-12">
 
               {/* Card Container (Rectangle 91-94) */}
-              <div className="w-full h-[420px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-6 flex items-center justify-center text-center shadow-[4px_4px_0px_#000000] group-hover:translate-y-[-4px] group-hover:shadow-[6px_6px_0px_#000000] transition-all duration-300">
+              <div className="w-full min-h-[460px] pb-16 rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-6 flex items-center justify-center text-center shadow-[4px_4px_0px_#000000] group-hover:translate-y-[-4px] group-hover:shadow-[6px_6px_0px_#000000] transition-all duration-300">
                 <p
-                  className="text-[#2C1F13] text-[16px] leading-[34px] font-medium px-2"
+                  className="text-[#2C1F13] text-[16px] leading-[28px] font-medium"
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
                   {item.text}
@@ -253,10 +176,10 @@ export default function AboutPage() {
               </div>
 
               {/* Pill Container (Rectangle 95-98) & Pill Text Label */}
-              <div className="absolute bottom-[-20px] w-[95%] sm:w-[334px] h-[40px] bg-[#EBB339] border-[1.5px] border-black rounded-[30px] shadow-[2px_2px_0px_#000000]" />
+              <div className="absolute bottom-[-20px] w-[90%] sm:w-[280px] h-[40px] bg-[#EBB339] border-[1.5px] border-black rounded-[30px] shadow-[2px_2px_0px_#000000]" />
 
               <div
-                className="absolute bottom-[-25px] w-[95%] sm:w-[334px] h-[50px] flex items-center justify-center text-center font-medium text-2xl sm:text-[32px] leading-[34px] text-[#2C1F13]"
+                className="absolute bottom-[-25px] w-[90%] sm:w-[280px] h-[50px] flex items-center justify-center text-center font-medium text-xl sm:text-[24px] leading-[34px] text-[#2C1F13]"
                 style={{
                   fontFamily: "'IBM Plex Sans', sans-serif",
                   textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -316,22 +239,22 @@ export default function AboutPage() {
                 className="w-full max-w-[344px] h-[220px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-4 flex items-center gap-4 shadow-[4px_4px_0px_#000000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all duration-300 relative"
               >
                 {/* Image (Rectangle 106-111) */}
-                <div className="relative w-[130px] sm:w-[180px] h-[180px] sm:h-[200px] rounded-[5px] border-[1.5px] border-black overflow-hidden bg-white flex-shrink-0">
+                <div className="relative w-[140px] h-[188px] rounded-[5px] border-[1.5px] border-black overflow-hidden bg-white flex-shrink-0">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
                     className="object-cover object-top"
-                    sizes="180px"
+                    sizes="140px"
                   />
                 </div>
 
                 {/* Name */}
                 <div
-                  className="font-medium text-lg sm:text-[24px] leading-[34px] text-black text-center flex-grow flex items-center justify-center"
+                  className="font-medium text-lg sm:text-[22px] leading-[28px] text-black text-left flex-grow flex items-center"
                   style={{
                     fontFamily: "'IBM Plex Sans', sans-serif",
-                    textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                    textShadow: "0px 2px 2px rgba(0, 0, 0, 0.15)",
                   }}
                 >
                   {member.name}
@@ -341,13 +264,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer (Rectangle 202) */}
-      <footer className="bg-[#5E3A16] w-full py-16 flex items-center justify-center text-white text-center text-lg">
-        <div className="max-w-xl px-4">
-          © {new Date().getFullYear()} Healing Ourth India Pvt. Ltd. All rights reserved.
-        </div>
-      </footer>
 
     </main>
   );
