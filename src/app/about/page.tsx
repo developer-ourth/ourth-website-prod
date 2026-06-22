@@ -51,7 +51,7 @@ export default function AboutPage() {
           <a href="/" className="flex items-center gap-4 hover:opacity-95 transition-opacity">
             <div className="relative w-[50px] h-[50px] md:w-[70px] md:h-[70px] drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]">
               <Image
-                src="/images/logo/logo.png"
+                src="/logo.png"
                 alt="Logo"
                 fill
                 className="object-contain"

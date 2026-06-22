@@ -36,7 +36,7 @@ export default function Navbar() {
         {/* Center: Category Navigation Pills */}
         <nav className="hidden items-center gap-4 lg:flex">
           <Link
-            href="/products"
+            href="/"
             className="inline-flex w-[165px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black text-[24px] font-normal text-black bg-transparent hover:bg-[#E8F0D8] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
