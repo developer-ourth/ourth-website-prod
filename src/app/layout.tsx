@@ -33,6 +33,7 @@ export const metadata: Metadata = {
   },
   description:
     "OURTH crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic.",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

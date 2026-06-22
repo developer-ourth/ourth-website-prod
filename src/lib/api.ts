@@ -52,6 +52,7 @@ export interface AuthUser {
   email: string;
   role: string;
   vendor_id?: number;
+  kyc_status?: string | null;
 }
 
 export interface LoginResponse {
@@ -77,10 +78,22 @@ export function registerApi(
   password: string,
   password_confirmation: string,
   phone?: string,
+  role?: "vendor" | "consumer",
+  gstin?: string,
+  business_name?: string,
 ) {
   return request<RegisterResponse>("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ name, email, password, password_confirmation, phone }),
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      password_confirmation,
+      phone,
+      role,
+      gstin,
+      business_name,
+    }),
   });
 }
 
@@ -328,6 +341,8 @@ export interface AdminOrder {
   total_amount: string;
   items_count: number;
   created_at: string;
+  order_type?: "b2c" | "b2b";
+  buyer_gstin?: string | null;
 }
 
 export interface AdminOrderListResponse {
@@ -450,6 +465,8 @@ export interface MarketProduct {
   category?: Pick<MarketCategory, "id" | "name"> | null;
   base_price: string;
   discounted_price: string | null;
+  wholesale_price: string | null;
+  min_order_quantity: number;
   primary_image_url: string | null;
   secondary_images: string[];
   unit: string;
@@ -467,6 +484,8 @@ export interface ProductPayload {
   category_id?: number | null;
   base_price: number;
   discounted_price?: number | null;
+  wholesale_price?: number | null;
+  min_order_quantity?: number;
   primary_image_url?: string;
   secondary_images?: string[];
   sku?: string;
@@ -563,7 +582,7 @@ export interface CartItem {
   quantity: number;
   unit_price: string;
   total_price: string;
-  product?: Pick<MarketProduct, "id" | "name" | "primary_image_url" | "base_price" | "discounted_price">;
+  product?: Pick<MarketProduct, "id" | "name" | "primary_image_url" | "base_price" | "discounted_price" | "wholesale_price" | "min_order_quantity">;
   productPack?: ProductPack | null;
 }
 
@@ -652,6 +671,8 @@ export interface OrderPayload {
   delivery_phone: string;
   payment_method: "cod" | "online" | "upi" | "card";
   notes?: string;
+  order_type?: "b2c" | "b2b";
+  buyer_gstin?: string;
 }
 
 export function placeOrder(payload: OrderPayload) {
@@ -704,3 +725,31 @@ export function getProductImageUrl(url: string | null | undefined, productName?:
   
   return url;
 }
+
+export function uploadKycDocumentFileApi(
+  vendorId: number,
+  documentType: string,
+  documentFile: File
+) {
+  const formData = new FormData();
+  formData.append("vendor_id", String(vendorId));
+  formData.append("document_type", documentType);
+  formData.append("document", documentFile);
+
+  const token = getToken();
+  return fetch(`${API_BASE}/vendors/kyc/upload-file`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  }).then(async (res) => {
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw { status: res.status, message: body?.message ?? res.statusText, body };
+    }
+    return res.json() as Promise<{ success: boolean; data: any }>;
+  });
+}
+

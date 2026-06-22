@@ -23,6 +23,8 @@ const EMPTY_FORM: ProductPayload = {
   category_id: null,
   base_price: 0,
   discounted_price: null,
+  wholesale_price: null,
+  min_order_quantity: 1,
   primary_image_url: "",
   secondary_images: [],
   sku: "",
@@ -93,6 +95,8 @@ function ProductsContent() {
       category_id: p.category_id,
       base_price: parseFloat(p.base_price),
       discounted_price: p.discounted_price ? parseFloat(p.discounted_price) : null,
+      wholesale_price: p.wholesale_price ? parseFloat(p.wholesale_price) : null,
+      min_order_quantity: p.min_order_quantity ?? 1,
       primary_image_url: p.primary_image_url ?? "",
       secondary_images: p.secondary_images ?? [],
       sku: p.sku ?? "",
@@ -221,9 +225,16 @@ function ProductsContent() {
                 </td>
                 <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{p.category?.name ?? "—"}</td>
                 <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                  ₹{parseFloat(p.base_price).toFixed(2)}
-                  {p.discounted_price && (
-                    <span className="ml-1 text-xs text-green-600">→ ₹{parseFloat(p.discounted_price).toFixed(2)}</span>
+                  <div>
+                    ₹{parseFloat(p.base_price).toFixed(2)}
+                    {p.discounted_price && (
+                      <span className="ml-1 text-xs text-green-600">→ ₹{parseFloat(p.discounted_price).toFixed(2)}</span>
+                    )}
+                  </div>
+                  {p.wholesale_price && (
+                    <div className="text-xs text-blue-600 dark:text-blue-400 font-normal">
+                      B2B: ₹{parseFloat(p.wholesale_price).toFixed(2)} (Min: {p.min_order_quantity})
+                    </div>
                   )}
                 </td>
                 <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{p.stock_quantity}</td>
@@ -289,6 +300,14 @@ function ProductsContent() {
                 </Field>
                 <Field label="Sale Price (₹)">
                   <input type="number" min="0" step="0.01" value={form.discounted_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, discounted_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional" />
+                </Field>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="B2B Wholesale Price (₹)">
+                  <input type="number" min="0" step="0.01" value={form.wholesale_price ?? ""} onChange={(e) => setForm((f) => ({ ...f, wholesale_price: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional (B2B)" />
+                </Field>
+                <Field label="B2B Min Order Quantity">
+                  <input type="number" min="1" value={form.min_order_quantity ?? ""} onChange={(e) => setForm((f) => ({ ...f, min_order_quantity: e.target.value ? parseInt(e.target.value) : undefined }))} className={inputCls} placeholder="Optional (B2B)" />
                 </Field>
               </div>
               <div className="grid grid-cols-2 gap-4">

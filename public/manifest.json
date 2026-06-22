@@ -1,0 +1,37 @@
+{
+  "name": "Healing OURTH",
+  "short_name": "OURTH",
+  "description": "Sustainable Leaf Tableware for a Plastic-Free Future",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBEFC9",
+  "theme_color": "#FAF8F3",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/images/logo/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/logo/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -59,6 +59,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!user) {
         throw new Error("Please log in to add items to cart.");
       }
+      if (user.role === "vendor" && user.kyc_status !== "verified" && user.kyc_status !== "approved") {
+        throw new Error("Your Business KYC is currently pending review. You cannot place B2B wholesale orders until verified. Please upload documents in your Business KYC dashboard.");
+      }
       setLoading(true);
       try {
         const res = await addCartItem(productId, quantity, packId);
@@ -72,6 +75,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const updateQty = useCallback(
     async (itemId: number, quantity: number) => {
+      const item = cart?.items.find((i) => i.id === itemId);
+      if (item && user?.role === "vendor") {
+        const minQty = item.product?.min_order_quantity ?? 1;
+        if (quantity < minQty) {
+          alert(`Minimum order quantity for "${item.product?.name}" is ${minQty} units.`);
+          return;
+        }
+      }
+
       setLoading(true);
       try {
         const res = await updateCartItem(itemId, quantity);
@@ -80,7 +92,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
       }
     },
-    []
+    [cart, user]
   );
 
   const removeFromCart = useCallback(

@@ -24,6 +24,7 @@ interface AuthUser {
   email: string;
   role: UserRole;
   vendor_id?: number;
+  kyc_status?: string | null;
 }
 
 interface AuthContextValue {
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: u.email,
           role: u.role as UserRole,
           vendor_id: u.vendor_id,
+          kyc_status: u.kyc_status,
         };
         setUser(authUser);
         localStorage.setItem(USER_KEY, JSON.stringify(authUser));
@@ -99,6 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email: u.email,
       role: u.role as UserRole,
       vendor_id: u.vendor_id,
+      kyc_status: u.kyc_status,
     };
     localStorage.setItem(USER_KEY, JSON.stringify(authUser));
     setUser(authUser);

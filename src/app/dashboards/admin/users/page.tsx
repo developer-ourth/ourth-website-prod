@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function AdminUsersPage() {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
+  const [roleFilter, setRoleFilter] = useState<"all" | "consumer" | "vendor">("all");
 
   useEffect(() => {
     getAdminDashboard()
@@ -20,6 +21,11 @@ export default function AdminUsersPage() {
   const byType = (users.by_type ?? {}) as Record<string, number>;
   const recent = (users.recent ?? []) as Record<string, unknown>[];
   const fmt = (n: unknown) => (n != null ? Number(n).toLocaleString("en-IN") : "—");
+
+  const filteredUsers = recent.filter((u) => {
+    if (roleFilter === "all") return true;
+    return u.role === roleFilter;
+  });
 
   return (
     <DashboardGuard requiredRole="admin">
@@ -60,7 +66,24 @@ export default function AdminUsersPage() {
             {/* Recent users */}
             {recent.length > 0 && (
               <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
-                <h2 className="mb-4 text-lg font-bold text-dark dark:text-white">Recently Registered</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
+                  <h2 className="text-lg font-bold text-dark dark:text-white">Recently Registered</h2>
+                  <div className="flex rounded-lg bg-gray-100 p-0.5 dark:bg-dark-2">
+                    {(["all", "consumer", "vendor"] as const).map((role) => (
+                      <button
+                        key={role}
+                        onClick={() => setRoleFilter(role)}
+                        className={`rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-wider transition ${
+                          roleFilter === role
+                            ? "bg-white text-dark shadow-sm dark:bg-gray-dark dark:text-white"
+                            : "text-dark-4 hover:text-dark dark:hover:text-white"
+                        }`}
+                      >
+                        {role === "all" ? "All" : role === "consumer" ? "Consumers (B2C)" : "Vendors (B2B)"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -72,7 +95,7 @@ export default function AdminUsersPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {recent.map((u, i) => (
+                      {filteredUsers.map((u, i) => (
                         <tr key={i} className="border-b border-stroke/50 dark:border-dark-3/50">
                           <td className="py-3 text-sm font-medium text-dark dark:text-white">{String(u.name ?? "—")}</td>
                           <td className="py-3 text-sm text-dark-4">{String(u.email ?? "—")}</td>

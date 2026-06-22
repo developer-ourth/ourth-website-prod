@@ -25,10 +25,15 @@ export default function ProductCard({ product, index }: { product: any; index: n
 
   const isEvenRow = index % 2 === 1;
 
+  const isB2B = user?.role === "vendor";
   const selectedPack = product.packs?.find((p: any) => p.id === selectedPackId);
   const price = selectedPack
     ? (selectedPack.discounted_price ?? selectedPack.base_price)
-    : (product.discounted_price ?? product.base_price ?? 0);
+    : (isB2B && product.wholesale_price !== null && product.wholesale_price !== undefined
+        ? product.wholesale_price
+        : (product.discounted_price ?? product.base_price ?? 0));
+
+  const minQty = isB2B ? (product.min_order_quantity ?? 1) : 1;
 
   const handleAdd = async () => {
     if (!user) {
@@ -39,7 +44,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
     setAdding(true);
     setSuccess(false);
     try {
-      await addToCart(product.id, 1, selectedPackId);
+      await addToCart(product.id, minQty, selectedPackId);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err: any) {
@@ -141,10 +146,22 @@ export default function ProductCard({ product, index }: { product: any; index: n
             {/* Price and Add-to-cart action */}
             <div className="flex items-center justify-between pt-4 border-t border-[#0D3A27]/10">
               <div>
-                <span className="text-xs font-semibold text-gray-500 block">Price</span>
-                <span className="text-2xl font-black text-[#0D3A27]">
-                  ₹{parseFloat(price).toFixed(2)}
+                <span className="text-xs font-semibold text-gray-500 block">
+                  {isB2B && !selectedPack ? "Wholesale Price" : "Price"}
                 </span>
+                <span className="text-2xl font-black text-[#0D3A27] flex items-center gap-1.5">
+                  ₹{parseFloat(price).toFixed(2)}
+                  {isB2B && !selectedPack && (
+                    <span className="text-[10px] bg-[#25784C]/10 text-[#25784C] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                      B2B
+                    </span>
+                  )}
+                </span>
+                {isB2B && minQty > 1 && !selectedPack && (
+                  <span className="text-[10px] text-gray-400 block mt-0.5">
+                    Min. Qty: {minQty} units
+                  </span>
+                )}
               </div>
               <button
                 onClick={handleAdd}

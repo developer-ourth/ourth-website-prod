@@ -31,6 +31,9 @@ export default function CartPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [authSubmitting, setAuthSubmitting] = useState(false);
+  const [isBusiness, setIsBusiness] = useState(false);
+  const [businessName, setBusinessName] = useState("");
+  const [gstin, setGstin] = useState("");
 
   // Address states
   const [addresses, setAddresses] = useState<UserAddress[]>([]);
@@ -85,7 +88,16 @@ export default function CartPage() {
         if (password.length < 8) {
           throw new Error("Password must be at least 8 characters.");
         }
-        const res = await registerApi(name.trim(), email.trim(), password, confirmPassword, phone.trim() || undefined);
+        const res = await registerApi(
+          name.trim(),
+          email.trim(),
+          password,
+          confirmPassword,
+          phone.trim() || undefined,
+          isBusiness ? "vendor" : "consumer",
+          isBusiness ? (gstin.trim() || undefined) : undefined,
+          isBusiness ? (businessName.trim() || undefined) : undefined
+        );
         setToken(res.data.token);
         localStorage.setItem("ourth_auth_user", JSON.stringify({ ...res.data.user }));
         // Refresh auth state by reloading window or setting manually
@@ -150,6 +162,7 @@ export default function CartPage() {
         delivery_postal_code: activeAddress.postal_code ?? "",
         delivery_phone: activeAddress.mobile ?? "",
         payment_method: paymentMethod === "cod" ? "cod" : "upi",
+        order_type: user?.role === "vendor" ? "b2b" : "b2c",
       });
       await clearCart();
       alert("Order placed successfully!");
@@ -323,7 +336,7 @@ export default function CartPage() {
                       />
                     </div>
 
-                    {authMode === "register" && (
+                     {authMode === "register" && (
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-gray-500 uppercase">
                           Mobile Number (optional)
@@ -336,6 +349,52 @@ export default function CartPage() {
                           className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary transition"
                         />
                       </div>
+                    )}
+
+                    {authMode === "register" && (
+                      <div className="flex items-center gap-2 py-1">
+                        <input
+                          type="checkbox"
+                          id="isBusiness"
+                          checked={isBusiness}
+                          onChange={(e) => setIsBusiness(e.target.checked)}
+                          className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                        />
+                        <label htmlFor="isBusiness" className="text-sm font-semibold text-gray-700 cursor-pointer select-none">
+                          I am registering as a business
+                        </label>
+                      </div>
+                    )}
+
+                    {authMode === "register" && isBusiness && (
+                      <>
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-gray-500 uppercase">
+                            Business Name
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={businessName}
+                            onChange={(e) => setBusinessName(e.target.value)}
+                            placeholder="Acme Corp"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary transition"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-gray-500 uppercase">
+                            GSTIN (optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={gstin}
+                            onChange={(e) => setGstin(e.target.value)}
+                            placeholder="22AAAAA0000A1Z5"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-primary transition"
+                          />
+                        </div>
+                      </>
                     )}
 
                     <div>

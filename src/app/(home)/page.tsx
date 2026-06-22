@@ -3,6 +3,7 @@ import Hero from "@/app/(website)/_components/Hero";
 import NaturesAnswer from "@/app/(website)/_components/NaturesAnswer";
 import BuiltForVendors from "@/app/(website)/_components/BuiltForVendors";
 import Products from "@/app/(website)/_components/Products";
+import BrandsAndTestimonials from "@/app/(website)/_components/BrandsAndTestimonials";
 import Footer from "@/app/(website)/_components/Footer";
 import fs from "fs";
 import path from "path";
@@ -27,9 +28,11 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       {config.showNaturesAnswer && <NaturesAnswer />}
-      {config.showBuiltForVendors && <BuiltForVendors />}
       {config.showProducts && <Products />}
+      <BrandsAndTestimonials />
+      {config.showBuiltForVendors && <BuiltForVendors />}
       <Footer />
     </main>
   );
 }
+

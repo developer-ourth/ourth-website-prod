@@ -1,14 +1,32 @@
 import Link from "next/link";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
-import { getMarketplaceProducts } from "@/lib/api";
+import { getMarketplaceProducts, getCategories } from "@/lib/api";
 import Image from "next/image";
 import ProductCard from "./ProductCard";
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ category?: string }>
+}) {
   let products: any[] = [];
   try {
-    const res = await getMarketplaceProducts({ per_page: 50 });
+    const resolvedParams = await searchParams;
+    const categorySlug = resolvedParams.category;
+    let categoryId: number | undefined;
+
+    if (categorySlug) {
+      const catRes = await getCategories();
+      const matchedCat = catRes.data?.find(
+        (c: any) => c.slug === categorySlug || c.name.toLowerCase() === categorySlug.toLowerCase()
+      );
+      if (matchedCat) {
+        categoryId = matchedCat.id;
+      }
+    }
+
+    const res = await getMarketplaceProducts({ category_id: categoryId, per_page: 50 });
     products = res.data || [];
   } catch (error) {
     console.error("Failed to load products from database in ProductsPage:", error);

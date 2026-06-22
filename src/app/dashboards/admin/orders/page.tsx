@@ -48,6 +48,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders]         = useState<AdminOrder[]>([]);
   const [loading, setLoading]       = useState(true);
   const [tab, setTab]               = useState<Tab>("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | "b2c" | "b2b">("all");
   const [page, setPage]             = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal]           = useState(0);
@@ -149,23 +150,46 @@ export default function AdminOrdersPage() {
 
   const pendingCount = orders.filter((o) => o.order_status === "pending").length;
 
+  const filteredOrders = orders.filter((o) => {
+    if (typeFilter === "all") return true;
+    const type = o.order_type ?? "b2c";
+    return type === typeFilter;
+  });
+
   return (
     <DashboardGuard requiredRole="admin">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-dark dark:text-white">Orders</h1>
             <p className="text-sm text-dark-4 dark:text-dark-6">
-              Manage and dispatch B2B vendor orders
+              Manage and dispatch B2B vendor and B2C consumer orders
               {total > 0 && <span className="ml-2 text-dark-3">({total} total)</span>}
             </p>
           </div>
-          {pendingCount > 0 && (
-            <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
-              {pendingCount} Pending
-            </span>
-          )}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex rounded-lg bg-gray-100 p-0.5 dark:bg-dark-2">
+              {(["all", "b2c", "b2b"] as const).map((tFilter) => (
+                <button
+                  key={tFilter}
+                  onClick={() => setTypeFilter(tFilter)}
+                  className={`rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-wider transition ${
+                    typeFilter === tFilter
+                      ? "bg-white text-dark shadow-sm dark:bg-gray-dark dark:text-white"
+                      : "text-dark-4 hover:text-dark dark:hover:text-white"
+                  }`}
+                >
+                  {tFilter === "all" ? "All" : tFilter === "b2c" ? "Consumer (B2C)" : "Business (B2B)"}
+                </button>
+              ))}
+            </div>
+            {pendingCount > 0 && (
+              <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
+                {pendingCount} Pending
+              </span>
+            )}
+          </div>
         </div>
 
         {error && (
@@ -203,6 +227,7 @@ export default function AdminOrdersPage() {
                   <tr className="border-b border-stroke bg-gray-50 dark:border-dark-3 dark:bg-gray-dark">
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Order #</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Vendor</th>
+                    <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Type</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Status</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Payment</th>
                     <th className="px-6 py-3 text-right text-xs font-semibold uppercase text-dark-4">Items</th>
@@ -212,22 +237,39 @@ export default function AdminOrdersPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stroke dark:divide-dark-3">
-                  {orders.length === 0 ? (
+                  {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="px-6 py-12 text-center text-sm text-dark-4">
+                      <td colSpan={9} className="px-6 py-12 text-center text-sm text-dark-4">
                         No orders found
                       </td>
                     </tr>
                   ) : (
-                    orders.map((order) => {
+                    filteredOrders.map((order) => {
                       const busy = actionLoading === order.id;
+                      const orderType = order.order_type ?? "b2c";
                       return (
                         <tr key={order.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-white/5">
                           <td className="px-6 py-4">
                             <span className="font-mono text-sm font-bold text-primary">{order.order_number}</span>
                           </td>
                           <td className="px-6 py-4 text-sm text-dark dark:text-white">
-                            {order.vendor_name ?? "—"}
+                            <div>
+                              <span>{order.vendor_name ?? "—"}</span>
+                              {orderType === "b2b" && order.buyer_gstin && (
+                                <div className="mt-0.5 text-xs text-dark-4 font-mono">
+                                  GST: {order.buyer_gstin}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span className={`rounded-md px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase ${
+                              orderType === "b2b" 
+                                ? "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400" 
+                                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                            }`}>
+                              {orderType}
+                            </span>
                           </td>
                           <td className="px-6 py-4 text-center">
                             <span className={`rounded px-2 py-0.5 text-xs font-semibold capitalize ${STATUS_BADGE[order.order_status] ?? "bg-gray-100 text-gray-600"}`}>

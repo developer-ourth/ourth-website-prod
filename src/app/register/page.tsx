@@ -19,6 +19,9 @@ function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [isBusiness, setIsBusiness] = useState(false);
+  const [businessName, setBusinessName] = useState("");
+  const [gstin, setGstin] = useState("");
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -58,6 +61,9 @@ function RegisterForm() {
         password,
         confirmPassword,
         phone.trim() || undefined,
+        isBusiness ? "vendor" : "consumer",
+        isBusiness ? (gstin.trim() || undefined) : undefined,
+        isBusiness ? (businessName.trim() || undefined) : undefined
       );
       setToken(res.data.token);
       // Store user then redirect
@@ -148,7 +154,7 @@ function RegisterForm() {
               />
             </div>
 
-            <div>
+             <div>
               <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
                 Mobile Number (optional)
               </label>
@@ -160,6 +166,50 @@ function RegisterForm() {
                 className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
               />
             </div>
+
+            <div className="flex items-center gap-2 py-1">
+              <input
+                type="checkbox"
+                id="isBusiness"
+                checked={isBusiness}
+                onChange={(e) => setIsBusiness(e.target.checked)}
+                className="h-4 w-4 rounded border-stroke text-primary focus:ring-primary dark:border-dark-3"
+              />
+              <label htmlFor="isBusiness" className="text-sm font-medium text-dark dark:text-white cursor-pointer">
+                I am registering as a business
+              </label>
+            </div>
+
+            {isBusiness && (
+              <>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    placeholder="Acme Corp"
+                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+                    GSTIN (optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={gstin}
+                    onChange={(e) => setGstin(e.target.value)}
+                    placeholder="22AAAAA0000A1Z5"
+                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              </>
+            )}
 
             <div>
               <label className="mb-2 block text-sm font-medium text-dark dark:text-white">

@@ -36,6 +36,7 @@ const ROLE_NAV: Record<UserRole, NavSection[]> = {
         { title: "Earnings", url: "/dashboards/vendor/earnings", icon: Icons.PieChart, items: [] },
         { title: "Catalog / Inventory", url: "/dashboards/vendor/catalog", icon: Icons.FourCircle, items: [] },
         { title: "QR Code", url: "/dashboards/vendor/qr", icon: Icons.User, items: [] },
+        { title: "Business KYC", url: "/dashboards/vendor/kyc", icon: Icons.User, items: [] },
       ],
     },
   ],

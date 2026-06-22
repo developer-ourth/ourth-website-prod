@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
-import fs from "fs";
-import path from "path";
 
 const coreValues = [
   "Every small choice matters",
@@ -16,11 +14,11 @@ const coreValues = [
 const standFor = [
   {
     title: "About OURTH",
-    text: "OURTH is a sustainability-driven ecosystem created to eliminate single-use plastic at the core through eco-friendly products, circular waste management, technology integration, and community participation.",
+    text: "OURTH is a sustainability-driven ecosystem created to eliminate single-use plastic at the core through eco-friendly products, circular waste management, technology integration, and community participation. Healing OURTH India Pvt. Ltd. is building not just a product company, but a long-term environmental movement focused on clean, green, healthy, and responsible living.",
   },
   {
     title: "Objective",
-    text: "Replace plastic disposables at a grassroots level with affordable, eco-friendly alternatives while integrating responsible disposal and waste collection systems.",
+    text: "Replace plastic disposables at the grassroots level with affordable eco-friendly alternatives while integrating responsible disposal and waste collection systems.",
   },
   {
     title: "Mission",
@@ -28,355 +26,329 @@ const standFor = [
   },
   {
     title: "Vision",
-    text: "To build Bharat's leading circular economy ecosystem connecting consumers, businesses, waste management, and environmental impact through sustainable products and technology.",
+    text: "To build Bharat’s leading circular economy ecosystem connecting consumers, businesses, waste management, and environmental impact through sustainable products and technology.",
   },
 ];
 
-const team = [
-  { name: "Pranay Bhargava", image: "/images/team/team-01.png", large: true },
+const teamLandscape = [
   { name: "Riya Goyal", image: "/images/team/team-02.png" },
-  { name: "Harshal Mathur", image: "/images/team/team-03.png" },
-  { name: "Sahil Bhargava", image: "/images/team/team-04.png" },
   { name: "Arnav Rajput", image: "/images/team/team-05.png" },
+  { name: "Harshal Mathur", image: "/images/team/team-03.png" },
   { name: "Rahul Gandhi", image: "/images/team/team-06.png" },
+  { name: "Sahil Bhargava", image: "/images/team/team-04.png" },
   { name: "Asteria Xing", image: "/images/team/team-07.png" },
 ];
 
 export default function AboutPage() {
-  // Read config dynamically at request time
-  let config = {
-    aboutTitle: "Eco-friendly, leaf-based tableware",
-    aboutDescription: "Ourth is on a mission to eliminate single-use plastics from street food, catering, and home dining. By sourcing fallen leaves from local forests, we craft stunning, natural plates and bowls that are entirely home-compostable.",
-    backgroundColor: "#D8EFE0"
-  };
-  try {
-    const configPath = path.join(process.cwd(), "src/data/website-config.json");
-    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  } catch (e) {
-    console.error("Failed to read dynamic website config in About", e);
-  }
-
   return (
-    <main style={{ background: config.backgroundColor }} className="relative">
-      <Navbar />
+    <main className="relative min-h-screen bg-[#FBEFC9] overflow-x-hidden">
+      
+      {/* Custom responsive Navbar wrapper */}
+      <div className="w-full max-w-[1625px] mx-auto px-4 md:px-8 mt-[18px]">
+        <div className="bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] h-[95px] flex items-center justify-between px-6 lg:px-12 w-full">
+          
+          {/* Logo & Brand Name */}
+          <a href="/" className="flex items-center gap-4 hover:opacity-95 transition-opacity">
+            <div className="relative w-[50px] h-[50px] md:w-[70px] md:h-[70px] drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]">
+              <Image 
+                src="/images/logo/logo.webp" 
+                alt="Logo" 
+                fill 
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span 
+              className="text-[#0D3A27] font-bold text-2xl md:text-[36px] leading-tight flex items-center"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              Healing Ourth
+            </span>
+          </a>
 
-      <section
-        className="relative mx-auto overflow-hidden px-6 pb-20 pt-80"
-        style={{ width: "1920px", height: "1080px", maxWidth: "100%" }}
-      >
-        {/* Left Curved Shape Backdrop */}
-        <div className="absolute top-0 left-0 h-[85%] w-full lg:w-[45%] bg-[#E2EFE0] rounded-br-[120px] lg:rounded-br-[200px] z-0" />
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
+            <a 
+              href="/" 
+              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              Shop
+            </a>
+            <a 
+              href="/about" 
+              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              About
+            </a>
+            <a 
+              href="/products" 
+              className="w-[120px] xl:w-[165px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              Products
+            </a>
+            <a 
+              href="/contact" 
+              className="w-[130px] xl:w-[181px] h-[47px] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-lg xl:text-[24px] font-normal text-black hover:bg-[#FAF8F3]/50 transition-all bg-[#FAF8F3]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              Get in touch
+            </a>
+          </nav>
 
-        {/* Top Left Image */}
-        <div className="absolute left-0 top-0 w-[35%] max-w-[100%] h-[100%] pointer-events-none z-0 select-none hidden md:block">
-          <Image
-            src="/images/about/about_top.webp"
-            alt="About Graphic"
-            fill
-            className="object-contain object-left-top"
-            priority
-          />
+          {/* Actions */}
+          <div className="flex items-center gap-4 md:gap-6">
+            {/* Cart Icon */}
+            <a href="/cart" className="relative w-[36px] h-[36px] md:w-[40px] md:h-[44px] flex items-center justify-center hover:scale-105 transition-all" aria-label="Cart">
+              <svg className="w-8 h-8 md:w-10 md:h-10 text-black" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.116 60.116 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+            </a>
+            <a 
+              href="/login" 
+              className="w-[100px] md:w-[146px] h-[40px] md:h-[47px] bg-[#76A52E] border-[1.5px] border-black rounded-[30px] flex items-center justify-center text-base md:text-[24px] font-normal text-[#FAF8F3] hover:opacity-90 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.15)]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              Sign in
+            </a>
+          </div>
+
         </div>
-        <div
-          className="absolute w-full max-w-[1580px] z-20"
-          style={{ left: "280px", top: "250px" }}
-        >
-          <div className="max-w-[680px]">
-            <h1
-              style={{
-                fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-                fontSize: "64px",
-                fontWeight: 800,
-                lineHeight: "1.1",
-                color: "#2C1F13",
-              }}
-            >
-              {config.aboutTitle}
-            </h1>
+      </div>
 
-            <p
-              className="mt-8"
-              style={{
-                fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                fontSize: "22px",
-                fontWeight: 500,
-                lineHeight: "1.45",
-                color: "#1B4F34",
-              }}
+      {/* 1. Where Leaves Become Legacy */}
+      <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] pt-16 lg:pt-28 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+          {/* Left Text content */}
+          <div className="lg:col-span-7 space-y-8">
+            <h1
+              className="text-[#5E3A16] font-bold text-5xl md:text-6xl lg:text-[72px] lg:leading-[78px] tracking-tight"
+              style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
             >
-              {config.aboutDescription}
+              Where Leaves <br className="hidden md:inline" />
+              Become Legacy
+            </h1>
+            <p
+              className="text-[#2B4D0E] text-xl md:text-[24px] leading-[38px] font-bold"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            >
+              We believe every meal served on a leaf is a vote for a cleaner
+              planet. A quiet act of choosing earth over plastic, tradition over
+              convenience, conscience over habit. One plate at a time, vendors
+              across India are rewriting the story of single-use. And the earth is
+              listening.
             </p>
           </div>
-        </div>
 
-        <div
-          className="absolute overflow-hidden rounded-[24px]"
-          style={{ left: "1002px", top: "213px", width: "639px", height: "577px" }}
-        >
-          <Image
-            src="/images/about/hoipl-plate-starter.webp"
-            alt="Leaf tableware"
-            fill
-            className="object-contain"
-            sizes="639px"
-          />
+          {/* Right Image */}
+          <div className="lg:col-span-5 flex justify-center w-full">
+            <div className="relative w-full max-w-[639px] aspect-[639/577] rounded-[5px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
+              <Image
+                src="/images/about/hoipl-plate-starter.webp"
+                alt="Leaf tableware plates stack"
+                fill
+                className="object-cover"
+                sizes="(max-w-[1024px]) 100vw, 639px"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section
-        className="relative px-6 py-80"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(4,18,10,0.74), rgba(4,18,10,0.74)), url('https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=1800&q=80')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-10 lg:grid-cols-[380px_1fr]">
-          <div className="rounded-[20px] bg-[#D8EFE0] p-2 shadow-xl">
-            <div className="relative h-[480px] overflow-hidden rounded-[14px] bg-white">
+      {/* 2. Green Man of INDIA */}
+      <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] py-16">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-[71px] items-stretch justify-center">
+          
+          {/* Left card: Founder Image */}
+          <div className="w-full lg:w-[504px] flex flex-col justify-center">
+            <div className="relative w-full aspect-[504/623] rounded-[5px] border-[1.5px] border-black bg-white overflow-hidden shadow-[4px_4px_0px_#000000]">
               <Image
                 src="/images/team/team-01.png"
-                alt="Founder"
+                alt="Founder of Ourth"
                 fill
-                className="object-cover"
-                sizes="380px"
+                className="object-cover object-top"
+                sizes="(max-w-[1024px]) 100vw, 504px"
               />
             </div>
           </div>
 
-          <div className="max-w-[720px]">
-            <h2
-              style={{
-                fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-                fontSize: "64px",
-                fontWeight: 800,
-                lineHeight: "0.95",
-                color: "#F2D48A",
-              }}
-            >
-              Green Man
-              <br />
-              of INDIA
-            </h2>
-
-            <p
-              className="mt-8"
-              style={{
-                fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                fontSize: "30px",
-                fontWeight: 500,
-                lineHeight: "1.45",
-                color: "#D8EFE0",
-              }}
-            >
-              Our founder watched his grandmother serve a feast on sal leaf
-              plates handstitched with a thorn. By morning they had joined the
-              soil. Decades later those plates are being replaced by styrofoam.
-              Ourth was born to bring that ancient wisdom back - but scaled for
-              modern vendors.
-            </p>
+          {/* Right card: Text Container (Rectangle 203) */}
+          <div className="w-full lg:w-[771px] flex flex-col">
+            <div className="h-full rounded-[5px] border-[1.5px] border-black bg-[#C7E08E] p-8 lg:p-12 shadow-[4px_4px_0px_#000000] flex flex-col justify-center space-y-6">
+              <h2
+                className="text-black font-bold text-4xl md:text-[56px] leading-[62px]"
+                style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+              >
+                Green Man <br className="hidden md:inline" />
+                of INDIA
+              </h2>
+              <p
+                className="text-[#2B4D0E] text-xl md:text-[24px] leading-[38px] font-bold"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+              >
+                Our founder watched his grandmother serve a feast on sal leaf
+                plates handstitched with a thorn. By morning they had joined the
+                soil. <br />
+                <br />
+                Decades later those plates are being replaced by styrofoam. Ourth
+                was born to bring that ancient wisdom back — but scaled for modern
+                vendors.
+              </p>
+            </div>
           </div>
+
         </div>
       </section>
 
-      <section className="min-h-[760px] px-6 py-20">
-        <div className="mx-auto w-full max-w-[1510px]">
-          <h3
-            className="mb-12 text-center"
-            style={{
-              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-              fontSize: "64px",
-              fontWeight: 800,
-              color: "#2C1F13",
-              lineHeight: "1",
-            }}
-          >
-            Our <span style={{ color: "#1A5C2E" }}>Core Values</span>
-          </h3>
+      {/* 3. Our Core Values */}
+      <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] py-16">
+        <h2
+          className="text-[#5E3A16] text-center text-4xl md:text-[56px] leading-[62px] font-bold mb-16"
+          style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+        >
+          Our Core Values
+        </h2>
 
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
-            {coreValues.map((value) => (
-              <div
-                key={value}
-                className="mx-auto flex h-[200px] w-[420px] items-center rounded-[18px] border bg-[#F2EFEC] px-6 py-7"
-                style={{ boxShadow: "-8px 0px 0px #1A5C2E" }}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-[80px] justify-items-center">
+          {coreValues.map((value, idx) => (
+            <div
+              key={idx}
+              className="w-full max-w-[420px] h-[200px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 flex items-center justify-center shadow-[4px_4px_0px_#000000] hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_#000000] transition-all duration-300"
+            >
+              <p
+                className="text-[#2C1F13] text-2xl md:text-[32px] leading-[34px] font-medium"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
+                {value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. What We Stand For */}
+      <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] py-16">
+        <h2
+          className="text-[#2C1F13] text-center text-4xl md:text-[56px] leading-[62px] font-bold mb-20"
+          style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+        >
+          What We Stand For
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 justify-items-center">
+          {standFor.map((item, idx) => (
+            <div key={idx} className="w-full max-w-[320px] relative flex flex-col items-center group mb-8">
+              
+              {/* Card Container (Rectangle 91-94) */}
+              <div className="w-full h-[420px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-6 flex items-center justify-center text-center shadow-[4px_4px_0px_#000000] group-hover:translate-y-[-4px] group-hover:shadow-[6px_6px_0px_#000000] transition-all duration-300">
                 <p
-                  style={{
-                    fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                    fontSize: "34px",
-                    fontWeight: 500,
-                    lineHeight: "1.2",
-                    color: "#2C1F13",
-                  }}
+                  className="text-[#2C1F13] text-[16px] leading-[34px] font-medium px-2"
+                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
-                  {value}
+                  {item.text}
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section className="px-6 pb-20">
-        <div className="mx-auto w-full max-w-[1510px]">
-          <h3
-            className="mb-10 text-center"
-            style={{
-              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-              fontSize: "64px",
-              fontWeight: 800,
-              color: "#2C1F13",
-              lineHeight: "1",
-            }}
-          >
-            What We Stand For
-          </h3>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            {standFor.map((item, index) => (
-              <div key={item.title} className="mx-auto w-[350.55px]">
-                <div
-                  className="h-[464.48px] w-[350.55px] rounded-[22px] border border-[#254E34] p-2"
-                  style={{
-                    backgroundImage:
-                      index % 2 === 0
-                        ? "url('https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=600&q=80')"
-                        : "url('https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=600&q=80')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <div className="h-full rounded-[16px] bg-[#F5F2EE] px-5 py-6">
-                    <p
-                      style={{
-                        fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                        fontSize: "22px",
-                        fontWeight: 500,
-                        lineHeight: "1.45",
-                        color: "#2C1F13",
-                      }}
-                    >
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  className="mt-3 rounded-[999px] text-center overflow-hidden"
-                  style={{
-                    backgroundImage: "url('/images/about/Group31.png')",
-                    backgroundSize: "100% 100%",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                      fontSize: "34px",
-                      fontWeight: 600,
-                      color: "#2C1F13",
-                      lineHeight: "1.2",
-                      padding: "8px 16px",
-                    }}
-                  >
-                    {item.title}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* <section className="px-6 pb-24">
-        <div className="mx-auto w-full max-w-[1420px]">
-          <h3
-            className="mb-10 text-center"
-            style={{
-              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
-              fontSize: "64px",
-              fontWeight: 800,
-              color: "#2C1F13",
-              lineHeight: "1",
-            }}
-          >
-            Ourth Team
-          </h3>
-
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
-            {team.map((member) => (
+              {/* Pill Container (Rectangle 95-98) & Pill Text Label */}
+              <div className="absolute bottom-[-20px] w-[95%] sm:w-[334px] h-[40px] bg-[#EBB339] border-[1.5px] border-black rounded-[30px] shadow-[2px_2px_0px_#000000]" />
+              
               <div
-                key={member.name}
-                className={member.large ? "md:row-span-2 md:w-[344px]" : "md:w-[344px]"}
+                className="absolute bottom-[-25px] w-[95%] sm:w-[334px] h-[50px] flex items-center justify-center text-center font-medium text-2xl sm:text-[32px] leading-[34px] text-[#2C1F13]"
+                style={{
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                }}
               >
+                {item.title}
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. Ourth Team */}
+      <section className="mx-auto max-w-[1625px] px-6 lg:px-[146px] py-20 mb-16">
+        <h2
+          className="text-[#2C1F13] text-center text-4xl md:text-[56px] leading-[62px] font-bold mb-20"
+          style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+        >
+          Ourth Team
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+          {/* Left Column: Pranay Bhargava (Large Card - Rectangle 99) */}
+          <div className="lg:col-span-4 flex justify-center w-full">
+            <div className="w-full max-w-[344px] h-[470px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-6 flex flex-col justify-between shadow-[4px_4px_0px_#000000] hover:translate-y-[-2px] transition-all duration-300">
+              
+              {/* Image 14 */}
+              <div className="relative w-full aspect-[293/363] rounded-[5px] border-[1.5px] border-black overflow-hidden bg-white">
+                <Image
+                  src="/images/team/team-01.png"
+                  alt="Pranay Bhargava"
+                  fill
+                  className="object-cover object-top"
+                  sizes="293px"
+                />
+              </div>
+
+              {/* Name Text */}
+              <div
+                className="w-full text-center font-medium text-[32px] leading-[34px] text-black"
+                style={{
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                Pranay Bhargava
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Other Team Members Landscape Grid (3 cols x 2 rows) */}
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
+            {teamLandscape.map((member, idx) => (
+              <div
+                key={idx}
+                className="w-full max-w-[344px] h-[220px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-4 flex items-center gap-4 shadow-[4px_4px_0px_#000000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all duration-300 relative"
+              >
+                {/* Image (Rectangle 106-111) */}
+                <div className="relative w-[130px] sm:w-[180px] h-[180px] sm:h-[200px] rounded-[5px] border-[1.5px] border-black overflow-hidden bg-white flex-shrink-0">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover object-top"
+                    sizes="180px"
+                  />
+                </div>
+                
+                {/* Name */}
                 <div
-                  className="rounded-[18px] p-2"
+                  className="font-medium text-lg sm:text-[24px] leading-[34px] text-black text-center flex-grow flex items-center justify-center"
                   style={{
-                    background: "#4B3627",
-                    boxShadow: "0px 4px 4px rgba(0,0,0,0.18)",
-                    width: member.large ? "344px" : "344px",
-                    height: member.large ? "470px" : "220px",
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                   }}
                 >
-                  <div
-                    className="flex items-center gap-3 rounded-[14px] p-2"
-                    style={{ background: member.large ? "rgba(255,255,255,0.92)" : "transparent" }}
-                  >
-                    <div
-                      className="relative overflow-hidden rounded-[12px]"
-                      style={{
-                        width: member.large ? "293px" : "180px",
-                        height: member.large ? "363px" : "200px",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                        sizes={member.large ? "293px" : "180px"}
-                      />
-                    </div>
-                    {!member.large && (
-                      <p
-                        style={{
-                          fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                          fontSize: "28px",
-                          fontWeight: 600,
-                          lineHeight: "1.2",
-                          color: "#F5F1EB",
-                        }}
-                      >
-                        {member.name}
-                      </p>
-                    )}
-                  </div>
-
-                  {member.large && (
-                    <p
-                      className="pb-2 pt-3 text-center"
-                      style={{
-                        fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif",
-                        fontSize: "36px",
-                        fontWeight: 600,
-                        lineHeight: "1.2",
-                        color: "#F5F1EB",
-                      }}
-                    >
-                      {member.name}
-                    </p>
-                  )}
+                  {member.name}
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
-      <Footer />
+      {/* Footer (Rectangle 202) */}
+      <footer className="bg-[#5E3A16] w-full py-16 flex items-center justify-center text-white text-center text-lg">
+        <div className="max-w-xl px-4">
+          © {new Date().getFullYear()} Healing Ourth India Pvt. Ltd. All rights reserved.
+        </div>
+      </footer>
+
     </main>
   );
 }
