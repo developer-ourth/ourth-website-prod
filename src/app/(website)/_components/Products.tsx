@@ -103,7 +103,7 @@ export default function Products() {
         ) : (
           <>
             {/* Desktop View: Grid */}
-            <div className="hidden lg:flex flex-wrap gap-[52px] justify-start">
+            <div className="hidden lg:grid grid-cols-2 xl:grid-cols-4 gap-8">
               {filteredProducts.map((p) => {
                 const displayPrice = isVendor && p.wholesale_price
                   ? parseFloat(p.wholesale_price)
@@ -112,7 +112,7 @@ export default function Products() {
                 return (
                   <div
                     key={p.id}
-                    className="w-[294px] h-[433px] bg-[#FBEFC9] border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex flex-col justify-between p-4 relative hover:translate-y-[-2px] transition-all"
+                    className="w-full max-w-[340px] h-[433px] mx-auto bg-[#FBEFC9] border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex flex-col justify-between p-4 relative hover:translate-y-[-2px] transition-all"
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {/* Image (198px x 198px centered) */}

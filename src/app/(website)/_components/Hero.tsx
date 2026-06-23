@@ -52,7 +52,7 @@ export default function Hero() {
           <div className="lg:col-span-7 flex justify-center lg:justify-end">
 
             {/* Desktop Collage (Figma layout: 3 columns, exact dimensions) */}
-            <div className="hidden lg:flex gap-[12px] h-[466px] w-[736px] select-none">
+            <div className="hidden xl:flex gap-[12px] h-[466px] w-[736px] select-none">
               {/* Column 1: 321px width */}
               <div className="flex flex-col gap-[17px] w-[321px]">
                 <div className="w-[321px] h-[249px] relative overflow-hidden rounded-[5px] shadow-[4px_4px_4px_2px_rgba(0,0,0,0.25)] bg-[#FAF8F3]">
@@ -100,7 +100,7 @@ export default function Hero() {
             </div>
 
             {/* Mobile/Tablet Collage (Fluid) */}
-            <div className="lg:hidden grid grid-cols-3 gap-3 h-[300px] md:h-[450px] w-full p-2">
+            <div className="xl:hidden grid grid-cols-3 gap-3 h-[300px] md:h-[450px] w-full p-2">
               <div className="flex flex-col gap-3 h-full">
                 <div className="flex-[5] relative overflow-hidden rounded-[5px] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] border-[1.5px] border-black">
                   <img src="/images/home/image1.png" alt="Food" className="w-full h-full object-cover" />
