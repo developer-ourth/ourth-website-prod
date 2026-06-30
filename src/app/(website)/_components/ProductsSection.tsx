@@ -106,11 +106,11 @@ export default function ProductsSection() {
               return (
                 <div key={id} className="relative w-[280px] h-[480px] flex-shrink-0 select-none group">
                   {/* Figma Card Image Backdrop */}
-                  <img
-                    src="/images/home/productcard.png"
-                    alt="Card Background"
-                    className="absolute inset-0 w-full h-full object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-300 pointer-events-none"
-                  />
+                      <img
+                        src="/images/home/productcard.webp"
+                        alt="Card Background"
+                        className="absolute inset-0 w-full h-full object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-300 pointer-events-none"
+                      />
 
                   {/* Card Content overlay */}
                   <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between items-start">
@@ -238,7 +238,7 @@ export default function ProductsSection() {
                   >
                     <div className="relative w-full aspect-[280/480]">
                       <img
-                        src="/images/home/productcard.png"
+                        src="/images/home/productcard.webp"
                         alt="Card Background"
                         className="absolute inset-0 w-full h-full object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] pointer-events-none"
                       />
