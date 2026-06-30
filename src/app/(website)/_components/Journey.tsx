@@ -6,31 +6,31 @@ export default function Journey() {
       id: 1,
       title: "This is just a demo",
       desc: "Text are going to be placed soon. This is just a demo",
-      image: "/images/icon/icon1.png"
+      image: "/images/icon/icon1.webp"
     },
     {
       id: 2,
       title: "This is just a demo",
       desc: "Text are going to be placed soon. This is just a demo",
-      image: "/images/icon/icon2.png"
+      image: "/images/icon/icon2.webp"
     },
     {
       id: 3,
       title: "This is just a demo",
       desc: "Text are going to be placed soon. This is just a demo",
-      image: "/images/icon/icon3.png"
+      image: "/images/icon/icon3.webp"
     },
     {
       id: 4,
       title: "This is just a demo",
       desc: "Text are going to be placed soon. This is just a demo",
-      image: "/images/icon/icon4.png"
+      image: "/images/icon/icon4.webp"
     },
     {
       id: 5,
       title: "This is just a demo",
       desc: "Text are going to be placed soon. This is just a demo",
-      image: "/images/icon/icon5.png"
+      image: "/images/icon/icon5.webp"
     }
   ];
 
@@ -75,7 +75,7 @@ export default function Journey() {
             style={{ top: "22%", width: "35.2%", maxWidth: "676px" }}
           >
             <img
-              src="/images/home/HOIPL_3DIndia.png"
+              src="/images/home/HOIPL_3DIndia.webp"
               alt="Healing Ourth Globe"
               className="w-full h-auto object-contain"
             />
@@ -223,7 +223,7 @@ export default function Journey() {
           {/* Globe on mobile */}
           <div className="flex justify-center mb-4">
             <img
-              src="/images/home/HOIPL_3DIndia.png"
+              src="/images/home/HOIPL_3DIndia.webp"
               alt="Healing Ourth Globe"
               className="w-[200px] h-[200px] object-contain"
             />

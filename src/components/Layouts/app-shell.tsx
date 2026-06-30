@@ -31,6 +31,7 @@ function isPublicRoute(pathname: string): boolean {
     normalized === "/products" ||
     normalized.startsWith("/products/") ||
     normalized === "/contact" ||
+    normalized === "/campaigns" ||
     normalized === "/privacy-policy" ||
     normalized === "/refund" ||
     normalized === "/terms" ||
@@ -46,6 +47,7 @@ function getPublicRouteBg(pathname: string): string {
   if (normalized === "/products") return "bg-[#E8F0D8]";
   if (normalized.startsWith("/products/") || normalized === "/client/dashboard") return "bg-[#DCEEFB]";
   if (normalized === "/contact") return "bg-[#9BDFF2]";
+  if (normalized === "/campaigns") return "bg-[#FAF8F3]";
   return "bg-[#D8EFE0]"; // Default landing page bg
 }
 

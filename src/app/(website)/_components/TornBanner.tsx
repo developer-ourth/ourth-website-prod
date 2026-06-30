@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function TornBanner() {
   // torn.png natural dimensions ≈ 1456 × 820px
   // Breakdown of the image:
@@ -23,21 +25,23 @@ export default function TornBanner() {
         background: "#FAF8F3",
       }}
     >
-      {/* Full torn.png shifted up to crop the top white paper area */}
-      <img
-        src="/images/home/torn.png"
-        alt="Torn paper banner"
+      {/* Container with relative layout to let Next.js Image fill it */}
+      <div
+        className="absolute left-0 w-full pointer-events-none select-none"
         style={{
-          position: "absolute",
-          left: 0,
-          width: "100%",
           height: "clamp(460px, 62vw, 940px)",
           top: "clamp(-100px, -13vw, -200px)",
-          objectFit: "fill",
-          pointerEvents: "none",
-          userSelect: "none",
         }}
-      />
+      >
+        <Image
+          src="/images/home/torn.png"
+          alt="Torn paper banner"
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+      </div>
 
       {/* Text centered in the transparent gap between the two torn edges */}
       <div

@@ -550,7 +550,7 @@ export default function ProductDetailsPage() {
                     {/* Thumbnail Image Container */}
                     <Link href={isMock ? "#" : `/products/${p.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 block">
                       <img
-                        src={isMock ? "/images/home/productcard.png" : image}
+                        src={isMock ? "/images/home/productcard.webp" : image}
                         alt={name}
                         className="max-h-[130px] max-w-[140px] object-contain p-2"
                       />

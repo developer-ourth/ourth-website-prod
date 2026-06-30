@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const teamMembers = [
-  { name: "Riya Goyal", image: "/images/team/team-02.png" },
-  { name: "Arnav Rajput", image: "/images/team/team-05.png" },
-  { name: "Harshal Mathur", image: "/images/team/team-03.png" },
-  { name: "Rahul Gandhi", image: "/images/team/team-06.png" },
-  { name: "Sahil Bhargava", image: "/images/team/team-04.png" },
-  { name: "Asteria Xing", image: "/images/team/team-07.png" }
+  { name: "Riya Goyal", image: "/images/team/team-02.webp" },
+  { name: "Arnav Rajput", image: "/images/team/team-05.webp" },
+  { name: "Harshal Mathur", image: "/images/team/team-03.webp" },
+  { name: "Rahul Gandhi", image: "/images/team/team-06.webp" },
+  { name: "Sahil Bhargava", image: "/images/team/team-04.webp" },
+  { name: "Asteria Xing", image: "/images/team/team-07.webp" }
 ];
 
 export default function KnowUsPage() {
@@ -21,7 +21,7 @@ export default function KnowUsPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/about/banner.png"
+            src="/images/about/banner.webp"
             alt="Know Us Banner"
             fill
             className="object-cover"
@@ -80,25 +80,25 @@ export default function KnowUsPage() {
             {/* Box 1 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/Element1.png" alt="Eco Products" fill className="object-contain" />
+                <Image src="/images/about/Element1.webp" alt="Eco Products" fill className="object-contain" />
               </div>
             </div>
             {/* Box 2 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/Element2.png" alt="Waste Disposal" fill className="object-contain" />
+                <Image src="/images/about/Element2.webp" alt="Waste Disposal" fill className="object-contain" />
               </div>
             </div>
             {/* Box 3 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/Element3.png" alt="Tech Integration" fill className="object-contain" />
+                <Image src="/images/about/Element3.webp" alt="Tech Integration" fill className="object-contain" />
               </div>
             </div>
             {/* Box 4 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/Element4.png" alt="Community" fill className="object-contain" />
+                <Image src="/images/about/Element4.webp" alt="Community" fill className="object-contain" />
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function KnowUsPage() {
         <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-0 pointer-events-none">
           <div className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[700px] md:h-[700px] lg:w-[1000px] lg:h-[1000px] opacity-[0.3]">
             <Image
-              src="/images/home/HOIPL_3DIndia.png"
+              src="/images/home/HOIPL_3DIndia.webp"
               alt="OURTH Watermark"
               fill
               className="object-contain"
@@ -127,7 +127,7 @@ export default function KnowUsPage() {
           {/* Founder Image */}
           <div className="w-full lg:w-[496px] h-[350px] sm:h-[450px] md:h-[520px] lg:h-[600px] relative rounded-[20px] sm:rounded-[25px] md:rounded-[30px] overflow-hidden flex-shrink-0 border border-black/10 shadow-lg">
             <Image
-              src="/images/team/content.png"
+              src="/images/team/content.webp"
               alt="Founder"
               fill
               className="object-cover object-top"
@@ -169,7 +169,7 @@ export default function KnowUsPage() {
         <div className="relative w-full overflow-hidden bg-white py-12 px-6 md:px-12 border-y border-black/10">
           {/* Full-width Background Image */}
           <div className="absolute inset-0 pointer-events-none z-0">
-            <Image src="/images/about/bgimg.png" alt="Harit Bharat Background" fill className="object-cover" />
+            <Image src="/images/about/bgimg.webp" alt="Harit Bharat Background" fill className="object-cover" />
             {/* Lighter overlay (30% opacity) so the background image is clearly visible */}
             <div className="absolute inset-0 bg-[#FAF8F3]/30" />
           </div>
