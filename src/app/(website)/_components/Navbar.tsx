@@ -14,9 +14,9 @@ export default function Navbar() {
   const cartCount = cart?.total_items ?? 0;
 
   return (
-    <div className="w-full bg-transparent absolute top-0 left-0 right-0 z-50">
+    <div className="w-full bg-transparent fixed top-0 left-0 right-0 z-[9999]">
       {/* Header Container with Glassmorphism Effect */}
-      <header 
+      <header
         className="w-full flex h-[70px] lg:h-[95px] items-center justify-between px-6 lg:px-12 box-sizing-border-box backdrop-blur-[12px]"
         style={{
           backgroundColor: "rgba(250, 248, 243, 0.55)", // translucent cream background
@@ -44,7 +44,7 @@ export default function Navbar() {
         {/* Center: Simplified Text Links (No pill borders, bold) */}
         <nav className="hidden items-center gap-12 lg:flex">
           <Link
-            href="/about"
+            href="/know-us"
             className="text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
@@ -58,11 +58,11 @@ export default function Navbar() {
             Marketplace
           </Link>
           <Link
-            href="/products"
+            href="/campaigns"
             className="text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
-            Products
+            Campaigns
           </Link>
         </nav>
 
@@ -94,7 +94,7 @@ export default function Navbar() {
           {/* Sign In Solid Green Capsule Button */}
           <Link
             href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
-            className="inline-flex w-[146px] h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#1A5C2E] text-[24px] font-bold text-white hover:opacity-90 transition-all shadow-[2px_2px_0px_#000000]"
+            className="inline-flex w-[146px] h-[47px] items-center justify-center rounded-[30px] bg-[#25784C] text-[24px] font-bold text-white hover:opacity-90 transition-all"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             {user ? "Dashboard" : "Sign in"}
@@ -127,7 +127,7 @@ export default function Navbar() {
         <div className="mt-4 flex flex-col gap-3 rounded-2xl border-2 border-black bg-white/95 p-4 shadow-[4px_4px_0px_0px_#000000] lg:hidden backdrop-blur-md">
           <nav className="flex flex-col gap-2.5">
             <Link
-              href="/about"
+              href="/know-us"
               className="text-base font-bold text-[#0D3A27] hover:underline"
               onClick={() => setOpen(false)}
             >
@@ -141,11 +141,11 @@ export default function Navbar() {
               ✦ Marketplace
             </Link>
             <Link
-              href="/products"
+              href="/campaigns"
               className="text-base font-bold text-[#0D3A27] hover:underline"
               onClick={() => setOpen(false)}
             >
-              ✦ Products
+              ✦ Campaigns
             </Link>
           </nav>
           <div className="my-2 border-t border-black/10" />

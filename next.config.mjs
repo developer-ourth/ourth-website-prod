@@ -24,6 +24,15 @@ const nextConfig = {
         port: ""
       }
     ]
+  },
+  async redirects() {
+    return [
+      {
+        source: "/about",
+        destination: "/know-us",
+        permanent: true
+      }
+    ];
   }
 };
 

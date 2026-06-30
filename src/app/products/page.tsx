@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getMarketplaceProducts, getCategories, getProductImageUrl, type MarketProduct } from "@/lib/api";
@@ -16,6 +18,8 @@ export default function ProductsPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  // Track selected pack per product ID: { [productId]: packId }
+  const [selectedPacks, setSelectedPacks] = useState<Record<number, number>>({});
 
   useEffect(() => {
     Promise.all([
@@ -40,7 +44,8 @@ export default function ProductsPage() {
       return;
     }
     try {
-      await addToCart(productId, 1);
+      const packId = selectedPacks[productId] ?? null;
+      await addToCart(productId, 1, packId);
       alert("Added to cart!");
     } catch (err: any) {
       alert(err?.message ?? "Failed to add product to cart.");
@@ -59,11 +64,11 @@ export default function ProductsPage() {
   const arrival1 = products[0];
   const arrival2 = products[1];
 
-  const arrival1Img = arrival1 
-    ? getProductImageUrl(arrival1.primary_image_url, arrival1.name) 
+  const arrival1Img = arrival1
+    ? getProductImageUrl(arrival1.primary_image_url, arrival1.name)
     : "/images/home/productcard.png";
-  const arrival2Img = arrival2 
-    ? getProductImageUrl(arrival2.primary_image_url, arrival2.name) 
+  const arrival2Img = arrival2
+    ? getProductImageUrl(arrival2.primary_image_url, arrival2.name)
     : "/images/home/productcard.png";
 
   const arrival1Name = arrival1?.name ?? "National Flag";
@@ -71,7 +76,7 @@ export default function ProductsPage() {
 
   // Background style matching homepage hero
   const heroBgStyle = {
-    backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero/marketbanner.png')",
+    backgroundImage: "url('/images/hero/marketbanner.png')",
     backgroundColor: "#7c5835",
   };
 
@@ -85,9 +90,9 @@ export default function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F3]">
-      
+
       {/* 1. Header Hero Banner */}
-      <section 
+      <section
         className="relative w-full h-[550px] lg:h-[650px] bg-cover bg-center"
         style={heroBgStyle}
       />
@@ -101,7 +106,7 @@ export default function ProductsPage() {
         <>
           {/* 2. Our Best selling Products */}
           <section className="py-20 max-w-[1400px] mx-auto px-6">
-            <h2 
+            <h2
               className="text-center text-3xl lg:text-[40px] font-bold text-[#2B4D0E] mb-12"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
@@ -123,25 +128,53 @@ export default function ProductsPage() {
                 return bestSellersList.map((product) => {
                   const isMock = product.id < 0;
                   const image = isMock ? "/images/home/productcard.png" : getProductImageUrl(product.primary_image_url, product.name);
-                  const price = Math.round(parseFloat(product.discounted_price ?? product.base_price));
                   const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
+                  const selPackId = product ? selectedPacks[product.id] : undefined;
+                  const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
+                  const price = selPack
+                    ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
+                    : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+
                   return (
-                    <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[395px] bg-[#FAF8F3]">
+                    <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                       {/* Centered rounded-rect product image container */}
-                      <div className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0">
+                      <Link href={isMock ? "#" : `/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
                         <img src={image} alt={product.name} className="max-w-[140px] max-h-[130px] object-contain p-2" />
-                      </div>
+                      </Link>
 
                       {/* Product details */}
                       <div className="space-y-1 text-left w-full mt-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                        <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
+                        <Link href={isMock ? "#" : `/products/${product.id}`} className="hover:underline block">
+                          <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
+                        </Link>
                         <p className="text-[20px] font-semibold text-black">₹{price}</p>
-                        
+
                         <div className="flex items-end justify-between pt-2">
-                          <div className="text-[16px] text-black font-normal space-y-0.5">
-                            {packs.length > 0 ? packs.slice(0, 2).map((pack: any) => <p key={pack.id}>{pack.name}</p>) : <><p>Pack of 100</p><p>Pack of 50</p></>}
+                          <div className="text-[14px] text-black font-semibold space-y-1">
+                            {packs.length > 0 && packs.slice(0, 2).map((pack: any) => {
+                              const isSelected = selPackId === pack.id;
+                              return (
+                                <button
+                                  key={pack.id}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setSelectedPacks(prev => ({
+                                      ...prev,
+                                      [product.id]: prev[product.id] === pack.id ? undefined! : pack.id
+                                    }));
+                                  }}
+                                  className={`block text-left px-2 py-0.5 rounded-md transition-all ${
+                                    isSelected
+                                      ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
+                                      : "text-gray-700 hover:bg-gray-100/50"
+                                  }`}
+                                >
+                                  {pack.name}
+                                </button>
+                              );
+                            })}
                           </div>
-                          <button 
+                          <button
                             onClick={() => !isMock && handleAdd(product.id)}
                             className="w-[125px] h-[36px] bg-[#FAF8F3] border-[1.5px] border-black rounded-[5px] text-[16px] font-normal text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
                           >
@@ -159,7 +192,7 @@ export default function ProductsPage() {
           {/* 3. Different Types of Categories */}
           <section className="py-16 bg-[#FAF8F3] border-t border-b border-gray-100">
             <div className="max-w-[1400px] mx-auto px-6">
-              <h2 
+              <h2
                 className="text-center text-3xl lg:text-[40px] font-bold text-black mb-12"
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
@@ -178,7 +211,7 @@ export default function ProductsPage() {
                     : "/images/home/productcard.png";
 
                   return (
-                    <button 
+                    <button
                       key={i}
                       onClick={() => setSelectedCategory(selectedCategory === id ? null : id)}
                       className={`flex flex-col items-center justify-between p-6 rounded-2xl border transition-all ${color.bg} ${selectedCategory === id ? "border-black ring-2 ring-black/10 scale-95" : "border-transparent hover:scale-102"}`}
@@ -196,36 +229,39 @@ export default function ProductsPage() {
 
           {/* 4. New Arrivals & Trending Products */}
           <section className="py-20 max-w-[1400px] mx-auto px-6">
-            <h2 
+            <h2
               className="text-center text-3xl lg:text-[40px] font-bold text-[#103F5E] mb-12"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               New Arrivals & Trending Products
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
+
               {/* Card 1: White Background with Blue Border */}
-              {/* Card 1: White Background with Blue Border */}
-              <div className="w-full max-w-[776px] min-h-[546px] bg-[#FAF8F3] border-4 border-[#103F5E] rounded-[30px] p-10 flex flex-col lg:flex-row items-center gap-8 hover:shadow-lg transition-shadow">
-                <div className="w-[330px] h-[298px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0">
-                  <img src={arrival1Img} alt={arrival1Name} className="max-w-[280px] max-h-[250px] object-contain p-4" />
-                </div>
-                <div className="flex-1 space-y-4 text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  <h3 className="text-[36px] lg:text-[40px] font-bold text-[#103F5E] leading-tight">{arrival1Name}</h3>
-                  <p className="text-[#103F5E] text-[20px] lg:text-[24px] font-normal leading-[34px]">
+              <div className="w-full max-w-[776px] min-h-[450px] bg-[#FAF8F3] border-4 border-[#103F5E] rounded-[30px] p-8 sm:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 hover:shadow-lg transition-shadow">
+                <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="w-[240px] h-[220px] sm:w-[280px] sm:h-[250px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-90 transition-opacity block">
+                  <img src={arrival1Img} alt={arrival1Name} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
+                </Link>
+                <div className="flex-1 space-y-3 text-left w-full" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                  <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="hover:underline block">
+                    <h3 className="text-[28px] sm:text-[32px] font-bold text-[#103F5E] leading-tight">{arrival1Name}</h3>
+                  </Link>
+                  <p className="text-[#103F5E] text-[16px] sm:text-[18px] font-normal leading-relaxed">
                     {arrival1?.description || "If you want Healing OURTH to be perceived like Apple, Nike, or Tesla rather than a traditional eco brand."}
                   </p>
                 </div>
               </div>
 
               {/* Card 2: Dark Blue Background */}
-              <div className="w-full max-w-[776px] min-h-[546px] bg-[#103F5E] rounded-[30px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] p-10 flex flex-col lg:flex-row-reverse items-center gap-8 hover:shadow-lg transition-shadow">
-                <div className="w-[330px] h-[298px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0">
-                  <img src={arrival2Img} alt={arrival2Name} className="max-w-[280px] max-h-[250px] object-contain p-4" />
-                </div>
-                <div className="flex-1 space-y-4 text-left lg:text-right" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  <h3 className="text-[36px] lg:text-[40px] font-bold text-[#EDE8DC] leading-tight">{arrival2Name}</h3>
-                  <p className="text-[#FAF8F3] text-[20px] lg:text-[24px] font-normal leading-[34px]">
+              <div className="w-full max-w-[776px] min-h-[450px] bg-[#103F5E] rounded-[30px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] p-8 sm:p-10 flex flex-col md:flex-row-reverse items-center gap-6 md:gap-8 hover:shadow-lg transition-shadow">
+                <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="w-[240px] h-[220px] sm:w-[280px] sm:h-[250px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-90 transition-opacity block">
+                  <img src={arrival2Img} alt={arrival2Name} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
+                </Link>
+                <div className="flex-1 space-y-3 text-left w-full" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                  <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="hover:underline block">
+                    <h3 className="text-[28px] sm:text-[32px] font-bold text-[#EDE8DC] leading-tight">{arrival2Name}</h3>
+                  </Link>
+                  <p className="text-[#FAF8F3] text-[16px] sm:text-[18px] font-normal leading-relaxed">
                     {arrival2?.description || "If you want Healing OURTH to be perceived like Apple, Nike, or Tesla rather than a traditional eco brand."}
                   </p>
                 </div>
@@ -236,13 +272,13 @@ export default function ProductsPage() {
 
           {/* 5. All Products */}
           <section className="py-20 max-w-[1400px] mx-auto px-6 border-t border-gray-100">
-            <h2 
+            <h2
               className="text-center text-3xl lg:text-[40px] font-bold text-[#5E3A16] mb-12"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               All Products
             </h2>
-            
+
             {filteredProducts.length === 0 ? (
               <div className="text-center py-12 bg-gray-50 border border-gray-100 rounded-2xl">
                 <p className="text-gray-500 font-semibold">No products found in this category.</p>
@@ -279,25 +315,53 @@ export default function ProductsPage() {
                         {paddedRow.map((product) => {
                           const isMock = product.id < 0;
                           const image = isMock ? "/images/home/productcard.png" : getProductImageUrl(product.primary_image_url, product.name);
-                          const price = Math.round(parseFloat(product.discounted_price ?? product.base_price));
                           const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
+                          const selPackId = product ? selectedPacks[product.id] : undefined;
+                          const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
+                          const price = selPack
+                            ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
+                            : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+
                           return (
-                            <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[395px] bg-[#FAF8F3]">
+                            <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                               {/* Centered rounded-rect product image container */}
-                              <div className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0">
+                              <Link href={isMock ? "#" : `/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
                                 <img src={image} alt={product.name} className="max-w-[140px] max-h-[130px] object-contain p-2" />
-                              </div>
+                              </Link>
 
                               {/* Product details */}
                               <div className="space-y-1 text-left w-full mt-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                                <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
+                                <Link href={isMock ? "#" : `/products/${product.id}`} className="hover:underline block">
+                                  <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
+                                </Link>
                                 <p className="text-[20px] font-semibold text-black">₹{price}</p>
-                                
+
                                 <div className="flex items-end justify-between pt-2">
-                                  <div className="text-[16px] text-black font-normal space-y-0.5">
-                                    {packs.length > 0 ? packs.slice(0, 2).map((pack: any) => <p key={pack.id}>{pack.name}</p>) : <><p>Pack of 100</p><p>Pack of 50</p></>}
+                                  <div className="text-[14px] text-black font-semibold space-y-1">
+                                    {packs.length > 0 && packs.slice(0, 2).map((pack: any) => {
+                                      const isSelected = selPackId === pack.id;
+                                      return (
+                                        <button
+                                          key={pack.id}
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            setSelectedPacks(prev => ({
+                                              ...prev,
+                                              [product.id]: prev[product.id] === pack.id ? undefined! : pack.id
+                                            }));
+                                          }}
+                                          className={`block text-left px-2 py-0.5 rounded-md transition-all ${
+                                            isSelected
+                                              ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
+                                              : "text-gray-700 hover:bg-gray-100/50"
+                                          }`}
+                                        >
+                                          {pack.name}
+                                        </button>
+                                      );
+                                    })}
                                   </div>
-                                  <button 
+                                  <button
                                     onClick={() => !isMock && handleAdd(product.id)}
                                     className="w-[125px] h-[36px] bg-[#FAF8F3] border-[1.5px] border-black rounded-[5px] text-[16px] font-normal text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
                                   >

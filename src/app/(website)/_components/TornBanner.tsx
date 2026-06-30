@@ -17,10 +17,10 @@ export default function TornBanner() {
     <section
       className="relative w-full"
       style={{
-        // Only show the 52.4% of the image that contains the tears + gap
-        height: "clamp(193px, 43.5vw, 623px)",
+        // Increased height for more vertical space and breathing room
+        height: "clamp(260px, 48vw, 680px)",
         overflow: "hidden",
-        background: "#D8EFE0", // matches page background — shows in the transparent gap
+        background: "#FAF8F3",
       }}
     >
       {/* Full torn.png shifted up to crop the top white paper area */}
@@ -31,8 +31,8 @@ export default function TornBanner() {
           position: "absolute",
           left: 0,
           width: "100%",
-          height: "clamp(420px, 56.3vw, 880px)", // full image at natural aspect ratio
-          top: "clamp(-80px, -11.65vw, -183px)", // shift up to clip top white paper
+          height: "clamp(460px, 62vw, 940px)",
+          top: "clamp(-100px, -13vw, -200px)",
           objectFit: "fill",
           pointerEvents: "none",
           userSelect: "none",

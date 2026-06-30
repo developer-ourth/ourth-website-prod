@@ -9,7 +9,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-[#0D3A27] text-[#EDE8DC] border-t-2 border-[#2C1F13] py-12">
+    <footer className="relative overflow-hidden bg-gradient-to-r from-[#76A52E]/20 via-[#C98A2E]/20 to-[#2693D6]/20 text-[#2C1F13] border-t border-black/10 py-12">
       <div className="mx-auto max-w-[1200px] px-6 flex flex-col items-center text-center">
         
         {/* Brand Logo & Name */}
@@ -23,32 +23,32 @@ export default function Footer() {
               className="object-contain" 
             />
           </div>
-          <span className="text-2xl font-black text-white tracking-tight uppercase">
+          <span className="text-2xl font-black text-[#0D3A27] tracking-tight uppercase">
             Healing Ourth
           </span>
-          <p className="text-xs font-bold text-[#EBF2E4]/70 max-w-md mt-1">
+          <p className="text-xs font-bold text-[#0D3A27]/70 max-w-md mt-1">
             sustainable leaf tableware crafted for a plastic-free future.
           </p>
         </div>
 
         {/* Links Navigation */}
-        <nav className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-8 border-y border-[#EDE8DC]/10 py-6 w-full max-w-2xl">
-          <Link href="/" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
+        <nav className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-8 border-y border-black/10 py-6 w-full max-w-2xl">
+          <Link href="/" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Home
           </Link>
-          <Link href="/about" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
-            About Us
+          <Link href="/know-us" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
+            Know Us
           </Link>
-          <Link href="/products" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
+          <Link href="/products" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Our Products
           </Link>
-          <Link href="/contact" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
+          <Link href="/contact" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Contact
           </Link>
-          <Link href="/privacy-policy" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
+          <Link href="/privacy-policy" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Privacy Policy
           </Link>
-          <Link href="/terms" className="text-sm font-bold text-[#EDE8DC]/90 hover:text-white transition-colors">
+          <Link href="/terms" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Terms of Service
           </Link>
         </nav>
@@ -91,7 +91,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom line */}
-        <div className="text-xs font-bold text-[#EDE8DC]/50 flex flex-col md:flex-row items-center gap-2 select-none">
+        <div className="text-xs font-bold text-[#0D3A27]/50 flex flex-col md:flex-row items-center gap-2 select-none">
           <span>© {new Date().getFullYear()} Healing Ourth. All rights reserved.</span>
           <span className="hidden md:inline">•</span>
           <span>crafted for a plastic-free future 💚</span>

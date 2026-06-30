@@ -10,37 +10,42 @@ import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
 
 function isAuthRoute(pathname: string): boolean {
+  const normalized = pathname.toLowerCase().replace(/\/$/, "");
   return (
-    pathname === "/login" ||
-    pathname.startsWith("/login/") ||
-    pathname === "/register" ||
-    pathname === "/forgot-password" ||
-    pathname === "/reset-password" ||
-    pathname === "/client/login" ||
-    pathname === "/client/register"
+    normalized === "/login" ||
+    normalized.startsWith("/login/") ||
+    normalized === "/register" ||
+    normalized === "/forgot-password" ||
+    normalized === "/reset-password" ||
+    normalized === "/client/login" ||
+    normalized === "/client/register"
   );
 }
 
 function isPublicRoute(pathname: string): boolean {
+  const normalized = pathname.toLowerCase().replace(/\/$/, "");
   return (
-    pathname === "/" ||
-    pathname === "/about" ||
-    pathname === "/products" ||
-    pathname.startsWith("/products/") ||
-    pathname === "/contact" ||
-    pathname === "/privacy-policy" ||
-    pathname === "/refund" ||
-    pathname === "/terms" ||
-    pathname === "/cart" ||
-    pathname === "/client/dashboard"
+    normalized === "" ||
+    normalized === "/know-us" ||
+    normalized.startsWith("/know-us/") ||
+    normalized === "/products" ||
+    normalized.startsWith("/products/") ||
+    normalized === "/contact" ||
+    normalized === "/privacy-policy" ||
+    normalized === "/refund" ||
+    normalized === "/terms" ||
+    normalized === "/cart" ||
+    normalized === "/client/dashboard"
   );
 }
 
 function getPublicRouteBg(pathname: string): string {
-  if (pathname === "/about" || pathname === "/cart") return "bg-[#FBEFC9]";
-  if (pathname === "/products") return "bg-[#E8F0D8]";
-  if (pathname.startsWith("/products/") || pathname === "/client/dashboard") return "bg-[#DCEEFB]";
-  if (pathname === "/contact") return "bg-[#9BDFF2]";
+  const normalized = pathname.toLowerCase().replace(/\/$/, "");
+  if (normalized === "/know-us" || normalized.startsWith("/know-us/")) return "bg-[#FAF8F3]";
+  if (normalized === "/cart") return "bg-[#FBEFC9]";
+  if (normalized === "/products") return "bg-[#E8F0D8]";
+  if (normalized.startsWith("/products/") || normalized === "/client/dashboard") return "bg-[#DCEEFB]";
+  if (normalized === "/contact") return "bg-[#9BDFF2]";
   return "bg-[#D8EFE0]"; // Default landing page bg
 }
 

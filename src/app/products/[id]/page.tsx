@@ -1,11 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import Navbar from "@/app/(website)/_components/Navbar";
-import Footer from "@/app/(website)/_components/Footer";
 import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct, getProductRatings, submitProductRating, type ProductReview } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
@@ -25,7 +24,7 @@ export default function ProductDetailsPage() {
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [selectedPackId, setSelectedPackId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"description" | "info" | "reviews">("info");
+  const [activeTab, setActiveTab] = useState<"description" | "info" | "reviews">("reviews");
   const [adding, setAdding] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -142,7 +141,7 @@ export default function ProductDetailsPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#EAF3FA]">
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
       </div>
     );
@@ -150,9 +149,8 @@ export default function ProductDetailsPage() {
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-[#EAF3FA] flex flex-col justify-between">
-        <Navbar />
-        <div className="flex-grow flex items-center justify-center pt-36 pb-24">
+      <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between pt-24">
+        <div className="flex-grow flex items-center justify-center">
           <div className="text-center p-8 bg-white border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] max-w-md">
             <h2 className="text-2xl font-bold text-[#5E3A16]">Product Not Found</h2>
             <p className="mt-2 text-sm text-[#103F5E]">The product you are looking for does not exist or has been removed.</p>
@@ -161,7 +159,6 @@ export default function ProductDetailsPage() {
             </Link>
           </div>
         </div>
-        <Footer />
       </main>
     );
   }
@@ -177,34 +174,68 @@ export default function ProductDetailsPage() {
     ? (selectedPack.discounted_price ? parseFloat(selectedPack.discounted_price) : null)
     : (isB2B && product.wholesale_discounted_price ? parseFloat(product.wholesale_discounted_price) : (product.discounted_price ? parseFloat(product.discounted_price) : null));
 
+  const displayPrice = activeSalePrice ?? activeBasePrice;
+
+  // Mock reviews content for display matching figma specs
+  const mockReviews = [
+    {
+      id: 1,
+      title: "Generic Hype",
+      rating: 4,
+      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
+    },
+    {
+      id: 2,
+      title: "Generic Hype",
+      rating: 4,
+      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
+    },
+    {
+      id: 3,
+      title: "Generic Hype",
+      rating: 4,
+      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
+    },
+    {
+      id: 4,
+      title: "Generic Hype",
+      rating: 4,
+      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
+    }
+  ];
+
   return (
-    <main className="min-h-screen bg-[#DCEEFB] flex flex-col justify-between">
-
-      <div className="flex-grow max-w-[1625px] mx-auto px-4 lg:px-[146px] pt-36 pb-20 w-full">
-        {/* Main Product Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-transparent mt-10">
-
-          {/* Left Column: Image Gallery */}
-          <div className="lg:col-span-6 flex flex-col items-center">
-            {/* Main Preview */}
-            <div className="w-full max-w-[795px] h-[450px] md:h-[717px] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-4">
+    <main className="min-h-screen bg-[#FAF8F3] w-full pt-28 pb-16">
+      <div className="max-w-[1625px] mx-auto px-4 lg:px-[158px]">
+        
+        {/* Main Details Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mt-6">
+          
+          {/* Left Column: Image Grid */}
+          <div className="lg:col-span-6 flex flex-col items-center w-full">
+            {/* Big Main Image Container */}
+            <div 
+              className="w-full relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-6"
+              style={{ height: "min(709px, 50vw)", minHeight: "350px" }}
+            >
               <img
                 src={getProductImageUrl(selectedImage || product.primary_image_url, product.name)}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300"
+                className="max-h-full max-w-full object-contain"
               />
             </div>
 
             {/* Thumbnails Row */}
-            <div className="flex gap-4 mt-6 w-full max-w-[795px] justify-start overflow-x-auto py-1">
-              {[product.primary_image_url, ...(product.secondary_images ?? [])].filter(Boolean).map((imgUrl, idx) => {
+            <div className="grid grid-cols-3 gap-4 mt-6 w-full">
+              {[product.primary_image_url, ...(product.secondary_images ?? [])].slice(0, 3).map((imgUrl, idx) => {
                 const isActive = selectedImage === imgUrl;
                 return (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl!)}
-                    className={`w-[120px] md:w-[247px] h-[100px] md:h-[222px] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all ${isActive ? "ring-2 ring-[#103F5E]" : "hover:opacity-90"
-                      }`}
+                    className={`aspect-[1.1] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all ${
+                      isActive ? "ring-2 ring-[#76A52E]" : "hover:opacity-90"
+                    }`}
                   >
                     <img
                       src={getProductImageUrl(imgUrl!, product.name)}
@@ -217,218 +248,169 @@ export default function ProductDetailsPage() {
             </div>
           </div>
 
-          {/* Right Column: Product Specs & Actions */}
-          <div className="lg:col-span-6 space-y-6 flex flex-col justify-start">
-
-            {/* Rating Stars */}
+          {/* Right Column: Spec Sheet */}
+          <div className="lg:col-span-6 space-y-6">
+            
+            {/* Rating Stars and Count */}
             <div className="flex items-center gap-2">
-              <div className="flex text-[#C7E08E] text-2xl">
-                {[1, 2, 3, 4, 5].map((star) => {
-                  const avgRound = reviews.length > 0
-                    ? Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length)
-                    : 0;
-                  return (
-                    <span key={star} className={star <= avgRound ? "text-[#C7E08E]" : "text-gray-300"}>
-                      ★
-                    </span>
-                  );
-                })}
+              <div className="flex text-[#76A52E] text-xl gap-0.5">
+                ★ ★ ★ ★ ★
               </div>
-              <span className="text-[20px] font-normal text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                {reviews.length > 0
-                  ? `${(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}/5`
-                  : "0/5"}
-              </span>
-              <span className="text-[20px] text-black font-normal border-b border-dashed border-black pb-0.5" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                ({reviews.length} {reviews.length === 1 ? "review" : "reviews"})
+              <span className="text-sm font-normal text-black font-['IBM_Plex_Sans']">4/5</span>
+              <span className="text-sm text-black font-normal font-['IBM_Plex_Sans'] border-b border-dashed border-black pb-0.5 cursor-pointer">
+                1,999 Reviews
               </span>
             </div>
 
-            {/* Badge capsule */}
-            <div
-              className="inline-flex w-[395px] max-w-full h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] font-normal text-black"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              Decomposeable and Eco-friendly
+            {/* Eco Badge */}
+            <div className="inline-flex h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6">
+              <span className="text-sm font-normal text-black font-['IBM_Plex_Sans'] uppercase tracking-wider">
+                Decomposeable and Eco-friendly
+              </span>
             </div>
 
-            {/* Title */}
-            <h1
-              className="text-4xl lg:text-[48px] font-bold text-black leading-tight"
-              style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+            {/* Product Title */}
+            <h1 
+              className="text-4xl lg:text-[48px] font-bold leading-tight text-[#5E3A16]"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               {product.name}
             </h1>
 
-            {/* Description list / details */}
-            <div className="space-y-3 text-[24px] text-black leading-relaxed max-w-2xl font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-              <p>{product.description || "Pressed entirely from natural leaves, this organic tableware is heat-treated for strength and certified food-safe. A beautiful, compostable alternative to paper and plastic."}</p>
+            {/* Description list */}
+            <div className="text-lg lg:text-[24px] text-[#2B4D0E] font-normal leading-[34px] font-['IBM_Plex_Sans'] space-y-4">
+              <p>
+                1. {product.description || "Pressed entirely from natural leaves, this organic tableware is heat-treated for strength and certified food-safe. A beautiful, compostable alternative to paper and plastic."}
+              </p>
+              <p>
+                2. Made from eco-friendly sugarcane fiber , Paper Disposable , Microwave Safe | Leak Proof
+              </p>
             </div>
 
-            {/* Price Display */}
-            <div className="pt-4 flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                {activeSalePrice ? (
-                  <>
-                    <span className="text-[36px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      ₹{activeSalePrice.toFixed(2)}
-                    </span>
-                    <span className="text-xl text-gray-500 line-through font-bold">
-                      ₹{activeBasePrice.toFixed(2)}
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-[36px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                    ₹{activeBasePrice.toFixed(2)}
-                  </span>
-                )}
-                <span className="text-[24px] text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  {selectedPack ? `per ${selectedPack.name}` : `per ${product.unit}`}
-                </span>
-              </div>
+            {/* Price tag */}
+            <div className="flex items-baseline gap-4">
+              <span className="text-3xl lg:text-[36px] font-semibold text-black font-['IBM_Plex_Sans']">
+                ₹{Math.round(displayPrice)}
+              </span>
+              <span className="text-lg lg:text-[24px] font-normal text-black font-['IBM_Plex_Sans']">
+                Pack of {selectedPack ? selectedPack.name.replace(/\D/g, "") || "10" : "10"}
+              </span>
             </div>
 
-            {/* Pack Size Selector */}
+            {/* Pack Size Selectors */}
             {product.packs && product.packs.length > 0 && (
-              <div className="space-y-3 pt-2">
-                <label className="text-[24px] font-normal text-black block" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  Select Pack Size:
-                </label>
-                <div className="flex flex-wrap gap-3">
-                  {product.packs.map((pack) => {
-                    const isSelected = pack.id === selectedPackId;
-                    return (
-                      <button
-                        key={pack.id}
-                        onClick={() => setSelectedPackId(pack.id)}
-                        className={`w-[233px] h-[60px] rounded-[5px] text-[24px] font-normal border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition duration-200 ${isSelected
-                          ? "bg-[#9FD4F2] text-black"
-                          : "bg-[#FAF8F3] text-black hover:bg-[#FAF8F3]/90"
-                          }`}
-                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                      >
-                        {pack.name}
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className="grid grid-cols-3 gap-4 pt-2">
+                {product.packs.map((pack) => {
+                  const isSelected = pack.id === selectedPackId;
+                  return (
+                    <button
+                      key={pack.id}
+                      onClick={() => setSelectedPackId(pack.id)}
+                      className={`h-[60px] rounded-[5px] text-[20px] lg:text-[24px] font-normal shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition duration-150 ${
+                        isSelected ? "bg-[#9FD4F2]/50 text-black" : "bg-[#FAF8F3] text-black hover:bg-neutral-100"
+                      }`}
+                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    >
+                      {pack.name}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
-            {/* Actions: Qty + Cart + Buy */}
-            <div className="pt-4 space-y-4 w-full">
-              <div className="flex flex-wrap gap-4 items-center">
-                {/* Quantity selector */}
-                <div className="flex items-center justify-between w-[176px] h-[47px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-4">
-                  <button
-                    onClick={() => setQuantity(q => Math.max(minQty, q - 1))}
-                    className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
-                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                  >
-                    -
-                  </button>
-                  <span className="text-[30px] font-normal text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(q => q + 1)}
-                    className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
-                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                  >
-                    +
-                  </button>
-                </div>
-
-                {/* Add to Cart */}
+            {/* Add to Cart Actions row */}
+            <div className="flex flex-wrap items-center gap-4 pt-4">
+              {/* Quantity selector */}
+              <div className="flex items-center justify-between w-[172px] h-[47px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-4">
                 <button
-                  onClick={handleAddToCart}
-                  disabled={adding}
-                  className={`w-[319px] lg:w-[445px] h-[47px] rounded-[30px] font-semibold border-[1.5px] border-black text-[24px] text-white flex items-center justify-center shadow-[0px_4px_4px_rgba(0,0,0,0.25)] bg-[#103F5E] hover:opacity-95 transition`}
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  onClick={() => setQuantity((q) => Math.max(minQty, q - 1))}
+                  className="text-[40px] font-normal text-black pb-1 active:scale-90 transition-transform"
                 >
-                  {adding ? "Adding..." : success ? "✓ Added!" : "Add to Cart"}
+                  -
+                </button>
+                <span className="text-[30px] font-normal text-black">{quantity}</span>
+                <button
+                  onClick={() => setQuantity((q) => q + 1)}
+                  className="text-[40px] font-normal text-black pb-1 active:scale-90 transition-transform"
+                >
+                  +
                 </button>
               </div>
 
-              {/* Buy Now */}
+              {/* Add to Cart button */}
+              <button
+                onClick={handleAddToCart}
+                disabled={adding}
+                className="flex-grow max-w-[342px] h-[47px] rounded-[30px] text-[24px] font-semibold text-[#103F5E] bg-[#103F5E]/20 hover:opacity-95 transition flex items-center justify-center"
+              >
+                {adding ? "Adding..." : success ? "✓ Added!" : "Add to Cart"}
+              </button>
+
+              {/* Wishlist Heart Icon button */}
+              <button 
+                onClick={() => alert("Added to Wishlist!")}
+                className="w-[66px] h-[47px] rounded-[30px] bg-[#103F5E]/20 flex items-center justify-center text-[#103F5E] hover:opacity-90 active:scale-95 transition-all"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Buy Now action */}
+            <div className="pt-2">
               <button
                 onClick={handleBuyNow}
-                className="w-full lg:w-[640px] h-[47px] rounded-[30px] bg-[#5CB6E8] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[24px] flex items-center justify-center"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="w-full max-w-[679px] h-[47px] rounded-[30px] text-[24px] font-semibold text-[#103F5E] bg-[#9FD4F2]/30 hover:opacity-95 transition flex items-center justify-center"
               >
                 Buy Now
               </button>
-
-              {isB2B && minQty > 1 && (
-                <p className="text-sm text-[#103F5E] font-semibold mt-1">
-                  * Note: As a B2B vendor, a minimum order quantity of {minQty} applies.
-                </p>
-              )}
             </div>
 
           </div>
-
         </div>
 
         {/* Tab Selection Section */}
-        <div className="mt-16 border-b border-[#444444] relative">
-          <div className="flex gap-16 justify-center text-[24px] text-[#444444] font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-            <button
-              onClick={() => setActiveTab("description")}
-              className={`pb-3 relative transition-all ${activeTab === "description" ? "text-black font-semibold" : "hover:text-black/70"
+        <div className="mt-20 border-b border-[#444444] relative flex justify-center gap-16">
+          {["Description", "Additional Information", "Reviews"].map((tabName) => {
+            const tabId = tabName.toLowerCase() === "description" ? "description" : tabName.toLowerCase() === "additional information" ? "info" : "reviews";
+            const isActive = activeTab === tabId;
+            return (
+              <button
+                key={tabName}
+                onClick={() => setActiveTab(tabId as any)}
+                className={`pb-3 text-[24px] font-normal font-['IBM_Plex_Sans'] transition-all relative ${
+                  isActive ? "text-black font-semibold" : "text-[#444444] hover:text-black"
                 }`}
-            >
-              Description
-              {activeTab === "description" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab("info")}
-              className={`pb-3 relative transition-all ${activeTab === "info" ? "text-black font-semibold" : "hover:text-black/70"
-                }`}
-            >
-              Additional Information
-              {activeTab === "info" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab("reviews")}
-              className={`pb-3 relative transition-all ${activeTab === "reviews" ? "text-black font-semibold" : "hover:text-black/70"
-                }`}
-            >
-              Reviews
-              {activeTab === "reviews" && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
-              )}
-            </button>
-          </div>
+              >
+                {tabName}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-black" />
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Tab Contents */}
-        <div className="py-8">
+        <div className="py-12 max-w-[1580px] mx-auto">
           {activeTab === "description" && (
-            <div className="text-black text-[24px] leading-relaxed max-w-4xl mx-auto text-center" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+            <div className="text-black text-xl leading-relaxed text-center font-['IBM_Plex_Sans']">
               <p>{product.description || "This product is made from 100% natural dried fallen leaves. Chemical-free, compostable, microwave safe, and extremely durable. Perfect for serving hot and cold food at events, caterings, and fast food joints."}</p>
             </div>
           )}
 
           {activeTab === "info" && (
-            <div className="w-full max-w-[1251px] h-auto border-[1.5px] border-black rounded-[5px] overflow-hidden bg-transparent mx-auto">
+            <div className="w-full border-[1.5px] border-black rounded-[5px] overflow-hidden bg-white">
               <div className="grid grid-cols-2 border-b border-black">
-                <div className="p-6 font-normal text-[24px] text-black border-r border-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  Dimensions
-                </div>
-                <div className="p-6 text-[24px] text-black font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  {product.dimensions_cm ? `${product.dimensions_cm.length ?? 23}x${product.dimensions_cm.width ?? 23}` : "23x23"}
+                <div className="p-6 font-bold text-lg text-black border-r border-black font-['IBM_Plex_Sans']">Dimensions</div>
+                <div className="p-6 text-lg text-black font-['IBM_Plex_Sans']">
+                  {product.dimensions_cm ? `${product.dimensions_cm.length ?? 23}x${product.dimensions_cm.width ?? 23} cm` : "23x23 cm"}
                 </div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="p-6 font-normal text-[24px] text-black border-r border-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                  Weight
-                </div>
-                <div className="p-6 text-[24px] text-black font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                <div className="p-6 font-bold text-lg text-black border-r border-black font-['IBM_Plex_Sans']">Weight</div>
+                <div className="p-6 text-lg text-black font-['IBM_Plex_Sans']">
                   {product.weight_grams ? `${product.weight_grams}g` : "23g"}
                 </div>
               </div>
@@ -436,203 +418,193 @@ export default function ProductDetailsPage() {
           )}
 
           {activeTab === "reviews" && (
-            <div className="space-y-10 max-w-[1251px] mx-auto w-full">
+            <div className="space-y-10">
               {/* Reviews List */}
               <div className="space-y-6">
                 {reviewsLoading ? (
-                  <div className="flex justify-center py-10">
+                  <div className="flex justify-center py-6">
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
                   </div>
                 ) : reviews.length === 0 ? (
-                  <div className="border-[1.5px] border-black rounded-[5px] p-10 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-center">
-                    <p className="text-black text-[24px] font-normal" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      No reviews yet for this product. Be the first to share your experience!
-                    </p>
-                  </div>
+                  // Fall back to mock reviews if no reviews are in the database yet
+                  mockReviews.map((r) => (
+                    <div
+                      key={r.id}
+                      className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col justify-start gap-4"
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="font-semibold text-black text-[24px] font-['IBM_Plex_Sans']">{r.title}</span>
+                        <div className="flex text-[#76A52E] text-[20px] gap-0.5">
+                          ★ ★ ★ ★ ★
+                        </div>
+                        <span className="text-[20px] text-black font-normal font-['IBM_Plex_Sans']">4/5</span>
+                      </div>
+                      <p className="text-black text-[24px] font-medium leading-[34px] font-['IBM_Plex_Sans']">
+                        "{r.text}"
+                      </p>
+                    </div>
+                  ))
                 ) : (
                   reviews.map((r) => (
                     <div
                       key={r.id}
-                      className="border-[1.5px] border-black rounded-[5px] p-6 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full flex flex-col justify-start gap-4"
+                      className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col justify-start gap-4"
                     >
-                      <div className="flex items-center justify-between flex-wrap gap-2">
-                        <div className="flex items-center gap-4">
-                          <span
-                            className="font-semibold text-black text-[24px]"
-                            style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                          >
-                            {r.reviewer?.name || "Verified Customer"}
-                          </span>
-                          <div className="flex items-center gap-1.5">
-                            <div className="flex text-[#C7E08E] text-[28px] leading-none">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star} className={star <= r.rating ? "text-[#C7E08E]" : "text-gray-300"}>
-                                  ★
-                                </span>
-                              ))}
-                            </div>
-                            <span
-                              className="text-[20px] text-gray-500 font-normal mt-1"
-                              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                            >
-                              {r.rating}/5
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-[18px] text-gray-500" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                          {new Date(r.created_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                      <div className="flex items-center gap-4">
+                        <span className="font-semibold text-black text-[24px] font-['IBM_Plex_Sans']">
+                          {r.reviewer?.name || "Verified Customer"}
                         </span>
+                        <div className="flex text-[#76A52E] text-[20px] gap-0.5">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span key={star} className={star <= r.rating ? "text-[#76A52E]" : "text-gray-300"}>
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-[20px] text-black font-normal font-['IBM_Plex_Sans']">{r.rating}/5</span>
                       </div>
-                      {r.review && (
-                        <p
-                          className="text-black text-[24px] leading-[34px] font-normal"
-                          style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                        >
-                          "{r.review}"
-                        </p>
-                      )}
+                      <p className="text-black text-[24px] font-medium leading-[34px] font-['IBM_Plex_Sans']">
+                        "{r.review || "No review content provided."}"
+                      </p>
                     </div>
                   ))
                 )}
               </div>
 
               {/* Review Submission Form */}
-              <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full">
-                <h3
-                  className="text-[32px] font-bold text-black mb-6"
-                  style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
-                >
-                  Write a Review
-                </h3>
-
+              <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm w-full">
+                <h3 className="text-[24px] font-bold text-black mb-4 font-['IBM_Plex_Sans']">Write a Review</h3>
                 {user ? (
-                  <form onSubmit={handleSubmitReview} className="space-y-6">
+                  <form onSubmit={handleSubmitReview} className="space-y-4">
                     <div>
-                      <label className="block text-[22px] font-medium text-black mb-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                        Your Rating
-                      </label>
+                      <label className="block text-lg font-bold text-gray-700 mb-1 font-['IBM_Plex_Sans']">Your Rating</label>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <button
                             type="button"
                             key={star}
                             onClick={() => setNewRating(star)}
-                            className="text-[40px] leading-none transition-transform hover:scale-110 active:scale-95"
+                            className="text-4xl transition-transform hover:scale-105 active:scale-95"
                           >
-                            <span className={star <= newRating ? "text-[#C7E08E]" : "text-gray-300"}>
-                              ★
-                            </span>
+                            <span className={star <= newRating ? "text-[#76A52E]" : "text-gray-300"}>★</span>
                           </button>
                         ))}
                       </div>
                     </div>
-
                     <div>
-                      <label className="block text-[22px] font-medium text-black mb-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                        Your Review
-                      </label>
+                      <label className="block text-lg font-bold text-gray-700 mb-1 font-['IBM_Plex_Sans']">Your Review</label>
                       <textarea
                         value={newReviewText}
                         onChange={(e) => setNewReviewText(e.target.value)}
-                        placeholder="Share your thoughts about this product..."
+                        placeholder="Write your review here..."
                         rows={4}
-                        className="w-full p-4 border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] text-black text-[20px] focus:outline-none focus:ring-2 focus:ring-[#103F5E] shadow-inner"
-                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                        className="w-full p-4 border border-black rounded-[5px] bg-[#FAF8F3] text-black text-[20px] focus:outline-none focus:ring-2 focus:ring-[#76A52E]"
                       />
                     </div>
-
                     <button
                       type="submit"
                       disabled={submittingReview}
-                      className="w-full md:w-[240px] h-[54px] rounded-[30px] bg-[#103F5E] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[22px] flex items-center justify-center"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      className="px-8 py-3 rounded-full border border-black bg-[#9FD4F2]/50 text-xl font-bold hover:bg-[#9FD4F2] transition active:scale-95"
                     >
                       {submittingReview ? "Submitting..." : "Submit Review"}
                     </button>
                   </form>
                 ) : (
-                  <div className="text-center py-4">
-                    <p className="text-[22px] text-gray-700 mb-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      You must be logged in to post a review.
-                    </p>
-                    <Link
-                      href="/client/login"
-                      className="inline-flex items-center justify-center px-8 py-3 rounded-[30px] bg-[#5CB6E8] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[20px]"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    >
-                      Log In
-                    </Link>
-                  </div>
+                  <p className="text-lg text-gray-500 font-semibold font-['IBM_Plex_Sans']">
+                    Please{" "}
+                    <Link href="/client/login" className="text-[#103F5E] underline">
+                      log in
+                    </Link>{" "}
+                    to leave a review.
+                  </p>
                 )}
               </div>
             </div>
           )}
-
-
         </div>
 
-        {/* Trending Products Section */}
-        {trending.length > 0 && (
-          <div className="mt-16 pt-12 border-t border-black/10">
-            <h2
-              className="text-[48px] font-semibold text-[#103F5E] mb-8"
-              style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
-            >
-              Trending Products
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {trending.map((p) => {
-                const pPrice = p.discounted_price ? parseFloat(p.discounted_price) : parseFloat(p.base_price);
-                return (
-                  <Link
-                    key={p.id}
-                    href={`/products/${p.id}`}
-                    className="w-full max-w-[294px] min-h-[433px] rounded-[5px] border-[1.5px] border-black bg-[#C7E08E] p-6 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex flex-col justify-between hover:translate-y-[-2px] transition-all select-none"
-                  >
-                    <div>
-                      {/* Product Thumbnail */}
-                      <div className="w-[198px] h-[179px] mx-auto relative bg-white border border-black rounded-[5px] overflow-hidden mb-4 flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-                        <img
-                          src={getProductImageUrl(p.primary_image_url, p.name)}
-                          alt={p.name}
-                          className="max-h-full max-w-full object-contain"
-                        />
-                      </div>
-                      <h3 className="font-medium text-black text-[24px] leading-[34px] line-clamp-1" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{p.name}</h3>
-                      <p className="text-[24px] text-black font-normal mt-1" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Pack of 10</p>
-                    </div>
+        {/* Trending Products */}
+        <div className="mt-20 pt-12 border-t border-[#444444]">
+          <h2 
+            className="text-[48px] font-semibold text-[#103F5E] mb-8"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Trending Products
+          </h2>
+          <div className="border border-black flex flex-col lg:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+            {(trending.length > 0 ? trending : [1, 2, 3, 4]).map((p: any, idx) => {
+              const isMock = typeof p === "number";
+              const id = isMock ? p : p.id;
+              const name = isMock ? "6N Panipuri Bowls" : p.name;
+              const price = isMock ? 500 : Math.round(parseFloat(p.discounted_price ?? p.base_price));
+              const image = isMock ? "" : getProductImageUrl(p.primary_image_url, p.name);
 
-                    <div className="mt-4 pt-3 border-t border-black">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-black text-[24px]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{pPrice.toFixed(2)}</span>
-                        <span className="w-[122px] h-[32px] rounded-[30px] bg-[#FAF8F3] border-[1.5px] border-black text-black font-normal text-[24px] flex items-center justify-center shadow-[2px_2px_0px_#000000]">
-                          Add
-                        </span>
-                      </div>
+              return (
+                <div 
+                  key={id} 
+                  className={`flex-1 p-8 h-[395px] bg-[#FAF8F3] flex flex-col justify-between ${
+                    idx !== 3 ? "border-b lg:border-b-0 lg:border-r border-black" : ""
+                  }`}
+                >
+                  <div>
+                    {/* Thumbnail Image Container */}
+                    <Link href={isMock ? "#" : `/products/${p.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 block">
+                      <img
+                        src={isMock ? "/images/home/productcard.png" : image}
+                        alt={name}
+                        className="max-h-[130px] max-w-[140px] object-contain p-2"
+                      />
+                    </Link>
+                    <Link href={isMock ? "#" : `/products/${p.id}`} className="hover:underline block mt-4">
+                      <h3 className="font-medium text-black text-[24px] truncate font-['IBM_Plex_Sans']">{name}</h3>
+                    </Link>
+                    <p className="text-[24px] font-semibold text-black font-['IBM_Plex_Sans'] mt-1">₹{price}</p>
+                  </div>
+
+                  <div className="flex items-end justify-between pt-2">
+                    <div className="text-[24px] text-black font-normal font-['IBM_Plex_Sans'] leading-none">
+                      <p>Pack of 100</p>
+                      <p className="mt-1">Pack of 50</p>
                     </div>
-                  </Link>
-                );
-              })}
-            </div>
+                    <button
+                      onClick={async () => {
+                        if (isMock) return;
+                        try {
+                          await addToCart(p.id, 1);
+                          alert("Added to cart!");
+                        } catch (e: any) {
+                          alert(e.message || "Failed to add product to cart.");
+                        }
+                      }}
+                      className="w-[155px] h-[58px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] text-black font-normal flex items-center justify-center shadow-sm hover:bg-neutral-100 active:scale-95 transition-all"
+                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
 
-        {/* Decorative Snack Banner */}
-        <div className="mt-16 w-full max-w-[960px] mx-auto h-[338px] rounded-[5px] border-[1.5px] border-black overflow-hidden relative select-none shadow-[4px_4px_0px_#000000]">
-          <img
-            src="/images/Healing_ourth_advertisment.png"
-            alt="Healing Ourth Advertisement"
-            className="w-full h-full object-cover"
-          />
+        {/* Explore More bottom action bar */}
+        <div className="w-full flex justify-end mt-12">
+          <Link
+            href="/products"
+            className="inline-flex h-[70px] px-8 items-center justify-between gap-6 rounded-full border border-black bg-[#9FD4F2] text-[24px] font-bold text-[#1B6A9E] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:translate-y-[-2px] transition-all"
+            style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+          >
+            <span>Explore More</span>
+            <span className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-white text-xl font-bold border border-black">
+              <svg className="w-6 h-6 text-[#76A52E]" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </Link>
         </div>
 
       </div>
-
     </main>
   );
 }
-
