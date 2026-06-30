@@ -80,25 +80,25 @@ export default function KnowUsPage() {
             {/* Box 1 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/element1.png" alt="Eco Products" fill className="object-contain" />
+                <Image src="/images/about/Element1.png" alt="Eco Products" fill className="object-contain" />
               </div>
             </div>
             {/* Box 2 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/element2.png" alt="Waste Disposal" fill className="object-contain" />
+                <Image src="/images/about/Element2.png" alt="Waste Disposal" fill className="object-contain" />
               </div>
             </div>
             {/* Box 3 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/element3.png" alt="Tech Integration" fill className="object-contain" />
+                <Image src="/images/about/Element3.png" alt="Tech Integration" fill className="object-contain" />
               </div>
             </div>
             {/* Box 4 */}
             <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
-                <Image src="/images/about/element4.png" alt="Community" fill className="object-contain" />
+                <Image src="/images/about/Element4.png" alt="Community" fill className="object-contain" />
               </div>
             </div>
           </div>
