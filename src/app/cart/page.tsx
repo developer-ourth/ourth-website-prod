@@ -189,7 +189,7 @@ export default function CartPage() {
         </h1>
 
         {items.length === 0 ? (
-          <div className="w-full max-w-[1039px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-16 text-center space-y-6 mx-auto">
+          <div className="w-full max-w-[1039px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-10 text-center space-y-6 mx-auto">
             <span className="text-6xl block">🛒</span>
             <h2 className="text-[32px] font-bold text-[#2C1F13]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Your cart is empty</h2>
             <p className="text-[20px] text-gray-600" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
@@ -210,7 +210,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div 
                   key={item.id} 
-                  className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6 flex flex-col md:flex-row gap-6 items-center relative"
+                  className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-4 flex flex-col md:flex-row gap-4 items-center relative"
                 >
                   {/* Remove Button */}
                   <button
@@ -221,7 +221,7 @@ export default function CartPage() {
                   </button>
 
                   {/* Image */}
-                  <div className="w-[198px] h-[179px] border-[1.5px] border-black rounded-[5px] bg-white flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.1)] flex-shrink-0">
+                  <div className="w-[120px] h-[120px] border-[1.5px] border-black rounded-[5px] bg-white flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.1)] flex-shrink-0">
                     <img
                       src={getProductImageUrl(item.product?.primary_image_url, item.product?.name)}
                       alt={item.product?.name ?? "Product"}
@@ -234,14 +234,14 @@ export default function CartPage() {
                     <div>
                       {/* Category Badge */}
                       <span 
-                        className="inline-flex w-[135px] h-[47px] bg-[#C7E08E] border-[1.5px] border-black rounded-[30px] items-center justify-center text-[24px] font-normal text-black"
+                        className="inline-flex px-4 py-1 bg-[#C7E08E] border border-black rounded-[30px] items-center justify-center text-[14px] font-medium text-black"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
                         {item.product?.category?.name || "Bowls"}
                       </span>
                       {/* Name */}
                       <h3 
-                        className="text-black font-semibold text-[32px] leading-[34px] mt-3"
+                        className="text-black font-semibold text-[20px] leading-[24px] mt-2"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
                         {item.product?.name ?? "6N Panipuri Bowls"}
@@ -249,7 +249,7 @@ export default function CartPage() {
                     </div>
                     {/* Pack Info */}
                     <p 
-                      className="text-[24px] text-[#444444] font-normal"
+                      className="text-[16px] text-[#444444] font-normal"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       {item.productPack?.name || "Pack of 10"}
@@ -259,26 +259,26 @@ export default function CartPage() {
                   {/* Quantity & Price */}
                   <div className="flex flex-col items-center md:items-end justify-between h-full py-1 flex-shrink-0 gap-4 w-full md:w-auto">
                     <span 
-                      className="text-black font-semibold text-[32px] leading-[34px]"
+                      className="text-black font-semibold text-[24px] leading-[28px]"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       ₹{(parseFloat(item.unit_price) * item.quantity).toFixed(0)}
                     </span>
                     {/* Qty Selector */}
-                    <div className="flex items-center justify-between w-[176px] h-[47px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-4 shadow-[2px_2px_0px_#000000]">
+                    <div className="flex items-center justify-between w-[110px] h-[36px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-3 shadow-[2px_2px_0px_#000000]">
                       <button
                         onClick={() => updateQty(item.id, Math.max(1, item.quantity - 1))}
-                        className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
+                        className="text-[24px] font-normal text-black pb-0.5 hover:scale-110 active:scale-95 transition flex items-center justify-center"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
                         -
                       </button>
-                      <span className="text-[30px] font-normal text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      <span className="text-[16px] font-medium text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                         {item.quantity}
                       </span>
                       <button
                         onClick={() => updateQty(item.id, item.quantity + 1)}
-                        className="text-[40px] font-normal text-black pb-1 hover:scale-110 active:scale-95 transition"
+                        className="text-[24px] font-normal text-black pb-0.5 hover:scale-110 active:scale-95 transition flex items-center justify-center"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
                         +
@@ -292,7 +292,7 @@ export default function CartPage() {
               {user && (
                 <div className="space-y-6">
                   {/* Address Section */}
-                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
+                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-[32px] font-bold text-[#2B4D0E]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                         Delivery Address
@@ -419,7 +419,7 @@ export default function CartPage() {
                   </div>
 
                   {/* Payment Method Section */}
-                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
+                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6">
                     <h3 className="text-[32px] font-bold text-[#2B4D0E] mb-6" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       Payment Method
                     </h3>
@@ -458,7 +458,7 @@ export default function CartPage() {
             <div className="lg:col-span-5 space-y-8 w-full">
               {!user ? (
                 /* Auth Form (if not logged in) */
-                <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
+                <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6">
                   <div className="flex border-b border-black mb-6">
                     <button
                       onClick={() => { setAuthMode("login"); setAuthError(""); }}
@@ -629,7 +629,7 @@ export default function CartPage() {
                 </div>
               ) : (
                 /* Checkout Summary Card (if logged in) */
-                <div className="w-full max-w-[546px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 space-y-6 ml-auto">
+                <div className="w-full max-w-[546px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6 space-y-6 ml-auto">
                   {/* Title */}
                   <h2 
                     className="text-[40px] font-semibold text-[#2B4D0E] leading-none mb-2"
