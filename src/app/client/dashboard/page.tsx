@@ -132,7 +132,7 @@ export default function ClientDashboardPage() {
           </h1>
           <button
             onClick={() => logout().then(() => router.push("/"))}
-            className="px-6 py-2 border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] hover:bg-red-50 text-sm font-bold hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000] transition-all"
+            className="px-6 py-2 rounded-[5px] bg-[#FAF8F3] hover:bg-red-50 text-sm font-bold hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000] transition-all"
           >
             Sign Out
           </button>
@@ -152,7 +152,7 @@ export default function ClientDashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] border border-white/40 flex items-center justify-center transition-all backdrop-blur-md ${
+                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] flex items-center justify-center transition-all backdrop-blur-md ${
                   isActive 
                     ? "bg-white shadow-md text-[#2B4D0E] font-medium" 
                     : "bg-white/60 shadow-sm hover:bg-white/80"
@@ -176,7 +176,7 @@ export default function ClientDashboardPage() {
                 {/* Login & Security Accordion/Selector */}
                 <button
                   onClick={() => setActiveSubTab("login_security")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "login_security"
                       ? "bg-white shadow-md text-[#2B4D0E] font-medium"
                       : "bg-white/60 shadow-sm hover:bg-white/80"
@@ -190,7 +190,7 @@ export default function ClientDashboardPage() {
                 {/* Payment Options Selector */}
                 <button
                   onClick={() => setActiveSubTab("payment_options")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "payment_options"
                       ? "bg-white shadow-md text-[#2B4D0E] font-medium"
                       : "bg-white/60 shadow-sm hover:bg-white/80"
@@ -204,7 +204,7 @@ export default function ClientDashboardPage() {
                 {/* Your Wishlist Selector */}
                 <button
                   onClick={() => setActiveSubTab("wishlist")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "wishlist"
                       ? "bg-white shadow-md text-[#2B4D0E] font-medium"
                       : "bg-white/60 shadow-sm hover:bg-white/80"
@@ -220,7 +220,7 @@ export default function ClientDashboardPage() {
               <div className="lg:col-span-6 w-full">
                 
                 {activeSubTab === "login_security" && (
-                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg">
+                  <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg">
                     <h3 className="text-2xl font-bold text-black mb-6" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Security Settings
                     </h3>
@@ -244,7 +244,7 @@ export default function ClientDashboardPage() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                            className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                           />
                         </div>
                         <div>
@@ -254,7 +254,7 @@ export default function ClientDashboardPage() {
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             placeholder="Add phone number"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                            className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                           />
                         </div>
                       </div>
@@ -265,7 +265,7 @@ export default function ClientDashboardPage() {
                           type="text"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                          className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                         />
                       </div>
 
@@ -278,7 +278,7 @@ export default function ClientDashboardPage() {
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             placeholder="••••••••••••"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                            className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                           />
                         </div>
                         <div>
@@ -288,7 +288,7 @@ export default function ClientDashboardPage() {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             placeholder="New password"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                            className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                           />
                         </div>
                         <div>
@@ -298,7 +298,7 @@ export default function ClientDashboardPage() {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder="Confirm new password"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-2.5 text-sm"
+                            className="w-full rounded-[5px] bg-white px-4 py-2.5 text-sm"
                           />
                         </div>
                       </div>
@@ -307,7 +307,7 @@ export default function ClientDashboardPage() {
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-[200px] h-[50px] rounded-[30px] bg-[#E8A33A] border-[1.5px] border-black text-black font-bold text-lg flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
+                          className="w-[200px] h-[50px] rounded-[30px] bg-[#E8A33A] text-black font-bold text-lg flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
                         >
                           {submitting ? "Saving..." : "Save"}
                         </button>
@@ -317,19 +317,19 @@ export default function ClientDashboardPage() {
                 )}
 
                 {activeSubTab === "payment_options" && (
-                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
+                  <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
                     <h3 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Payment Methods
                     </h3>
                     <p className="text-gray-600">Saved credit cards and UPI options appear here.</p>
-                    <div className="p-4 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8] font-bold text-sm">
+                    <div className="p-4 rounded-[5px] bg-[#E8F0D8] font-bold text-sm">
                       🔒 Secured Payments by Razorpay
                     </div>
                   </div>
                 )}
 
                 {activeSubTab === "wishlist" && (
-                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
+                  <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
                     <h3 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Your Wishlist ({wishlist.length})
                     </h3>
@@ -361,7 +361,7 @@ export default function ClientDashboardPage() {
 
           {/* ORDERS TAB */}
           {activeTab === "orders" && (
-            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
+            <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Active Orders ({activeOrders.length})
               </h2>
@@ -371,7 +371,7 @@ export default function ClientDashboardPage() {
                   <p className="text-gray-600 font-semibold mb-4">No active orders right now.</p>
                   <button 
                     onClick={() => router.push("/products")}
-                    className="px-6 py-2.5 bg-[#76A52E] text-white font-bold rounded-[30px] border-[1.5px] border-black "
+                    className="px-6 py-2.5 bg-[#76A52E] text-white font-bold rounded-[30px] "
                   >
                     Start Shopping
                   </button>
@@ -379,7 +379,7 @@ export default function ClientDashboardPage() {
               ) : (
                 <div className="space-y-6">
                   {activeOrders.map((order) => (
-                    <div key={order.id} className="p-6 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8] space-y-4">
+                    <div key={order.id} className="p-6 rounded-[5px] bg-[#E8F0D8] space-y-4">
                       <div className="flex flex-col sm:flex-row justify-between border-b border-black/10 pb-4">
                         <div>
                           <p className="text-xs text-gray-700 font-bold uppercase">Order Reference</p>
@@ -413,7 +413,7 @@ export default function ClientDashboardPage() {
 
           {/* HISTORY TAB */}
           {activeTab === "history" && (
-            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
+            <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Order History
               </h2>
@@ -422,7 +422,7 @@ export default function ClientDashboardPage() {
               <div className="flex gap-4 border-b border-black/10 pb-4">
                 <button
                   onClick={() => setHistoryFilter("successful")}
-                  className={`px-6 py-2 border-[1.5px] border-black rounded-[30px] font-bold text-sm ${
+                  className={`px-6 py-2 rounded-[30px] font-bold text-sm ${
                     historyFilter === "successful" 
                       ? "bg-[#A4CC55] " 
                       : "bg-white hover:bg-gray-100 "
@@ -432,7 +432,7 @@ export default function ClientDashboardPage() {
                 </button>
                 <button
                   onClick={() => setHistoryFilter("canceled")}
-                  className={`px-6 py-2 border-[1.5px] border-black rounded-[30px] font-bold text-sm ${
+                  className={`px-6 py-2 rounded-[30px] font-bold text-sm ${
                     historyFilter === "canceled" 
                       ? "bg-[#A4CC55] " 
                       : "bg-white hover:bg-gray-100 "
@@ -480,7 +480,7 @@ export default function ClientDashboardPage() {
 
           {/* ADDRESS TAB */}
           {activeTab === "address" && (
-            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
+            <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Address Book
               </h2>
@@ -497,19 +497,19 @@ export default function ClientDashboardPage() {
 
           {/* SUPPORT TAB */}
           {activeTab === "support" && (
-            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
+            <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Customer Support
               </h2>
               <p className="text-[#4C7A1A] font-bold">We're here to help you heal the earth, one plate at a time!</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="p-6 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8]">
+                <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
                   <h4 className="font-bold text-black text-lg mb-2">📧 Email Support</h4>
                   <p className="text-sm text-gray-700">Send us a message and we'll reply within 24 hours.</p>
                   <p className="font-bold mt-2 text-black">support@healingourth.com</p>
                 </div>
-                <div className="p-6 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8]">
+                <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
                   <h4 className="font-bold text-black text-lg mb-2">📞 Phone Support</h4>
                   <p className="text-sm text-gray-700">Talk to our customer care team (9 AM - 6 PM).</p>
                   <p className="font-bold mt-2 text-black">+91 1800-OURTH-CARE</p>
