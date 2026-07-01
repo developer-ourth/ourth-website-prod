@@ -39,6 +39,16 @@ export default function ClientDashboardPage() {
   // History tab sub-filters
   const [historyFilter, setHistoryFilter] = useState<"successful" | "canceled">("successful");
 
+  // Address Modal state
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "India",
+  });
+
   useEffect(() => {
     if (!isLoading && !user) {
       router.replace("/client/login");
@@ -119,6 +129,7 @@ export default function ClientDashboardPage() {
   const canceledOrders = orders.filter(o => o.status === "cancelled");
 
   return (
+    <>
     <main className="min-h-screen pt-36 pb-24 px-4 lg:px-[146px] bg-[#FAF8F3]">
       <div className="max-w-[1625px] mx-auto">
         
@@ -488,7 +499,10 @@ export default function ClientDashboardPage() {
               <div className="p-6 border border-dashed border-black/30 rounded-lg flex flex-col items-center justify-center text-center py-10 bg-white">
                 <span className="text-3xl mb-2">📍</span>
                 <p className="font-bold text-black mb-4">No addresses saved yet</p>
-                <button className="px-6 py-2 bg-[#76A52E] text-white font-bold rounded-[30px] border border-black text-sm">
+                <button 
+                  onClick={() => setIsAddressModalOpen(true)}
+                  className="px-6 py-2 bg-[#76A52E] text-white font-bold rounded-[30px] text-sm"
+                >
                   Add New Address
                 </button>
               </div>
@@ -521,5 +535,52 @@ export default function ClientDashboardPage() {
 
       </div>
     </main>
+
+      {/* ADDRESS MODAL */}
+      {isAddressModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          <div className="w-full max-w-md bg-white rounded-[5px] p-8 shadow-xl relative animate-in fade-in zoom-in duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>Add New Address</h3>
+              <button 
+                onClick={() => setIsAddressModalOpen(false)} 
+                className="text-2xl text-gray-500 hover:text-black absolute right-6 top-6"
+              >
+                &times;
+              </button>
+            </div>
+            <form onSubmit={(e) => { e.preventDefault(); setIsAddressModalOpen(false); /* Mock save for now */ }} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">Street Address</label>
+                <input type="text" required value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" placeholder="123 Green Way" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-black mb-1">City</label>
+                  <input type="text" required value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" placeholder="Mumbai" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-black mb-1">State</label>
+                  <input type="text" required value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" placeholder="MH" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-black mb-1">PIN / ZIP</label>
+                  <input type="text" required value={newAddress.zip} onChange={e => setNewAddress({...newAddress, zip: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" placeholder="400001" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-black mb-1">Country</label>
+                  <input type="text" required value={newAddress.country} onChange={e => setNewAddress({...newAddress, country: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" />
+                </div>
+              </div>
+              <button type="submit" className="w-full py-3 mt-4 bg-[#76A52E] text-white font-bold rounded-[30px] hover:opacity-90 transition">
+                Save Address
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
