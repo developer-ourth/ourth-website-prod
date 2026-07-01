@@ -2,11 +2,9 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { CampaignVisitors } from "@/components/Charts/campaign-visitors";
 import { UsedDevices } from "@/components/Charts/used-devices";
 import { createTimeFrameExtractor } from "@/utils/timeframe-extractor";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Basic Chart",
-};
+
+
 
 type PropsType = {
   searchParams: Promise<{
