@@ -16,7 +16,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-3 mb-8">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white p-2.5 border-2 border-[#2C1F13] shadow-[3px_3px_0px_0px_#2C1F13]">
             <Image 
-              src="/logo.png" 
+              src="/images/logo/HOIPL_3DIndia.webp" 
               alt="Healing Ourth Logo" 
               width={48} 
               height={48} 

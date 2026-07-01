@@ -132,7 +132,7 @@ export default function ClientDashboardPage() {
           </h1>
           <button
             onClick={() => logout().then(() => router.push("/"))}
-            className="px-6 py-2 border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] hover:bg-red-50 text-sm font-bold shadow-[2px_2px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000] transition-all"
+            className="px-6 py-2 border-[1.5px] border-black rounded-[5px] bg-[#FAF8F3] hover:bg-red-50 text-sm font-bold hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000] transition-all"
           >
             Sign Out
           </button>
@@ -307,7 +307,7 @@ export default function ClientDashboardPage() {
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-[200px] h-[50px] rounded-[30px] bg-[#E8A33A] border-[1.5px] border-black text-black font-bold text-lg flex items-center justify-center shadow-[2px_2px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
+                          className="w-[200px] h-[50px] rounded-[30px] bg-[#E8A33A] border-[1.5px] border-black text-black font-bold text-lg flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
                         >
                           {submitting ? "Saving..." : "Save"}
                         </button>
@@ -371,7 +371,7 @@ export default function ClientDashboardPage() {
                   <p className="text-gray-600 font-semibold mb-4">No active orders right now.</p>
                   <button 
                     onClick={() => router.push("/products")}
-                    className="px-6 py-2.5 bg-[#76A52E] text-white font-bold rounded-[30px] border-[1.5px] border-black shadow-[2px_2px_0px_#000000]"
+                    className="px-6 py-2.5 bg-[#76A52E] text-white font-bold rounded-[30px] border-[1.5px] border-black "
                   >
                     Start Shopping
                   </button>
@@ -379,7 +379,7 @@ export default function ClientDashboardPage() {
               ) : (
                 <div className="space-y-6">
                   {activeOrders.map((order) => (
-                    <div key={order.id} className="p-6 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8] shadow-[2px_2px_0px_#000000] space-y-4">
+                    <div key={order.id} className="p-6 border-[1.5px] border-black rounded-[5px] bg-[#E8F0D8] space-y-4">
                       <div className="flex flex-col sm:flex-row justify-between border-b border-black/10 pb-4">
                         <div>
                           <p className="text-xs text-gray-700 font-bold uppercase">Order Reference</p>
@@ -424,8 +424,8 @@ export default function ClientDashboardPage() {
                   onClick={() => setHistoryFilter("successful")}
                   className={`px-6 py-2 border-[1.5px] border-black rounded-[30px] font-bold text-sm ${
                     historyFilter === "successful" 
-                      ? "bg-[#A4CC55] shadow-[2px_2px_0px_#000000]" 
-                      : "bg-white hover:bg-gray-100 shadow-[2px_2px_0px_#000000]"
+                      ? "bg-[#A4CC55] " 
+                      : "bg-white hover:bg-gray-100 "
                   }`}
                 >
                   Successful
@@ -434,8 +434,8 @@ export default function ClientDashboardPage() {
                   onClick={() => setHistoryFilter("canceled")}
                   className={`px-6 py-2 border-[1.5px] border-black rounded-[30px] font-bold text-sm ${
                     historyFilter === "canceled" 
-                      ? "bg-[#A4CC55] shadow-[2px_2px_0px_#000000]" 
-                      : "bg-white hover:bg-gray-100 shadow-[2px_2px_0px_#000000]"
+                      ? "bg-[#A4CC55] " 
+                      : "bg-white hover:bg-gray-100 "
                   }`}
                 >
                   Canceled

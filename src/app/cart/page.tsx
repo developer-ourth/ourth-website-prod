@@ -197,7 +197,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black shadow-[2px_2px_0px_#000000] hover:scale-105 transition text-[24px]"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black hover:scale-105 transition text-[24px]"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               Browse Products
@@ -265,7 +265,7 @@ export default function CartPage() {
                       ₹{(parseFloat(item.unit_price) * item.quantity).toFixed(0)}
                     </span>
                     {/* Qty Selector */}
-                    <div className="flex items-center justify-between w-[110px] h-[36px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-3 shadow-[2px_2px_0px_#000000]">
+                    <div className="flex items-center justify-between w-[110px] h-[36px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-3 ">
                       <button
                         onClick={() => updateQty(item.id, Math.max(1, item.quantity - 1))}
                         className="text-[24px] font-normal text-black pb-0.5 hover:scale-110 active:scale-95 transition flex items-center justify-center"
@@ -300,7 +300,7 @@ export default function CartPage() {
                       {!showAddressForm && (
                         <button
                           onClick={() => setShowAddressForm(true)}
-                          className="px-4 py-2 bg-[#C7E08E] border-[1.5px] border-black rounded-[30px] text-black font-semibold text-[18px] shadow-[2px_2px_0px_#000000] hover:scale-105 transition"
+                          className="px-4 py-2 bg-[#C7E08E] border-[1.5px] border-black rounded-[30px] text-black font-semibold text-[18px] hover:scale-105 transition"
                         >
                           + Add Address
                         </button>
@@ -366,14 +366,14 @@ export default function CartPage() {
                           <button
                             type="button"
                             onClick={() => setShowAddressForm(false)}
-                            className="flex-1 border-[1.5px] border-black py-3 rounded-[30px] text-[18px] font-semibold text-black bg-[#FAF8F3] shadow-[2px_2px_0px_#000000]"
+                            className="flex-1 border-[1.5px] border-black py-3 rounded-[30px] text-[18px] font-semibold text-black bg-[#FAF8F3] "
                           >
                             Cancel
                           </button>
                           <button
                             type="submit"
                             disabled={addressSubmitting}
-                            className="flex-1 bg-[#25784C] text-white py-3 rounded-[30px] text-[18px] font-semibold border-[1.5px] border-black shadow-[2px_2px_0px_#000000]"
+                            className="flex-1 bg-[#25784C] text-white py-3 rounded-[30px] text-[18px] font-semibold border-[1.5px] border-black "
                           >
                             Save Address
                           </button>
@@ -388,7 +388,7 @@ export default function CartPage() {
                         {addresses.map((addr) => (
                           <label
                             key={addr.id}
-                            className={`flex items-start gap-4 p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 cursor-pointer shadow-[2px_2px_0px_#000000] ${
+                            className={`flex items-start gap-4 p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 cursor-pointer ${
                               selectedAddressId === addr.id
                                 ? "bg-[#C7E08E]"
                                 : "bg-[#FAF8F3]"
@@ -426,7 +426,7 @@ export default function CartPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <button
                         onClick={() => setPaymentMethod("cod")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 shadow-[2px_2px_0px_#000000] ${
+                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 ${
                           paymentMethod === "cod"
                             ? "bg-[#C7E08E] text-black font-semibold"
                             : "bg-[#FAF8F3] text-gray-700"
@@ -438,7 +438,7 @@ export default function CartPage() {
                       </button>
                       <button
                         onClick={() => setPaymentMethod("online")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 shadow-[2px_2px_0px_#000000] ${
+                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 ${
                           paymentMethod === "online"
                             ? "bg-[#C7E08E] text-black font-semibold"
                             : "bg-[#FAF8F3] text-gray-700"
@@ -617,7 +617,7 @@ export default function CartPage() {
                     <button
                       type="submit"
                       disabled={authSubmitting}
-                      className="w-full rounded-[30px] bg-[#25784C] px-6 py-3.5 font-bold text-white border-[1.5px] border-black shadow-[2px_2px_0px_#000000] hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] disabled:opacity-60 transition text-[18px]"
+                      className="w-full rounded-[30px] bg-[#25784C] px-6 py-3.5 font-bold text-white border-[1.5px] border-black hover:opacity-90 active:translate-y-[1px] disabled:opacity-60 transition text-[18px]"
                     >
                       {authSubmitting
                         ? "Please wait..."
@@ -639,7 +639,7 @@ export default function CartPage() {
                   </h2>
 
                   {/* Total Items pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Total Items</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       {items.reduce((sum, item) => sum + item.quantity, 0) < 10 ? `0${items.reduce((sum, item) => sum + item.quantity, 0)}` : items.reduce((sum, item) => sum + item.quantity, 0)} items
@@ -647,25 +647,25 @@ export default function CartPage() {
                   </div>
 
                   {/* Sub Total pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Sub Total</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{parseFloat(total).toFixed(0)}</span>
                   </div>
 
                   {/* Est Delivery pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Est. Delivery</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹30</span>
                   </div>
 
                   {/* Taxes pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Taxes</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹15</span>
                   </div>
 
                   {/* Discount pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Discount</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>-0.00</span>
                   </div>
@@ -674,7 +674,7 @@ export default function CartPage() {
                   <div className="border-t-[1.5px] border-dashed border-black my-4" />
 
                   {/* Final Payment pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       ₹{(parseFloat(total) + 30 + 15).toFixed(0)}
@@ -682,7 +682,7 @@ export default function CartPage() {
                   </div>
 
                   {/* Promo Code Input */}
-                  <div className="w-full h-[64px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between shadow-[2px_2px_0px_#000000]">
+                  <div className="w-full h-[64px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between ">
                     <input
                       type="text"
                       placeholder="Enter Promo Code"
@@ -711,7 +711,7 @@ export default function CartPage() {
                   <button
                     onClick={handleCheckout}
                     disabled={checkoutSubmitting || addresses.length === 0}
-                    className="w-full h-[47px] rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 shadow-[2px_2px_0px_#000000] active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000]"
+                    className="w-full h-[47px] rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 active:translate-y-[1px] "
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {checkoutSubmitting ? "Placing Order..." : "CHECKOUT"}

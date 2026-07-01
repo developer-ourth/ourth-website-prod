@@ -99,7 +99,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
                     <button
                       key={pack.id}
                       onClick={() => setSelectedPackId(pack.id)}
-                      className={`px-4 py-2 rounded-[30px] text-[16px] font-medium border-[1.5px] border-black transition duration-200 shadow-[2px_2px_0px_#000000] ${
+                      className={`px-4 py-2 rounded-[30px] text-[16px] font-medium border-[1.5px] border-black transition duration-200 ${
                         isSelected
                           ? "bg-[#C7E08E] text-black"
                           : "bg-white text-black hover:bg-gray-50"
@@ -136,7 +136,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
             <button
               onClick={handleAdd}
               disabled={adding}
-              className={`rounded-[30px] px-8 py-3 text-[18px] font-bold border-[1.5px] border-black shadow-[2px_2px_0px_#000000] transition duration-200 ${
+              className={`rounded-[30px] px-8 py-3 text-[18px] font-bold border-[1.5px] border-black transition duration-200 ${
                 success
                   ? "bg-green-600 text-white"
                   : "bg-[#103F5E] text-white hover:opacity-90"

@@ -115,7 +115,7 @@ export default function ClientLoginPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black shadow-[2px_2px_0px_#000000] text-white font-bold transition hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] py-3.5 flex justify-center items-center gap-2 text-lg"
+                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black text-white font-bold transition hover:opacity-90 active:translate-y-[1px] py-3.5 flex justify-center items-center gap-2 text-lg"
               >
                 {submitting ? (
                   <>

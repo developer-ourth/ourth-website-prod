@@ -27,7 +27,7 @@ export default function Navbar() {
         {/* Left: Brand Identity */}
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/logo.png"
+            src="/images/logo/HOIPL_3DIndia.webp"
             alt="Healing Ourth"
             width={79}
             height={79}
