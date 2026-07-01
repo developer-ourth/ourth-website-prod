@@ -75,7 +75,7 @@ export default function ClientDashboardPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#DCEEFB]">
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
       </div>
     );
@@ -119,7 +119,7 @@ export default function ClientDashboardPage() {
   const canceledOrders = orders.filter(o => o.status === "cancelled");
 
   return (
-    <main className="min-h-screen pt-36 pb-24 px-4 lg:px-[146px] bg-[#DCEEFB]">
+    <main className="min-h-screen pt-36 pb-24 px-4 lg:px-[146px] bg-[#FAF8F3]">
       <div className="max-w-[1625px] mx-auto">
         
         {/* Title */}
@@ -152,10 +152,10 @@ export default function ClientDashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] border-[1.5px] border-black flex items-center justify-center transition-all ${
+                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] border border-white/40 flex items-center justify-center transition-all backdrop-blur-md ${
                   isActive 
-                    ? "bg-[#A4CC55] shadow-[4px_4px_0px_#000000] translate-x-[2px] translate-y-[2px]" 
-                    : "bg-[#FAF8F3] shadow-[4px_4px_0px_#000000] hover:translate-y-[-2px]"
+                    ? "bg-white shadow-md text-[#2B4D0E] font-medium" 
+                    : "bg-white/60 shadow-sm hover:bg-white/80"
                 }`}
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
@@ -176,10 +176,10 @@ export default function ClientDashboardPage() {
                 {/* Login & Security Accordion/Selector */}
                 <button
                   onClick={() => setActiveSubTab("login_security")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border-[1.5px] border-black flex items-center justify-between transition-all ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "login_security"
-                      ? "bg-[#E8F0D8] shadow-[4px_4px_0px_#000000]"
-                      : "bg-[#FAF8F3] shadow-[4px_4px_0px_#000000] hover:translate-y-[-1px]"
+                      ? "bg-white shadow-md text-[#2B4D0E] font-medium"
+                      : "bg-white/60 shadow-sm hover:bg-white/80"
                   }`}
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
@@ -190,10 +190,10 @@ export default function ClientDashboardPage() {
                 {/* Payment Options Selector */}
                 <button
                   onClick={() => setActiveSubTab("payment_options")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border-[1.5px] border-black flex items-center justify-between transition-all ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "payment_options"
-                      ? "bg-[#E8F0D8] shadow-[4px_4px_0px_#000000]"
-                      : "bg-[#FAF8F3] shadow-[4px_4px_0px_#000000] hover:translate-y-[-1px]"
+                      ? "bg-white shadow-md text-[#2B4D0E] font-medium"
+                      : "bg-white/60 shadow-sm hover:bg-white/80"
                   }`}
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
@@ -204,10 +204,10 @@ export default function ClientDashboardPage() {
                 {/* Your Wishlist Selector */}
                 <button
                   onClick={() => setActiveSubTab("wishlist")}
-                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border-[1.5px] border-black flex items-center justify-between transition-all ${
+                  className={`w-full h-[84px] text-[24px] font-normal text-black text-left px-8 rounded-[5px] border border-white/40 flex items-center justify-between transition-all backdrop-blur-md ${
                     activeSubTab === "wishlist"
-                      ? "bg-[#E8F0D8] shadow-[4px_4px_0px_#000000]"
-                      : "bg-[#FAF8F3] shadow-[4px_4px_0px_#000000] hover:translate-y-[-1px]"
+                      ? "bg-white shadow-md text-[#2B4D0E] font-medium"
+                      : "bg-white/60 shadow-sm hover:bg-white/80"
                   }`}
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 >
@@ -220,7 +220,7 @@ export default function ClientDashboardPage() {
               <div className="lg:col-span-6 w-full">
                 
                 {activeSubTab === "login_security" && (
-                  <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000]">
+                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg">
                     <h3 className="text-2xl font-bold text-black mb-6" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Security Settings
                     </h3>
@@ -317,7 +317,7 @@ export default function ClientDashboardPage() {
                 )}
 
                 {activeSubTab === "payment_options" && (
-                  <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-4">
+                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
                     <h3 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Payment Methods
                     </h3>
@@ -329,7 +329,7 @@ export default function ClientDashboardPage() {
                 )}
 
                 {activeSubTab === "wishlist" && (
-                  <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-4">
+                  <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-4">
                     <h3 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-poppins), Poppins" }}>
                       Your Wishlist ({wishlist.length})
                     </h3>
@@ -361,7 +361,7 @@ export default function ClientDashboardPage() {
 
           {/* ORDERS TAB */}
           {activeTab === "orders" && (
-            <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-6">
+            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Active Orders ({activeOrders.length})
               </h2>
@@ -413,7 +413,7 @@ export default function ClientDashboardPage() {
 
           {/* HISTORY TAB */}
           {activeTab === "history" && (
-            <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-6">
+            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Order History
               </h2>
@@ -480,7 +480,7 @@ export default function ClientDashboardPage() {
 
           {/* ADDRESS TAB */}
           {activeTab === "address" && (
-            <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-6">
+            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Address Book
               </h2>
@@ -497,7 +497,7 @@ export default function ClientDashboardPage() {
 
           {/* SUPPORT TAB */}
           {activeTab === "support" && (
-            <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 shadow-[4px_4px_0px_#000000] space-y-6">
+            <div className="rounded-[5px] border border-white/40 bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
               <h2 className="text-3xl font-bold text-black" style={{ fontFamily: "var(--font-poppins)" }}>
                 Customer Support
               </h2>
