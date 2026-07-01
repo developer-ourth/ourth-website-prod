@@ -68,6 +68,23 @@ export default function Navbar() {
 
         {/* Right: Cart & Sign In CTAs */}
         <div className="hidden items-center gap-6 lg:flex">
+          {/* Wishlist Icon */}
+          <Link
+            href="/wishlist"
+            className="relative flex items-center justify-center w-[40px] h-[44px] text-[#2C1F13] hover:opacity-85 transition-all"
+            title="Wishlist"
+          >
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </Link>
+
           {/* Cart Icon */}
           <Link
             href="/cart"
@@ -146,6 +163,13 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             >
               ✦ Campaigns
+            </Link>
+            <Link
+              href="/wishlist"
+              className="text-base font-bold text-[#0D3A27] hover:underline"
+              onClick={() => setOpen(false)}
+            >
+              ✦ Wishlist
             </Link>
           </nav>
           <div className="my-2 border-t border-black/10" />

@@ -813,3 +813,16 @@ export function getConsumerWishlistApi() {
   return request<{ success: boolean; data: any[] }>("/me/wishlist");
 }
 
+export function addToWishlistApi(productId: number) {
+  return request<{ success: boolean; message: string }>("/me/wishlist", {
+    method: "POST",
+    body: JSON.stringify({ product_id: productId }),
+  });
+}
+
+export function removeFromWishlistApi(productId: number) {
+  return request<{ success: boolean; message: string }>(`/me/wishlist/${productId}`, {
+    method: "DELETE",
+  });
+}
+
