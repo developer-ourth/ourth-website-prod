@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
+import useSWR from "swr";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -13,61 +14,71 @@ import {
 } from "@/lib/api";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
+import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function WishlistPage() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const { addToCart } = useCart();
-  const [wishlist, setWishlist] = useState<any[]>([]);
-  const [loadingContent, setLoadingContent] = useState(true);
-
-  const fetchWishlist = useCallback(async () => {
-    try {
-      setLoadingContent(true);
-      const res = await getConsumerWishlistApi();
-      setWishlist(res.data || []);
-    } catch (err) {
-      console.error("Failed to load wishlist", err);
-    } finally {
-      setLoadingContent(false);
-    }
-  }, []);
+  const { data: wishlist = [], error, mutate, isLoading: isWishlistLoading } = useSWR(
+    user ? "/me/wishlist" : null,
+    () => getConsumerWishlistApi().then((res) => res.data || [])
+  );
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!user) {
-        router.replace("/client/login");
-      } else {
-        fetchWishlist();
-      }
+    if (!isLoading && !user) {
+      router.replace("/client/login");
     }
-  }, [user, isLoading, router, fetchWishlist]);
+  }, [user, isLoading, router]);
 
   const handleRemove = async (productId: number) => {
+    // Optimistic UI Update
+    mutate(wishlist.filter((w: any) => w.product_id !== productId), false);
+    
     try {
       await removeFromWishlistApi(productId);
-      setWishlist(wishlist.filter((w) => w.product_id !== productId));
-    } catch (error) {
-      console.error("Failed to remove from wishlist", error);
+      mutate(); // Revalidate with server
+      toast.success("Removed from wishlist");
+    } catch (error: any) {
+      mutate(); // Revert on failure
+      toast.error(error.message || "Failed to remove from wishlist");
     }
   };
 
   const handleAddToCart = async (product: any) => {
     try {
       await addToCart(product.id, 1);
-      // Optional: auto-remove from wishlist after adding to cart
-      // await handleRemove(product.id);
       router.push("/cart");
     } catch (error) {
       console.error("Failed to add to cart", error);
     }
   };
 
-  if (isLoading || loadingContent) {
+  if (isLoading || isWishlistLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
-      </div>
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-32 pb-24 px-4 lg:px-[146px] bg-[#FAF8F3] font-sans">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="mb-8">
+              <Skeleton className="h-12 w-64 mb-4 bg-gray-200" />
+              <Skeleton className="h-6 w-96 bg-gray-200" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="rounded-[5px] bg-white/85 p-4 shadow-lg flex flex-col h-[400px]">
+                  <Skeleton className="w-full aspect-square rounded-[5px] bg-gray-200 mb-4" />
+                  <Skeleton className="h-6 w-3/4 bg-gray-200 mb-4" />
+                  <Skeleton className="h-8 w-1/4 bg-gray-200 mb-6" />
+                  <Skeleton className="h-12 w-full mt-auto rounded-[30px] bg-gray-200" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
     );
   }
 
@@ -114,7 +125,6 @@ export default function WishlistPage() {
                         alt={product.name}
                         fill
                         className="object-contain p-4 group-hover:scale-105 transition duration-300"
-                        unoptimized
                       />
                       <button
                         onClick={() => handleRemove(product.id)}

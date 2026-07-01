@@ -8,6 +8,7 @@ import { getMarketplaceProducts, getCategories, getProductImageUrl, type MarketP
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsPage() {
   const { user } = useAuth();
@@ -99,8 +100,19 @@ export default function ProductsPage() {
 
       {/* Loading state indicator */}
       {loading ? (
-        <div className="flex h-96 items-center justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
+        <div className="py-20 max-w-[1400px] mx-auto px-6">
+          <div className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+                <Skeleton className="w-[171px] h-[154px] bg-gray-200 mx-auto" />
+                <div className="mt-4 space-y-2">
+                  <Skeleton className="h-6 w-3/4 bg-gray-200" />
+                  <Skeleton className="h-6 w-1/4 bg-gray-200" />
+                </div>
+                <Skeleton className="h-8 w-1/2 mt-auto bg-gray-200" />
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <>

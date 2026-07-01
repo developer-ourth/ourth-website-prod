@@ -17,6 +17,7 @@ import {
   logoutApi,
   setToken,
 } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface AuthUser {
   id: number;
@@ -105,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     localStorage.setItem(USER_KEY, JSON.stringify(authUser));
     setUser(authUser);
+    toast.success(`Welcome back, ${u.name}!`);
   }, []);
 
   const logout = useCallback(async () => {
@@ -116,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearToken();
     localStorage.removeItem(USER_KEY);
     setUser(null);
+    toast.success("Logged out successfully");
   }, []);
 
   return (

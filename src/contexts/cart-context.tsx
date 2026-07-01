@@ -16,6 +16,7 @@ import {
   clearCart as clearCartApi,
   type Cart,
 } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface CartContextValue {
   cart: Cart | null;
@@ -69,6 +70,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       try {
         const res = await addCartItem(productId, quantity, packId);
         setCart(res.data);
+        toast.success("Added to cart! 🌿");
+      } catch (err: any) {
+        toast.error(err.message || "Failed to add to cart");
+        throw err;
       } finally {
         setLoading(false);
       }
@@ -87,12 +92,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      setLoading(true);
+      const prevCart = cart;
+      if (cart) {
+        setCart({
+          ...cart,
+          items: cart.items.map(i => i.id === itemId ? { ...i, quantity } : i)
+        });
+      }
+
       try {
         const res = await updateCartItem(itemId, quantity);
         setCart(res.data);
-      } finally {
-        setLoading(false);
+      } catch (err: any) {
+        setCart(prevCart);
+        toast.error(err.message || "Failed to update quantity");
       }
     },
     [cart, user]
@@ -100,15 +113,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const removeFromCart = useCallback(
     async (itemId: number) => {
-      setLoading(true);
+      const prevCart = cart;
+      if (cart) {
+        setCart({
+          ...cart,
+          items: cart.items.filter(i => i.id !== itemId)
+        });
+      }
+      
       try {
         await removeCartItem(itemId);
         await fetchCart();
-      } finally {
-        setLoading(false);
+        toast.success("Removed from cart");
+      } catch (err: any) {
+        setCart(prevCart);
+        toast.error("Failed to remove item");
       }
     },
-    [fetchCart]
+    [cart, fetchCart]
   );
 
   const clearCart = useCallback(async () => {

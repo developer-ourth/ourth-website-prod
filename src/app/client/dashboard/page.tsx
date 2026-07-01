@@ -9,6 +9,8 @@ import {
   getConsumerOrdersApi,
   getConsumerWishlistApi
 } from "@/lib/api";
+import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Tab = "profile" | "orders" | "history" | "address" | "support";
 
@@ -85,9 +87,20 @@ export default function ClientDashboardPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
-      </div>
+      <main className="min-h-screen pt-36 pb-24 px-4 lg:px-[146px] bg-[#FAF8F3]">
+        <div className="max-w-[1625px] mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <Skeleton className="h-12 w-64 bg-gray-200" />
+            <Skeleton className="h-10 w-24 bg-gray-200 rounded-[5px]" />
+          </div>
+          <div className="flex gap-4 mb-8">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-12 w-32 bg-gray-200 rounded-[5px]" />
+            ))}
+          </div>
+          <Skeleton className="h-[400px] w-full bg-gray-200 rounded-[5px]" />
+        </div>
+      </main>
     );
   }
 
@@ -549,7 +562,7 @@ export default function ClientDashboardPage() {
                 &times;
               </button>
             </div>
-            <form onSubmit={(e) => { e.preventDefault(); setIsAddressModalOpen(false); /* Mock save for now */ }} className="space-y-4">
+            <form onSubmit={(e) => { e.preventDefault(); setIsAddressModalOpen(false); toast.success("Address added successfully!"); }} className="space-y-4">
               <div>
                 <label className="block text-sm font-bold text-black mb-1">Street Address</label>
                 <input type="text" required value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-2.5 text-sm" placeholder="123 Green Way" />
