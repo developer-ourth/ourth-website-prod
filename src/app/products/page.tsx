@@ -93,7 +93,7 @@ export default function ProductsPage() {
 
       {/* 1. Header Hero Banner */}
       <section
-        className="relative w-full h-[550px] lg:h-[650px] bg-cover bg-center"
+        className="relative w-full h-[220px] sm:h-[400px] md:h-[550px] lg:h-[650px] bg-cover bg-center mt-[70px] lg:mt-[95px]"
         style={heroBgStyle}
       />
 

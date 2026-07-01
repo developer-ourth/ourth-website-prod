@@ -44,28 +44,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-2 px-4 dark:bg-[#020d1a]">
+    <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3] px-4">
       <div className="w-full max-w-md">
-        <div className="rounded-[10px] bg-white p-8 shadow-1 dark:bg-gray-dark">
+        <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
           <div className="mb-8 text-center">
-            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-2xl text-white">
+            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#2B4D0E] text-2xl text-white">
               🌿
             </div>
-            <h1 className="text-2xl font-bold text-dark dark:text-white">Sign in to Ourth</h1>
-            <p className="mt-1 text-sm text-dark-4 dark:text-dark-6">
+            <h1 className="text-3xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">Sign in to Ourth</h1>
+            <p className="mt-2 text-sm text-[#444444] font-['IBM_Plex_Sans']">
               Use your account email. Dashboard access is assigned by your role.
             </p>
           </div>
 
           {error && (
-            <div className="mb-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+            <div className="mb-5 rounded-[5px] bg-red-50 border border-red-500 px-4 py-3 text-sm text-red-600 font-['IBM_Plex_Sans']">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">Email Address</label>
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Email Address</label>
               <input
                 type="email"
                 required
@@ -73,14 +73,14 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@ourth.local"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
             <div>
               <div className="mb-2 flex items-center justify-between">
-                <label className="block text-sm font-medium text-dark dark:text-white">Password</label>
-                <a href="/forgot-password" className="text-xs font-medium text-primary hover:underline">
+                <label className="block text-sm font-bold text-black font-['IBM_Plex_Sans']">Password</label>
+                <a href="/forgot-password" className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']">
                   Forgot password?
                 </a>
               </div>
@@ -91,22 +91,22 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full rounded-lg bg-primary px-6 py-3 font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+              className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black shadow-[2px_2px_0px_#000000] px-6 py-3.5 font-bold text-white transition hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] disabled:opacity-60 font-['IBM_Plex_Sans'] text-[18px]"
             >
               {submitting ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-dark-4 dark:text-dark-6">
+          <p className="mt-6 text-center text-sm text-[#444444] font-['IBM_Plex_Sans']">
             New user?{" "}
-            <a href="/register" className="font-medium text-primary hover:underline">
+            <a href="/register" className="font-bold text-[#2B4D0E] hover:underline">
               Create an account
             </a>
           </p>

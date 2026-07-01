@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="relative w-full overflow-hidden border-b-[1.5px] border-black">
       {/* Background street scene */}
       <div
-        className="relative w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-center flex flex-col justify-end"
+        className="relative w-full h-[260px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end"
         style={{
           backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('/images/hero/hero.webp')",
           backgroundColor: "#7c5835"

@@ -178,18 +178,18 @@ export default function CartPage() {
   const total = cart?.total_amount ?? "0.00";
 
   return (
-    <main className="min-h-screen bg-[#FBEFC9] pt-36 pb-24">
+    <main className="min-h-screen bg-[#FAF8F3] pt-36 pb-24 font-['IBM_Plex_Sans']">
       <div className="mx-auto max-w-[1625px] px-4 lg:px-[146px] w-full">
         {/* Title */}
         <h1 
-          className="text-black font-semibold text-[48px] leading-[62px] mb-10 text-left"
-          style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif", color: "#103F5E" }}
+          className="font-semibold text-[48px] leading-[62px] mb-10 text-left"
+          style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: "#2B4D0E" }}
         >
           Cart
         </h1>
 
         {items.length === 0 ? (
-          <div className="w-full max-w-[1039px] bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-16 text-center space-y-6 mx-auto">
+          <div className="w-full max-w-[1039px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-16 text-center space-y-6 mx-auto">
             <span className="text-6xl block">🛒</span>
             <h2 className="text-[32px] font-bold text-[#2C1F13]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Your cart is empty</h2>
             <p className="text-[20px] text-gray-600" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
@@ -197,7 +197,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[30px] bg-[#103F5E] text-white font-semibold border-[1.5px] border-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:opacity-95 transition text-[24px]"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black shadow-[2px_2px_0px_#000000] hover:scale-105 transition text-[24px]"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               Browse Products
@@ -210,7 +210,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div 
                   key={item.id} 
-                  className="w-full bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-6 flex flex-col md:flex-row gap-6 items-center relative"
+                  className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6 flex flex-col md:flex-row gap-6 items-center relative"
                 >
                   {/* Remove Button */}
                   <button
@@ -221,7 +221,7 @@ export default function CartPage() {
                   </button>
 
                   {/* Image */}
-                  <div className="w-[198px] h-[179px] border-[1.5px] border-black rounded-[5px] bg-white flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex-shrink-0">
+                  <div className="w-[198px] h-[179px] border-[1.5px] border-black rounded-[5px] bg-white flex items-center justify-center p-2 shadow-[0px_4px_4px_rgba(0,0,0,0.1)] flex-shrink-0">
                     <img
                       src={getProductImageUrl(item.product?.primary_image_url, item.product?.name)}
                       alt={item.product?.name ?? "Product"}
@@ -292,15 +292,15 @@ export default function CartPage() {
               {user && (
                 <div className="space-y-6">
                   {/* Address Section */}
-                  <div className="w-full bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-8">
+                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-[32px] font-bold text-black" style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}>
+                      <h3 className="text-[32px] font-bold text-[#2B4D0E]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                         Delivery Address
                       </h3>
                       {!showAddressForm && (
                         <button
                           onClick={() => setShowAddressForm(true)}
-                          className="px-4 py-2 bg-[#9FD4F2] border-[1.5px] border-black rounded-[30px] text-black font-semibold text-[18px] shadow-[2px_2px_0px_#000000] hover:scale-105 transition"
+                          className="px-4 py-2 bg-[#C7E08E] border-[1.5px] border-black rounded-[30px] text-black font-semibold text-[18px] shadow-[2px_2px_0px_#000000] hover:scale-105 transition"
                         >
                           + Add Address
                         </button>
@@ -314,20 +314,20 @@ export default function CartPage() {
                           value={addrName}
                           onChange={(e) => setAddrName(e.target.value)}
                           placeholder="Recipient Name (e.g. Sahil)"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <input
                           required
                           value={addrLine1}
                           onChange={(e) => setAddrLine1(e.target.value)}
                           placeholder="Address Line 1"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <input
                           value={addrLine2}
                           onChange={(e) => setAddrLine2(e.target.value)}
                           placeholder="Address Line 2 (Optional)"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <div className="grid grid-cols-2 gap-4">
                           <input
@@ -335,14 +335,14 @@ export default function CartPage() {
                             value={addrCity}
                             onChange={(e) => setAddrCity(e.target.value)}
                             placeholder="City"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                           <input
                             required
                             value={addrState}
                             onChange={(e) => setAddrState(e.target.value)}
                             placeholder="State"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -351,14 +351,14 @@ export default function CartPage() {
                             value={addrPostalCode}
                             onChange={(e) => setAddrPostalCode(e.target.value)}
                             placeholder="Pincode"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                           <input
                             required
                             value={addrMobile}
                             onChange={(e) => setAddrMobile(e.target.value)}
                             placeholder="Mobile (10 digits)"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                         </div>
 
@@ -373,7 +373,7 @@ export default function CartPage() {
                           <button
                             type="submit"
                             disabled={addressSubmitting}
-                            className="flex-1 bg-[#103F5E] text-white py-3 rounded-[30px] text-[18px] font-semibold border-[1.5px] border-black shadow-[2px_2px_0px_#000000]"
+                            className="flex-1 bg-[#25784C] text-white py-3 rounded-[30px] text-[18px] font-semibold border-[1.5px] border-black shadow-[2px_2px_0px_#000000]"
                           >
                             Save Address
                           </button>
@@ -390,7 +390,7 @@ export default function CartPage() {
                             key={addr.id}
                             className={`flex items-start gap-4 p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 cursor-pointer shadow-[2px_2px_0px_#000000] ${
                               selectedAddressId === addr.id
-                                ? "bg-[#9FD4F2]"
+                                ? "bg-[#C7E08E]"
                                 : "bg-[#FAF8F3]"
                             }`}
                           >
@@ -419,8 +419,8 @@ export default function CartPage() {
                   </div>
 
                   {/* Payment Method Section */}
-                  <div className="w-full bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-8">
-                    <h3 className="text-[32px] font-bold text-black mb-6" style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}>
+                  <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
+                    <h3 className="text-[32px] font-bold text-[#2B4D0E] mb-6" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       Payment Method
                     </h3>
                     <div className="grid grid-cols-2 gap-4">
@@ -458,7 +458,7 @@ export default function CartPage() {
             <div className="lg:col-span-5 space-y-8 w-full">
               {!user ? (
                 /* Auth Form (if not logged in) */
-                <div className="w-full bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-8">
+                <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
                   <div className="flex border-b border-black mb-6">
                     <button
                       onClick={() => { setAuthMode("login"); setAuthError(""); }}
@@ -482,7 +482,7 @@ export default function CartPage() {
                     </button>
                   </div>
 
-                  <h3 className="text-[24px] font-bold text-black mb-6" style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}>
+                  <h3 className="text-[24px] font-bold text-[#2B4D0E] mb-6" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                     {authMode === "login" ? "Sign in to place order" : "Create a consumer account"}
                   </h3>
 
@@ -504,7 +504,7 @@ export default function CartPage() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Asteria Xing"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
                     )}
@@ -519,7 +519,7 @@ export default function CartPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                       />
                     </div>
 
@@ -533,7 +533,7 @@ export default function CartPage() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+91 9876543210"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
                     )}
@@ -545,7 +545,7 @@ export default function CartPage() {
                           id="isBusiness"
                           checked={isBusiness}
                           onChange={(e) => setIsBusiness(e.target.checked)}
-                          className="h-4 w-4 rounded border-black text-black focus:ring-black accent-black"
+                          className="h-4 w-4 rounded border-black text-black focus:ring-black accent-black cursor-pointer"
                         />
                         <label htmlFor="isBusiness" className="text-sm font-semibold text-gray-700 cursor-pointer select-none">
                           I am registering as a business
@@ -565,7 +565,7 @@ export default function CartPage() {
                             value={businessName}
                             onChange={(e) => setBusinessName(e.target.value)}
                             placeholder="Acme Corp"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                           />
                         </div>
 
@@ -578,7 +578,7 @@ export default function CartPage() {
                             value={gstin}
                             onChange={(e) => setGstin(e.target.value)}
                             placeholder="22AAAAA0000A1Z5"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                           />
                         </div>
                       </>
@@ -594,7 +594,7 @@ export default function CartPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Min. 8 characters"
-                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                       />
                     </div>
 
@@ -609,7 +609,7 @@ export default function CartPage() {
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           placeholder="Repeat password"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#103F5E] transition"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
                     )}
@@ -617,7 +617,7 @@ export default function CartPage() {
                     <button
                       type="submit"
                       disabled={authSubmitting}
-                      className="w-full rounded-[30px] bg-[#103F5E] px-6 py-3.5 font-bold text-white border-[1.5px] border-black shadow-[2px_2px_0px_#000000] hover:opacity-90 disabled:opacity-60 transition text-[18px]"
+                      className="w-full rounded-[30px] bg-[#25784C] px-6 py-3.5 font-bold text-white border-[1.5px] border-black shadow-[2px_2px_0px_#000000] hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] disabled:opacity-60 transition text-[18px]"
                     >
                       {authSubmitting
                         ? "Please wait..."
@@ -629,11 +629,11 @@ export default function CartPage() {
                 </div>
               ) : (
                 /* Checkout Summary Card (if logged in) */
-                <div className="w-full max-w-[546px] bg-[#FAF8F3] border-[1.5px] border-black shadow-[4px_4px_0px_#000000] rounded-[5px] p-8 space-y-6 ml-auto">
+                <div className="w-full max-w-[546px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 space-y-6 ml-auto">
                   {/* Title */}
                   <h2 
-                    className="text-[40px] font-semibold text-[#103F5E] leading-none mb-2"
-                    style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+                    className="text-[40px] font-semibold text-[#2B4D0E] leading-none mb-2"
+                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     Summary
                   </h2>
@@ -691,7 +691,7 @@ export default function CartPage() {
                     />
                     <button 
                       type="button"
-                      className="w-[111px] h-[48px] rounded-[30px] bg-[#9FD4F2] border-[1.5px] border-black text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition"
+                      className="w-[111px] h-[48px] rounded-[30px] bg-[#C7E08E] border-[1.5px] border-black text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       Apply
@@ -711,7 +711,7 @@ export default function CartPage() {
                   <button
                     onClick={handleCheckout}
                     disabled={checkoutSubmitting || addresses.length === 0}
-                    className="w-full h-[47px] rounded-[30px] bg-[#1B6A9E] text-white font-semibold border-[1.5px] border-black text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 shadow-[2px_2px_0px_#000000]"
+                    className="w-full h-[47px] rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 shadow-[2px_2px_0px_#000000] active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000]"
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {checkoutSubmitting ? "Placing Order..." : "CHECKOUT"}

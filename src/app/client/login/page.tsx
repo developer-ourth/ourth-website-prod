@@ -29,8 +29,8 @@ export default function ClientLoginPage() {
 
   if (isLoading || user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FBEFC9]">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#25784C] border-t-transparent" />
       </div>
     );
   }
@@ -51,26 +51,19 @@ export default function ClientLoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FBEFC9] flex flex-col justify-between">
+    <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between font-['IBM_Plex_Sans']">
       <Navbar />
 
       <div className="flex-grow flex items-center justify-center px-4 pt-36 pb-24">
         <div className="w-full max-w-[480px]">
-          {/* Neo-brutalist Premium Website Container */}
-          <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 md:p-10 shadow-[6px_6px_0px_#000000] relative overflow-hidden">
+          <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-10 relative overflow-hidden">
             
             <div className="mb-8 text-center">
               <span className="text-5xl block mb-4 select-none">🌿</span>
-              <h1 
-                className="text-3xl font-bold text-[#5E3A16] tracking-tight"
-                style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
-              >
+              <h1 className="text-3xl font-bold text-[#2B4D0E]">
                 Welcome Back
               </h1>
-              <p 
-                className="mt-2 text-sm font-semibold text-[#103F5E]"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-              >
+              <p className="mt-2 text-sm text-[#444444]">
                 Sign in to your account to order tableware
               </p>
             </div>
@@ -83,10 +76,7 @@ export default function ClientLoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label 
-                  className="mb-2 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-2 block text-sm font-bold text-black pl-1">
                   Email Address or Mobile Number
                 </label>
                 <input
@@ -95,23 +85,18 @@ export default function ClientLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com or +91 9876543210"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
               <div>
                 <div className="mb-2 flex items-center justify-between pl-1">
-                  <label 
-                    className="block text-xs font-bold text-black uppercase tracking-wider"
-                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                  >
+                  <label className="block text-sm font-bold text-black">
                     Password
                   </label>
                   <Link 
                     href="/forgot-password" 
-                    className="text-xs font-bold text-[#76A52E] hover:underline"
-                    style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']"
                   >
                     Forgot password?
                   </Link>
@@ -123,20 +108,18 @@ export default function ClientLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-[30px] bg-[#76A52E] hover:bg-[#659124] text-[#FAF8F3] font-normal border-[1.5px] border-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all py-3.5 flex justify-center items-center gap-2 text-lg"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black shadow-[2px_2px_0px_#000000] text-white font-bold transition hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] py-3.5 flex justify-center items-center gap-2 text-lg"
               >
                 {submitting ? (
                   <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#FAF8F3] border-t-transparent" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     <span>Signing in...</span>
                   </>
                 ) : (
@@ -145,24 +128,20 @@ export default function ClientLoginPage() {
               </button>
             </form>
 
-            <p 
-              className="mt-8 text-center text-sm font-semibold text-[#103F5E]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
+            <p className="mt-8 text-center text-sm text-[#444444]">
               New here?{" "}
               <Link 
                 href="/client/register" 
-                className="font-bold text-[#76A52E] hover:underline"
+                className="font-bold text-[#2B4D0E] hover:underline"
               >
                 Create an account
               </Link>
             </p>
 
-            <div className="mt-6 pt-6 border-t border-black/10 text-center">
+            <div className="mt-6 pt-4 text-center">
               <Link 
                 href="/login" 
                 className="text-xs font-bold text-gray-500 hover:text-black transition"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 Are you a team member or vendor? Go to Portal
               </Link>

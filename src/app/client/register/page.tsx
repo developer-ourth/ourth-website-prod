@@ -37,8 +37,8 @@ export default function ClientRegisterPage() {
 
   if (isLoading || user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FBEFC9]">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3]">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#25784C] border-t-transparent" />
       </div>
     );
   }
@@ -80,26 +80,19 @@ export default function ClientRegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FBEFC9] flex flex-col justify-between">
+    <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between font-['IBM_Plex_Sans']">
       <Navbar />
 
       <div className="flex-grow flex items-center justify-center px-4 pt-36 pb-24">
         <div className="w-full max-w-[480px]">
-          {/* Neo-brutalist Premium Website Container */}
-          <div className="rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] p-8 md:p-10 shadow-[6px_6px_0px_#000000] relative overflow-hidden">
+          <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-10 relative overflow-hidden">
             
             <div className="mb-8 text-center">
               <span className="text-5xl block mb-4 select-none">🌿</span>
-              <h1 
-                className="text-3xl font-bold text-[#5E3A16] tracking-tight"
-                style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
-              >
+              <h1 className="text-3xl font-bold text-[#2B4D0E]">
                 Create Account
               </h1>
-              <p 
-                className="mt-2 text-sm font-semibold text-[#103F5E]"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-              >
+              <p className="mt-2 text-sm text-[#444444]">
                 Sign up to start purchasing eco-friendly tableware
               </p>
             </div>
@@ -112,10 +105,7 @@ export default function ClientRegisterPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label 
-                  className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-1 block text-sm font-bold text-black pl-1">
                   Full Name
                 </label>
                 <input
@@ -124,16 +114,12 @@ export default function ClientRegisterPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Asteria Xing"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
               <div>
-                <label 
-                  className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-1 block text-sm font-bold text-black pl-1">
                   Email Address
                 </label>
                 <input
@@ -142,16 +128,12 @@ export default function ClientRegisterPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
               <div>
-                <label 
-                  className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-1 block text-sm font-bold text-black pl-1">
                   Mobile Number (optional)
                 </label>
                 <input
@@ -159,8 +141,7 @@ export default function ClientRegisterPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 9876543210"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
@@ -170,12 +151,11 @@ export default function ClientRegisterPage() {
                   id="isBusiness"
                   checked={isBusiness}
                   onChange={(e) => setIsBusiness(e.target.checked)}
-                  className="h-4 w-4 rounded border-black text-[#76A52E] focus:ring-[#76A52E] accent-[#76A52E]"
+                  className="h-4 w-4 rounded border-black text-black focus:ring-black accent-black cursor-pointer"
                 />
                 <label 
                   htmlFor="isBusiness" 
-                  className="text-sm font-bold text-[#103F5E] cursor-pointer"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="text-sm font-bold text-[#444444] cursor-pointer select-none"
                 >
                   I am registering as a business
                 </label>
@@ -184,10 +164,7 @@ export default function ClientRegisterPage() {
               {isBusiness && (
                 <div className="space-y-4 pt-2 border-t border-black/10 transition-all duration-200">
                   <div>
-                    <label 
-                      className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    >
+                    <label className="mb-1 block text-sm font-bold text-black pl-1">
                       Business Name
                     </label>
                     <input
@@ -196,16 +173,12 @@ export default function ClientRegisterPage() {
                       value={businessName}
                       onChange={(e) => setBusinessName(e.target.value)}
                       placeholder="Acme Corp"
-                      className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                     />
                   </div>
 
                   <div>
-                    <label 
-                      className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    >
+                    <label className="mb-1 block text-sm font-bold text-black pl-1">
                       GSTIN (optional)
                     </label>
                     <input
@@ -213,18 +186,14 @@ export default function ClientRegisterPage() {
                       value={gstin}
                       onChange={(e) => setGstin(e.target.value)}
                       placeholder="22AAAAA0000A1Z5"
-                      className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                     />
                   </div>
                 </div>
               )}
 
               <div>
-                <label 
-                  className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-1 block text-sm font-bold text-black pl-1">
                   Password
                 </label>
                 <input
@@ -233,16 +202,12 @@ export default function ClientRegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Min. 8 characters"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
               <div>
-                <label 
-                  className="mb-1 block text-xs font-bold text-black uppercase tracking-wider pl-1"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                >
+                <label className="mb-1 block text-sm font-bold text-black pl-1">
                   Confirm Password
                 </label>
                 <input
@@ -251,27 +216,22 @@ export default function ClientRegisterPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Repeat password"
-                  className="w-full rounded-[5px] border-[1.5px] border-black bg-white px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:bg-[#FAF8F3] transition shadow-[2px_2px_0px_#000000] focus:shadow-[1px_1px_0px_#000000]"
-                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                 />
               </div>
 
-              <div 
-                className="text-[11px] text-[#103F5E] pl-1 leading-relaxed pt-1"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-              >
+              <div className="text-[11px] text-[#444444] pl-1 leading-relaxed pt-1">
                 By creating an account, you agree to our Terms of Service and Privacy Policy.
               </div>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-[30px] bg-[#76A52E] hover:bg-[#659124] text-[#FAF8F3] font-normal border-[1.5px] border-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all py-3.5 flex justify-center items-center gap-2 text-lg mt-2"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black shadow-[2px_2px_0px_#000000] text-white font-bold transition hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] py-3.5 flex justify-center items-center gap-2 text-lg mt-2"
               >
                 {submitting ? (
                   <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#FAF8F3] border-t-transparent" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     <span>Creating account...</span>
                   </>
                 ) : (
@@ -280,24 +240,20 @@ export default function ClientRegisterPage() {
               </button>
             </form>
 
-            <p 
-              className="mt-8 text-center text-sm font-semibold text-[#103F5E]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
+            <p className="mt-8 text-center text-sm text-[#444444]">
               Already have an account?{" "}
               <Link 
                 href="/client/login" 
-                className="font-bold text-[#76A52E] hover:underline"
+                className="font-bold text-[#2B4D0E] hover:underline"
               >
                 Sign in
               </Link>
             </p>
 
-            <div className="mt-6 pt-6 border-t border-black/10 text-center">
+            <div className="mt-6 pt-4 text-center">
               <Link 
                 href="/login" 
                 className="text-xs font-bold text-gray-500 hover:text-black transition"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 Are you a team member or vendor? Go to Portal
               </Link>

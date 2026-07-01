@@ -82,11 +82,11 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-2 px-4 dark:bg-[#020d1a]">
+    <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3] px-4">
       <div className="w-full max-w-md">
         <button
           onClick={() => router.push("/login")}
-          className="mb-8 flex items-center gap-2 text-sm text-dark-4 transition hover:text-primary dark:text-dark-6"
+          className="mb-8 flex items-center gap-2 text-sm font-bold text-[#444444] transition hover:text-[#2B4D0E] font-['IBM_Plex_Sans']"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
@@ -100,32 +100,32 @@ function RegisterForm() {
           Back to Login
         </button>
 
-        <div className="rounded-[10px] bg-white p-8 shadow-1 dark:bg-gray-dark">
+        <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
           <div className="mb-6 flex items-center gap-4">
             <div
-              className={`flex h-14 w-14 items-center justify-center rounded-full ${currentRoleConfig.color} text-2xl text-white`}
+              className={`flex h-14 w-14 items-center justify-center rounded-full bg-[#2B4D0E] text-2xl text-white`}
             >
-              {currentRoleConfig.emoji}
+              🌿
             </div>
             <div>
-              <h1 className="text-xl font-bold text-dark dark:text-white">
+              <h1 className="text-2xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">
                 Create Account
               </h1>
-              <p className="text-xs text-dark-4 dark:text-dark-6">
+              <p className="text-xs text-[#444444] font-['IBM_Plex_Sans']">
                 {currentRoleConfig.label} Portal
               </p>
             </div>
           </div>
 
           {error && (
-            <div className="mb-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            <div className="mb-5 rounded-[5px] bg-red-50 border border-red-500 px-4 py-3 text-sm text-red-600 font-['IBM_Plex_Sans']">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                 Full Name
               </label>
               <input
@@ -135,12 +135,12 @@ function RegisterForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your full name"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                 Email Address
               </label>
               <input
@@ -150,12 +150,12 @@ function RegisterForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
              <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                 Mobile Number (optional)
               </label>
               <input
@@ -163,7 +163,7 @@ function RegisterForm() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 9876543210"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
@@ -173,9 +173,9 @@ function RegisterForm() {
                 id="isBusiness"
                 checked={isBusiness}
                 onChange={(e) => setIsBusiness(e.target.checked)}
-                className="h-4 w-4 rounded border-stroke text-primary focus:ring-primary dark:border-dark-3"
+                className="h-4 w-4 rounded border-black text-black focus:ring-black accent-black cursor-pointer"
               />
-              <label htmlFor="isBusiness" className="text-sm font-medium text-dark dark:text-white cursor-pointer">
+              <label htmlFor="isBusiness" className="text-sm font-bold text-[#444444] cursor-pointer select-none font-['IBM_Plex_Sans']">
                 I am registering as a business
               </label>
             </div>
@@ -183,7 +183,7 @@ function RegisterForm() {
             {isBusiness && (
               <>
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+                  <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                     Business Name
                   </label>
                   <input
@@ -192,12 +192,12 @@ function RegisterForm() {
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     placeholder="Acme Corp"
-                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+                  <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                     GSTIN (optional)
                   </label>
                   <input
@@ -205,14 +205,14 @@ function RegisterForm() {
                     value={gstin}
                     onChange={(e) => setGstin(e.target.value)}
                     placeholder="22AAAAA0000A1Z5"
-                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
                   />
                 </div>
               </>
             )}
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                 Password
               </label>
               <input
@@ -222,12 +222,12 @@ function RegisterForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Min. 8 characters"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
+              <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
                 Confirm Password
               </label>
               <input
@@ -237,24 +237,24 @@ function RegisterForm() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Repeat password"
-                className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className={`w-full rounded-lg px-6 py-3 font-medium text-white transition ${currentRoleConfig.color} hover:opacity-90 disabled:opacity-60`}
+              className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black shadow-[2px_2px_0px_#000000] px-6 py-3.5 font-bold text-white transition hover:opacity-90 active:translate-y-[1px] active:shadow-[1px_1px_0px_#000000] disabled:opacity-60 font-['IBM_Plex_Sans'] text-[18px]"
             >
               {submitting ? "Creating account…" : "Create Account"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-dark-4 dark:text-dark-6">
+          <p className="mt-6 text-center text-sm text-[#444444] font-['IBM_Plex_Sans']">
             Already have an account?{" "}
             <a
               href="/login"
-              className="font-medium text-primary hover:underline"
+              className="font-bold text-[#2B4D0E] hover:underline"
             >
               Sign in
             </a>
