@@ -4,32 +4,32 @@ export default function Journey() {
   const steps = [
     {
       id: 1,
-      title: "This is just a demo",
-      desc: "Text are going to be placed soon. This is just a demo",
+      title: "Sustainable Materials",
+      desc: "Our journey starts with 100% natural and renewable resources like fallen leaves and bamboo.",
       image: "/images/icon/icon1.webp"
     },
     {
       id: 2,
-      title: "This is just a demo",
-      desc: "Text are going to be placed soon. This is just a demo",
+      title: "Eco-Friendly Products",
+      desc: "We craft biodegradable plates, bowls, and cutlery that are safe for you and the planet.",
       image: "/images/icon/icon2.webp"
     },
     {
       id: 3,
-      title: "This is just a demo",
-      desc: "Text are going to be placed soon. This is just a demo",
+      title: "Responsible Disposal",
+      desc: "After use, simply dispose of our products in compost or organic waste bins.",
       image: "/images/icon/icon3.webp"
     },
     {
       id: 4,
-      title: "This is just a demo",
-      desc: "Text are going to be placed soon. This is just a demo",
+      title: "Turning Waste to Fertilizer",
+      desc: "The organic waste naturally breaks down, transforming into nutrient-rich compost and fertilizer.",
       image: "/images/icon/icon4.webp"
     },
     {
       id: 5,
-      title: "This is just a demo",
-      desc: "Text are going to be placed soon. This is just a demo",
+      title: "Back to Nature",
+      desc: "The fertilizer enriches the soil, fostering new leaves and bamboo, completing the sustainable cycle.",
       image: "/images/icon/icon5.webp"
     }
   ];
