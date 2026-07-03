@@ -80,7 +80,7 @@ export default function Navbar() {
                 setSearchQuery("");
               }
             }} 
-            className="relative hidden xl:block"
+            className="relative flex items-center"
           >
             <input 
               type="text" 
