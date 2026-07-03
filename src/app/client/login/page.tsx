@@ -8,6 +8,7 @@ import Link from "next/link";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
 import { GoogleLogin } from "@react-oauth/google";
+import Image from "next/image";
 import { sendOtp } from "@/lib/api";
 import toast from "react-hot-toast";
 
@@ -105,7 +106,15 @@ export default function ClientLoginPage() {
           <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-10 relative overflow-hidden">
             
             <div className="mb-8 text-center">
-              <span className="text-5xl block mb-4 select-none">🌿</span>
+              <div className="mb-4 inline-flex items-center justify-center">
+                <Image 
+                  src="/images/logo/HOIPL_3DIndia.webp" 
+                  alt="Healing Ourth Logo" 
+                  width={80} 
+                  height={80} 
+                  className="object-contain drop-shadow-md"
+                />
+              </div>
               <h1 className="text-3xl font-bold text-[#2B4D0E]">
                 Welcome Back
               </h1>

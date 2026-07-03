@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import Image from "next/image";
 
 function RegisterForm() {
   const router = useRouter();
@@ -103,10 +104,14 @@ function RegisterForm() {
 
         <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
           <div className="mb-6 flex items-center gap-4">
-            <div
-              className={`flex h-14 w-14 items-center justify-center rounded-full bg-[#2B4D0E] text-2xl text-white`}
-            >
-              🌿
+            <div className="flex items-center justify-center">
+              <Image 
+                src="/images/logo/HOIPL_3DIndia.webp" 
+                alt="Healing Ourth Logo" 
+                width={64} 
+                height={64} 
+                className="object-contain drop-shadow-md"
+              />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">

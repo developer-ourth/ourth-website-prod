@@ -5,6 +5,7 @@ import { getRoleConfig } from "@/lib/roles";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import Image from "next/image";
 import { sendOtp } from "@/lib/api";
 import toast from "react-hot-toast";
 
@@ -96,8 +97,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
           <div className="mb-8 text-center">
-            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#2B4D0E] text-2xl text-white">
-              🌿
+            <div className="mb-4 inline-flex items-center justify-center">
+              <Image 
+                src="/images/logo/HOIPL_3DIndia.webp" 
+                alt="Healing Ourth Logo" 
+                width={80} 
+                height={80} 
+                className="object-contain drop-shadow-md"
+              />
             </div>
             <h1 className="text-3xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">Sign in to Ourth</h1>
             <p className="mt-2 text-sm text-[#444444] font-['IBM_Plex_Sans']">
