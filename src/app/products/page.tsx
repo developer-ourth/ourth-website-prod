@@ -18,7 +18,7 @@ function ProductsPageContent() {
   const { addToCart } = useCart();
   const router = useRouter();
 
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   const searchParam = searchParams.get("search") || "";
 
