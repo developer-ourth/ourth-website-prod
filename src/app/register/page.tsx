@@ -6,10 +6,11 @@ import { registerApi, setToken } from "@/lib/api";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 function RegisterForm() {
   const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, loginWithGoogleToken } = useAuth();
 
   const roleConfig = getRoleConfig("consumer")!;
   const [name, setName] = useState("");
@@ -122,6 +123,21 @@ function RegisterForm() {
               {error}
             </div>
           )}
+
+          <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                if (credentialResponse.credential) {
+                  try {
+                    await loginWithGoogleToken(credentialResponse.credential);
+                  } catch (err: any) {
+                    setError(err?.message || "Google registration failed.");
+                  }
+                }
+              }}
+              onError={() => setError("Google Login Failed")}
+            />
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

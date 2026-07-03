@@ -72,6 +72,27 @@ export function loginApi(email: string, password: string) {
   });
 }
 
+export function loginWithGoogle(idToken: string) {
+  return request<LoginResponse>("/auth/google", {
+    method: "POST",
+    body: JSON.stringify({ id_token: idToken }),
+  });
+}
+
+export function sendOtp(phone: string) {
+  return request<{ success: boolean; message: string }>("/auth/otp/send", {
+    method: "POST",
+    body: JSON.stringify({ phone }),
+  });
+}
+
+export function verifyOtp(phone: string, otp: string) {
+  return request<LoginResponse>("/auth/otp/verify", {
+    method: "POST",
+    body: JSON.stringify({ phone, otp }),
+  });
+}
+
 export function registerApi(
   name: string,
   email: string,

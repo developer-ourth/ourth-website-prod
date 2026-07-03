@@ -7,6 +7,8 @@ import { ThemeProvider } from "next-themes";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 export function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
@@ -21,17 +23,22 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Using a mock client ID or env var
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "MOCK_CLIENT_ID";
+
   return (
-    <ThemeProvider defaultTheme="light" attribute="class">
-      <AuthProvider>
-        <CartProvider>
-          <SidebarProvider>
-            {children}
-            <Toaster position="bottom-right" toastOptions={{ style: { background: '#FAF8F3', color: '#000', border: '1px solid #76A52E' } }} />
-          </SidebarProvider>
-        </CartProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <ThemeProvider defaultTheme="light" attribute="class">
+        <AuthProvider>
+          <CartProvider>
+            <SidebarProvider>
+              {children}
+              <Toaster position="bottom-right" toastOptions={{ style: { background: '#FAF8F3', color: '#000', border: '1px solid #76A52E' } }} />
+            </SidebarProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 }
 
