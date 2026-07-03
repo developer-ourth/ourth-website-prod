@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function ClientRegisterPage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, loginWithGoogleToken } = useAuth();
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -102,6 +103,21 @@ export default function ClientRegisterPage() {
                 {error}
               </div>
             )}
+
+            <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    try {
+                      await loginWithGoogleToken(credentialResponse.credential);
+                    } catch (err: any) {
+                      setError(err?.message || "Google registration failed.");
+                    }
+                  }
+                }}
+                onError={() => setError("Google Login Failed")}
+              />
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
