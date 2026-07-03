@@ -227,7 +227,17 @@ function ProductsPageContent() {
                   return (
                     <button
                       key={i}
-                      onClick={() => setSelectedCategory(selectedCategory === id ? null : id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setSelectedCategory(selectedCategory === id ? null : id);
+                        setTimeout(() => {
+                          const el = document.getElementById('all-products');
+                          if (el) {
+                            const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                          }
+                        }, 50);
+                      }}
                       className={`flex flex-col items-center justify-between p-6 rounded-2xl border transition-all ${color.bg} ${selectedCategory === id ? "border-black ring-2 ring-black/10 scale-95" : "border-transparent hover:scale-102"}`}
                     >
                       <span className={`font-bold text-lg ${color.text} mb-4`}>{name}</span>
