@@ -427,7 +427,7 @@ export default function CartPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <button
                         onClick={() => setPaymentMethod("cod")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 ${
+                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] transition duration-200 ${
                           paymentMethod === "cod"
                             ? "bg-[#C7E08E] text-black font-semibold"
                             : "bg-[#FAF8F3] text-gray-700"
@@ -439,7 +439,7 @@ export default function CartPage() {
                       </button>
                       <button
                         onClick={() => setPaymentMethod("online")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 ${
+                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] transition duration-200 ${
                           paymentMethod === "online"
                             ? "bg-[#C7E08E] text-black font-semibold"
                             : "bg-[#FAF8F3] text-gray-700"
@@ -640,7 +640,7 @@ export default function CartPage() {
                   </h2>
 
                   {/* Total Items pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Total Items</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       {items.reduce((sum, item) => sum + item.quantity, 0) < 10 ? `0${items.reduce((sum, item) => sum + item.quantity, 0)}` : items.reduce((sum, item) => sum + item.quantity, 0)} items
@@ -648,25 +648,25 @@ export default function CartPage() {
                   </div>
 
                   {/* Sub Total pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Sub Total</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{parseFloat(total).toFixed(0)}</span>
                   </div>
 
                   {/* Est Delivery pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Est. Delivery</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹30</span>
                   </div>
 
                   {/* Taxes pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Taxes</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹15</span>
                   </div>
 
                   {/* Discount pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Discount</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>-0.00</span>
                   </div>
@@ -675,7 +675,7 @@ export default function CartPage() {
                   <div className="border-t-[1.5px] border-dashed border-black my-4" />
 
                   {/* Final Payment pill */}
-                  <div className="w-full h-[47px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       ₹{(parseFloat(total) + 30 + 15).toFixed(0)}
@@ -683,7 +683,7 @@ export default function CartPage() {
                   </div>
 
                   {/* Promo Code Input */}
-                  <div className="w-full h-[64px] rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between ">
+                  <div className="w-full h-[64px] rounded-[30px] bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between ">
                     <input
                       type="text"
                       placeholder="Enter Promo Code"
@@ -692,7 +692,7 @@ export default function CartPage() {
                     />
                     <button 
                       type="button"
-                      className="w-[111px] h-[48px] rounded-[30px] bg-[#C7E08E] border-[1.5px] border-black text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition"
+                      className="w-[111px] h-[48px] rounded-[30px] bg-[#C7E08E] text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       Apply
@@ -712,7 +712,7 @@ export default function CartPage() {
                   <button
                     onClick={handleCheckout}
                     disabled={checkoutSubmitting || addresses.length === 0}
-                    className="w-full h-[47px] rounded-[30px] bg-[#25784C] text-white font-semibold border-[1.5px] border-black text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 active:translate-y-[1px] "
+                    className="w-full h-[47px] rounded-[30px] bg-[#25784C] text-white font-semibold text-[24px] flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 active:translate-y-[1px] "
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {checkoutSubmitting ? "Placing Order..." : "CHECKOUT"}
