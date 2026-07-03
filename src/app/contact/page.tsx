@@ -135,6 +135,9 @@ export default function ContactPage() {
                     )}
                   </button>
                 </form>
+              </div>
+            </div>
+          </div>
       </div>
     </main>
   );
