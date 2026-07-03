@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -138,7 +139,7 @@ export default function ProductsPage() {
                   <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                     {/* Centered rounded-rect product image container */}
                     <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
-                      <img src={image} alt={product.name} className="max-w-[140px] max-h-[130px] object-contain p-2" />
+                      <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
                     </Link>
 
                     {/* Product details */}
@@ -216,7 +217,7 @@ export default function ProductsPage() {
                     >
                       <span className={`font-bold text-lg ${color.text} mb-4`}>{name}</span>
                       <div className="w-[120px] h-[80px] flex items-center justify-center">
-                        <img src={catImage} alt={name} className="max-h-full max-w-full object-contain" />
+                        <Image src={catImage} alt={name} width={120} height={80} className="max-h-full max-w-full object-contain" />
                       </div>
                     </button>
                   );
@@ -238,7 +239,7 @@ export default function ProductsPage() {
               {/* Card 1: White Background with Blue Border */}
               <div className="w-full max-w-[776px] min-h-[450px] bg-[#FAF8F3] border-4 border-[#103F5E] rounded-[30px] p-8 sm:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 hover:shadow-lg transition-shadow">
                 <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="w-[240px] h-[220px] sm:w-[280px] sm:h-[250px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-90 transition-opacity block">
-                  <img src={arrival1Img} alt={arrival1Name} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
+                  <Image src={arrival1Img} alt={arrival1Name} width={240} height={220} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
                 </Link>
                 <div className="flex-1 space-y-3 text-left w-full" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="hover:underline block">
@@ -253,7 +254,7 @@ export default function ProductsPage() {
               {/* Card 2: Dark Blue Background */}
               <div className="w-full max-w-[776px] min-h-[450px] bg-[#103F5E] rounded-[30px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] p-8 sm:p-10 flex flex-col md:flex-row-reverse items-center gap-6 md:gap-8 hover:shadow-lg transition-shadow">
                 <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="w-[240px] h-[220px] sm:w-[280px] sm:h-[250px] rounded-[30px] border-[1.5px] border-black bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-90 transition-opacity block">
-                  <img src={arrival2Img} alt={arrival2Name} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
+                  <Image src={arrival2Img} alt={arrival2Name} width={240} height={220} className="max-w-[200px] max-h-[190px] sm:max-w-[240px] sm:max-h-[220px] object-contain p-4" />
                 </Link>
                 <div className="flex-1 space-y-3 text-left w-full" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="hover:underline block">
@@ -310,7 +311,7 @@ export default function ProductsPage() {
                             <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                               {/* Centered rounded-rect product image container */}
                               <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
-                                <img src={image} alt={product.name} className="max-w-[140px] max-h-[130px] object-contain p-2" />
+                                <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
                               </Link>
 
                               {/* Product details */}

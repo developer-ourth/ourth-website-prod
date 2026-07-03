@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 export default function Journey() {
   const steps = [
@@ -74,9 +75,11 @@ export default function Journey() {
             className="absolute left-1/2 -translate-x-1/2 z-10"
             style={{ top: "22%", width: "35.2%", maxWidth: "676px" }}
           >
-            <img
+            <Image
               src="/images/home/HOIPL_3DIndia.webp"
               alt="Healing Ourth Globe"
+              width={676}
+              height={669}
               className="w-full h-auto object-contain"
             />
           </div>
@@ -87,9 +90,11 @@ export default function Journey() {
             className="absolute flex flex-row items-center gap-4 z-20"
             style={{ left: "42%", top: "4%" }}
           >
-            <img
+            <Image
               src={steps[2].image}
               alt={steps[2].title}
+              width={160}
+              height={160}
               className="w-[160px] h-[160px] object-contain flex-shrink-0"
             />
             <div className="text-left" style={{ maxWidth: "205px" }}>
@@ -114,9 +119,11 @@ export default function Journey() {
             className="absolute flex flex-row-reverse items-center gap-4 z-20"
             style={{ left: "12%", top: "25%" }}
           >
-            <img
+            <Image
               src={steps[1].image}
               alt={steps[1].title}
+              width={160}
+              height={160}
               className="w-[160px] h-[160px] object-contain flex-shrink-0"
             />
             <div className="text-right" style={{ maxWidth: "205px" }}>
@@ -141,9 +148,11 @@ export default function Journey() {
             className="absolute flex flex-row items-center gap-4 z-20"
             style={{ right: "10%", top: "25%" }}
           >
-            <img
+            <Image
               src={steps[3].image}
               alt={steps[3].title}
+              width={160}
+              height={160}
               className="w-[160px] h-[160px] object-contain flex-shrink-0"
             />
             <div className="text-left" style={{ maxWidth: "205px" }}>
@@ -168,9 +177,11 @@ export default function Journey() {
             className="absolute flex flex-row-reverse items-center gap-4 z-20"
             style={{ left: "2%", top: "68%" }}
           >
-            <img
+            <Image
               src={steps[0].image}
               alt={steps[0].title}
+              width={160}
+              height={160}
               className="w-[160px] h-[160px] object-contain flex-shrink-0"
             />
             <div className="text-right" style={{ maxWidth: "205px" }}>
@@ -195,9 +206,11 @@ export default function Journey() {
             className="absolute flex flex-row items-center gap-4 z-20"
             style={{ right: "2%", top: "68%" }}
           >
-            <img
+            <Image
               src={steps[4].image}
               alt={steps[4].title}
+              width={160}
+              height={160}
               className="w-[160px] h-[160px] object-contain flex-shrink-0"
             />
             <div className="text-left" style={{ maxWidth: "205px" }}>
@@ -222,16 +235,18 @@ export default function Journey() {
         <div className="lg:hidden grid grid-cols-1 gap-6 mt-8 w-full max-w-[500px] mx-auto">
           {/* Globe on mobile */}
           <div className="flex justify-center mb-4">
-            <img
+            <Image
               src="/images/home/HOIPL_3DIndia.webp"
               alt="Healing Ourth Globe"
+              width={200}
+              height={200}
               className="w-[200px] h-[200px] object-contain"
             />
           </div>
           {steps.map((s) => (
             <div key={s.id} className="flex items-center gap-4 bg-white p-4 border border-black/10 rounded-xl shadow-sm">
               <div className="w-[90px] h-[90px] flex-shrink-0">
-                <img src={s.image} alt={s.title} className="w-full h-full object-contain" />
+                <Image src={s.image} alt={s.title} width={90} height={90} className="w-full h-full object-contain" />
               </div>
               <div>
                 <p className="text-base font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.title}</p>

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/image";
@@ -106,10 +107,12 @@ export default function ProductsSection() {
               return (
                 <div key={id} className="relative w-[280px] h-[480px] flex-shrink-0 select-none group">
                   {/* Figma Card Image Backdrop */}
-                      <img
+                      <Image
                         src="/images/home/productcard.webp"
                         alt="Card Background"
-                        className="absolute inset-0 w-full h-full object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-300 pointer-events-none"
+                        fill
+                        sizes="280px"
+                        className="object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-300 pointer-events-none"
                       />
 
                   {/* Card Content overlay */}
@@ -118,9 +121,11 @@ export default function ProductsSection() {
                     <NextLink href={`/products/${id}`} className="relative w-full h-[180px] mt-2 flex items-center justify-center hover:opacity-90 block">
                       {/* Product Image */}
                       <div className="relative z-10 w-[140px] h-[110px] flex items-center justify-center">
-                        <img 
+                        <Image 
                           src={image} 
-                          alt={name} 
+                          alt={name}
+                          width={140}
+                          height={110} 
                           className="max-w-full max-h-full object-contain transform group-hover:scale-105 transition-all duration-300"
                         />
                       </div>
@@ -237,15 +242,17 @@ export default function ProductsSection() {
                     style={{ width: "calc(50% - 8px)", scrollSnapAlign: "start" }}
                   >
                     <div className="relative w-full aspect-[280/480]">
-                      <img
+                      <Image
                         src="/images/home/productcard.webp"
                         alt="Card Background"
-                        className="absolute inset-0 w-full h-full object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] pointer-events-none"
+                        fill
+                        sizes="(max-width: 1024px) 50vw, 280px"
+                        className="object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] pointer-events-none"
                       />
                       <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
                         <NextLink href={`/products/${id}`} className="relative w-full h-[40%] mt-1 flex items-center justify-center hover:opacity-90 block">
                           <div className="relative z-10 w-[100px] sm:w-[130px] h-[80px] sm:h-[100px] flex items-center justify-center">
-                            <img src={image} alt={name} className="max-w-full max-h-full object-contain" />
+                            <Image src={image} alt={name} width={130} height={100} className="max-w-full max-h-full object-contain" />
                           </div>
                         </NextLink>
                         <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
