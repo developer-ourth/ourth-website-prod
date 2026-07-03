@@ -99,7 +99,10 @@ export default function ProductDetailsPage() {
   }, [productId, loadReviews]);
 
   // Adjust quantity based on B2B min order quantity
-  const minQty = isB2B ? (product?.min_order_quantity ?? 1) : 1;
+  const selectedPack = product?.packs?.find((p) => p.id === selectedPackId);
+  const minQty = isB2B 
+    ? (selectedPack ? (selectedPack.min_order_quantity ?? 1) : (product?.min_order_quantity ?? 1))
+    : 1;
   useEffect(() => {
     if (quantity < minQty) {
       setQuantity(minQty);
@@ -162,8 +165,6 @@ export default function ProductDetailsPage() {
       </main>
     );
   }
-
-  const selectedPack = product.packs?.find((p) => p.id === selectedPackId);
 
   // Price resolution
   const activeBasePrice = selectedPack
