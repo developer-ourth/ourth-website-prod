@@ -23,7 +23,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F8F3] flex flex-col justify-between">
+    <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between font-['IBM_Plex_Sans']">
       <div>
 
         {/* Top Sky Section (Contains Tree, Grass, and Title) */}
@@ -58,8 +58,8 @@ export default function ContactPage() {
           {/* Headline (Right aligned) */}
           <div className="relative z-20 mx-auto max-w-[1580px] w-full px-8 lg:px-16 flex justify-end">
             <h1
-              className="text-[#2C1F13] font-black text-4xl sm:text-5xl lg:text-6xl text-right max-w-4xl leading-[1.1] tracking-tight"
-              style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif" }}
+              className="text-[#2B4D0E] font-black text-4xl sm:text-5xl lg:text-6xl text-right max-w-4xl leading-[1.1] tracking-tight"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
             >
               We are always happy to hear <br />
               and meet up with you
@@ -68,7 +68,7 @@ export default function ContactPage() {
         </section>
 
         {/* Transition Boundary (Cloud Mask) */}
-        <div className="relative w-full h-[60px] bg-[#D8EFE0] -mt-1 z-20">
+        <div className="relative w-full h-[60px] bg-[#FAF8F3] -mt-1 z-20">
           <div className="absolute top-[-150px] left-0 right-0 h-[300px] pointer-events-none select-none">
             <Image
               src="/images/contact/clouds.png"
@@ -80,14 +80,13 @@ export default function ContactPage() {
         </div>
 
         {/* Bottom Sage Green Section (Contains the Cards) */}
-        <section className="bg-[#D8EFE0] pt-8 pb-24 px-6 relative z-20">
+        <section className="bg-[#FAF8F3] pt-8 pb-24 px-6 relative z-20">
           <div
-            className="mx-auto max-w-[1506px] min-h-[595px] bg-[#FAF8F3]/50 rounded-[30px] p-8 md:p-14 border border-[#C6DCD0] flex flex-col md:flex-row gap-12 items-center justify-between"
-            style={{ boxShadow: "0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}
+            className="mx-auto max-w-[1506px] min-h-[595px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-14 flex flex-col md:flex-row gap-12 items-center justify-between"
           >
             {/* Left Column (Contact Details) */}
             <div className="w-full md:w-[45%] flex flex-col justify-center pr-0 md:pr-8">
-              <h2 className="text-[#2C1F13] font-bold text-3xl mb-10 tracking-tight">
+              <h2 className="text-[#2B4D0E] font-bold text-3xl mb-10 tracking-tight" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 <span>
                   Contact Us:
                 </span>
@@ -95,20 +94,20 @@ export default function ContactPage() {
 
               <div className="space-y-6 max-w-[480px]">
                 <div>
-                  <label className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                  <label className="block text-[#2B4D0E] text-[18px] font-bold mb-2">
                     Phone number
                   </label>
-                  <div className="w-full bg-[#FAF7F2] border border-[#E5E0D8] rounded-full px-6 py-4 text-base font-medium text-[#2C1F13]/70" style={{ boxShadow: "inset 0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}>
+                  <div className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] text-black">
                     1234567890
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                  <label className="block text-[#2B4D0E] text-[18px] font-bold mb-2">
                     Email
                   </label>
-                  <div className="w-full bg-[#FAF7F2] border border-[#E5E0D8] rounded-full px-6 py-4 text-base font-medium text-[#2C1F13]/70" style={{ boxShadow: "inset 0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}>
-                    <a href="mailto:ourth@ourth.com" className="underline decoration-[#2C1F13]/70 underline-offset-2 hover:text-[#2C1F13]">
+                  <div className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] text-black">
+                    <a href="mailto:ourth@ourth.com" className="underline decoration-black underline-offset-2 hover:opacity-80">
                       ourth@ourth.com
                     </a>
                   </div>
@@ -118,14 +117,11 @@ export default function ContactPage() {
 
             {/* Right Column (Interactive Form Card) */}
             <div className="w-full md:w-[50%] max-w-[620px]">
-              <div
-                className="bg-[#FAF8F3]/50 rounded-[35px] p-8 md:p-10 border border-[#E5E0D8] relative"
-                style={{ boxShadow: "0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}
-              >
+              <div className="bg-white/85 backdrop-blur-xl rounded-[5px] p-8 md:p-10 border border-white/40 shadow-lg relative w-full">
                 {/* Tree sprout / leaf sprout icon at top center */}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="name-input" className="block text-[#2B4D0E] text-[18px] font-bold mb-2">
                       Full Name
                     </label>
                     <input
@@ -135,13 +131,12 @@ export default function ContactPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Sage Sharma"
-                      className="w-full bg-[#FAF7F2] border border-[#E5E0D8] rounded-full px-6 py-4 text-base text-[#2C1F13] placeholder-[#2C1F13]/40 focus:outline-none focus:border-[#5B896F] transition font-medium"
-                      style={{ boxShadow: "inset 0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}
+                      className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="phone-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="phone-input" className="block text-[#2B4D0E] text-[18px] font-bold mb-2">
                       Number
                     </label>
                     <input
@@ -151,13 +146,12 @@ export default function ContactPage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="0987654321"
-                      className="w-full bg-[#FAF7F2] border border-[#E5E0D8] rounded-full px-6 py-4 text-base text-[#2C1F13] placeholder-[#2C1F13]/40 focus:outline-none focus:border-[#5B896F] transition font-medium"
-                      style={{ boxShadow: "inset 0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}
+                      className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email-input" className="block text-[#2C1F13] text-[15px] font-bold mb-2 pl-4">
+                    <label htmlFor="email-input" className="block text-[#2B4D0E] text-[18px] font-bold mb-2">
                       Email
                     </label>
                     <input
@@ -167,18 +161,14 @@ export default function ContactPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="sagesharma@gmail.com"
-                      className="w-full bg-[#FAF7F2] border border-[#E5E0D8] rounded-full px-6 py-4 text-base text-[#2C1F13] placeholder-[#2C1F13]/40 focus:outline-none focus:border-[#5B896F] transition font-medium"
-                      style={{ boxShadow: "inset 0 4px 4px 0 rgba(0, 0, 0, 0.25)" }}
+                      className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={submitted || loading}
-                    className="w-full rounded-full font-bold text-lg py-4 px-6 transition duration-300 shadow-md text-white mt-8 flex items-center justify-center"
-                    style={{
-                      backgroundColor: (submitted || loading) ? "#5B896F" : "#5B896F",
-                    }}
+                    className="w-full bg-[#25784C] text-white py-3 rounded-[30px] text-[18px] font-semibold border-[1.5px] border-black mt-8 flex items-center justify-center hover:opacity-95 transition disabled:opacity-50 active:translate-y-[1px]"
                   >
                     {loading ? (
                       <span className="flex items-center gap-2">
