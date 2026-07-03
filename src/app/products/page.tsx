@@ -381,6 +381,7 @@ function ProductsPageContent() {
               </div>
             )}
           </section>
+        </>
       )}
     </main>
   );
