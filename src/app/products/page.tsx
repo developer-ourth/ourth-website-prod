@@ -335,7 +335,7 @@ function ProductsPageContent() {
                             : Math.round(parseFloat(product.discounted_price ?? product.base_price));
 
                           return (
-                            <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+                            <div key={product.id} className="w-full md:w-[25%] md:flex-none border-b md:border-b-0 md:border-r border-black last:border-b-0 md:last:border-r-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                               {/* Centered rounded-rect product image container */}
                               <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
                                 <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
@@ -384,9 +384,6 @@ function ProductsPageContent() {
                             </div>
                           );
                         })}
-                        {Array.from({ length: 4 - row.length }).map((_, i) => (
-                          <div key={`empty-${i}`} className="flex-1 border-b md:border-b-0 md:border-r border-transparent md:border-black last:border-0 hidden md:block p-8 h-[430px]"></div>
-                        ))}
                       </div>
                     );
                   });
