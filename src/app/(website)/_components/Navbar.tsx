@@ -2,19 +2,47 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { getRoleConfig } from "@/lib/roles";
+import { getMarketplaceProducts, getProductImageUrl, type MarketProduct } from "@/lib/api";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState<MarketProduct[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRefDesktop = useRef<HTMLDivElement>(null);
+  const searchRefMobile = useRef<HTMLDivElement>(null);
+  
   const router = useRouter();
   const { cart } = useCart();
   const { user } = useAuth();
   const cartCount = cart?.total_items ?? 0;
+
+  useEffect(() => {
+    getMarketplaceProducts({ per_page: 100 })
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRefDesktop.current && !searchRefDesktop.current.contains(event.target as Node) &&
+          searchRefMobile.current && !searchRefMobile.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredProducts = searchQuery.trim() === "" 
+    ? [] 
+    : products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))).slice(0, 5);
 
   return (
     <div className="w-full bg-transparent fixed top-0 left-0 right-0 z-[9999]">
@@ -72,30 +100,79 @@ export default function Navbar() {
         {/* Right: Cart & Sign In CTAs */}
         <div className="hidden items-center gap-6 lg:flex">
           {/* Search Bar */}
-          <form 
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (searchQuery.trim()) {
-                router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
-                setSearchQuery("");
-              }
-            }} 
-            className="relative flex items-center"
-          >
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-4 py-2 text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[220px]"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            />
-            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-[#25784C] transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-          </form>
+          <div ref={searchRefDesktop} className="relative flex items-center">
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchQuery.trim()) {
+                  router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                  setShowDropdown(false);
+                }
+              }} 
+              className="relative flex items-center"
+            >
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchQuery}
+                onFocus={() => setShowDropdown(true)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowDropdown(true);
+                }}
+                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-4 py-2 text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[220px]"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+              />
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-[#25784C] transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            </form>
+
+            {/* Dropdown */}
+            {showDropdown && searchQuery.trim() !== "" && (
+              <div className="absolute top-full mt-2 w-[300px] right-0 bg-white border-[1.5px] border-black rounded-xl shadow-lg overflow-hidden z-[10000]">
+                {filteredProducts.length > 0 ? (
+                  <div className="flex flex-col">
+                    {filteredProducts.map(p => (
+                      <Link 
+                        href={`/products/${p.id}`} 
+                        key={p.id}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          setSearchQuery("");
+                        }}
+                        className="flex items-center gap-3 p-3 hover:bg-[#F5F8F3] border-b border-black/10 last:border-0 transition-colors"
+                      >
+                        <div className="w-10 h-10 bg-white border border-black/10 rounded flex items-center justify-center p-1 shrink-0">
+                          <Image src={getProductImageUrl(p.primary_image_url, p.name)} alt={p.name} width={40} height={40} className="object-contain max-h-full" />
+                        </div>
+                        <div className="flex flex-col overflow-hidden">
+                          <span className="text-sm font-bold text-[#0D3A27] truncate" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{p.name}</span>
+                          <span className="text-xs font-semibold text-[#25784C]">₹{p.base_price}</span>
+                        </div>
+                      </Link>
+                    ))}
+                    <button 
+                      onClick={() => {
+                        router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-center p-3 text-sm font-bold text-[#25784C] hover:bg-[#E8F0D8] transition-colors bg-[#FAF8F3]"
+                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                    >
+                      View all results
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-4 text-center text-sm font-semibold text-gray-500" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                    No products found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           {/* Wishlist Icon */}
           <Link
             href="/wishlist"
@@ -199,31 +276,83 @@ export default function Navbar() {
             >
               ✦ Wishlist
             </Link>
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (searchQuery.trim()) {
-                  router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
-                  setSearchQuery("");
-                  setOpen(false);
-                }
-              }} 
-              className="relative mt-2"
-            >
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-2 w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-              />
-              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </form>
+            <div ref={searchRefMobile} className="relative mt-2">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (searchQuery.trim()) {
+                    router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                    setSearchQuery("");
+                    setOpen(false);
+                    setShowDropdown(false);
+                  }
+                }} 
+                className="relative"
+              >
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  value={searchQuery}
+                  onFocus={() => setShowDropdown(true)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowDropdown(true);
+                  }}
+                  className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-2 w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
+                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              </form>
+              
+              {/* Mobile Dropdown */}
+              {showDropdown && searchQuery.trim() !== "" && (
+                <div className="absolute top-full mt-2 w-full left-0 bg-white border-[1.5px] border-black rounded-xl shadow-lg overflow-hidden z-[10000]">
+                  {filteredProducts.length > 0 ? (
+                    <div className="flex flex-col">
+                      {filteredProducts.map(p => (
+                        <Link 
+                          href={`/products/${p.id}`} 
+                          key={p.id}
+                          onClick={() => {
+                            setShowDropdown(false);
+                            setSearchQuery("");
+                            setOpen(false);
+                          }}
+                          className="flex items-center gap-3 p-3 hover:bg-[#F5F8F3] border-b border-black/10 last:border-0 transition-colors"
+                        >
+                          <div className="w-10 h-10 bg-white border border-black/10 rounded flex items-center justify-center p-1 shrink-0">
+                            <Image src={getProductImageUrl(p.primary_image_url, p.name)} alt={p.name} width={40} height={40} className="object-contain max-h-full" />
+                          </div>
+                          <div className="flex flex-col overflow-hidden">
+                            <span className="text-sm font-bold text-[#0D3A27] truncate" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{p.name}</span>
+                            <span className="text-xs font-semibold text-[#25784C]">₹{p.base_price}</span>
+                          </div>
+                        </Link>
+                      ))}
+                      <button 
+                        onClick={() => {
+                          router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                          setShowDropdown(false);
+                          setOpen(false);
+                        }}
+                        className="w-full text-center p-3 text-sm font-bold text-[#25784C] hover:bg-[#E8F0D8] transition-colors bg-[#FAF8F3]"
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      >
+                        View all results
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-sm font-semibold text-gray-500" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      No products found
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </nav>
           <div className="my-2 border-t border-black/10" />
           <div className="flex gap-3">
