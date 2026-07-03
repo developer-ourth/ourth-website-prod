@@ -57,9 +57,8 @@ export default function ProductsSection() {
     try {
       const packId = selectedPacks[productId] ?? null;
       await addToCart(productId, 1, packId);
-      toast.success("Added to cart!");
     } catch (err: any) {
-      toast.error(err?.message ?? "Failed to add product to cart.");
+      // Context handles error
     }
   };
 

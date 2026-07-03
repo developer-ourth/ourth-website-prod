@@ -123,7 +123,7 @@ export default function ProductDetailsPage() {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err: any) {
-      toast.error(err?.message ?? "Failed to add item to cart.");
+      // Context handles error
     } finally {
       setAdding(false);
     }
@@ -139,7 +139,7 @@ export default function ProductDetailsPage() {
       await addToCart(product.id, quantity, selectedPackId);
       router.push("/cart");
     } catch (err: any) {
-      toast.error(err?.message ?? "Failed to proceed to buy.");
+      // Context handles error
     }
   };
 
@@ -573,9 +573,8 @@ export default function ProductDetailsPage() {
                         if (isMock) return;
                         try {
                           await addToCart(p.id, 1);
-                          toast.success("Added to cart!");
                         } catch (e: any) {
-                          toast.error(e.message || "Failed to add product to cart.");
+                          // Context handles error
                         }
                       }}
                       className="w-[155px] h-[58px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] text-black font-normal flex items-center justify-center shadow-sm hover:bg-neutral-100 active:scale-95 transition-all"

@@ -50,7 +50,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err: any) {
-      toast.error(err?.message ?? "Failed to add item to cart.");
+      // Context handles error
     } finally {
       setAdding(false);
     }
