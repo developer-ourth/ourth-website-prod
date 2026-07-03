@@ -5,10 +5,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
 import { getRoleConfig } from "@/lib/roles";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const { cart } = useCart();
   const { user } = useAuth();
   const cartCount = cart?.total_items ?? 0;
@@ -68,6 +71,31 @@ export default function Navbar() {
 
         {/* Right: Cart & Sign In CTAs */}
         <div className="hidden items-center gap-6 lg:flex">
+          {/* Search Bar */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim()) {
+                router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                setSearchQuery("");
+              }
+            }} 
+            className="relative hidden xl:block"
+          >
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-4 py-2 text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[220px]"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+            />
+            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-[#25784C] transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </form>
           {/* Wishlist Icon */}
           <Link
             href="/wishlist"
@@ -171,6 +199,31 @@ export default function Navbar() {
             >
               ✦ Wishlist
             </Link>
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchQuery.trim()) {
+                  router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+                  setSearchQuery("");
+                  setOpen(false);
+                }
+              }} 
+              className="relative mt-2"
+            >
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-2 w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+              />
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            </form>
           </nav>
           <div className="my-2 border-t border-black/10" />
           <div className="flex gap-3">
