@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { ImageUpload } from "@/components/ui/image-upload";
@@ -159,7 +160,7 @@ function ProductsContent() {
       await deleteProduct(id);
       load();
     } catch (e: unknown) {
-      alert((e as { message?: string })?.message ?? "Failed to delete.");
+      toast.error((e as { message?: string })?.message ?? "Failed to delete.");
     }
   }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import Navbar from "@/app/(website)/_components/Navbar";
 import Footer from "@/app/(website)/_components/Footer";
@@ -137,7 +138,7 @@ export default function CartPage() {
       setAddrPostalCode("");
       setAddrMobile("");
     } catch (err: any) {
-      alert(err?.message ?? "Failed to add address.");
+      toast.error(err?.message ?? "Failed to add address.");
     } finally {
       setAddressSubmitting(false);
     }
@@ -147,7 +148,7 @@ export default function CartPage() {
   const handleCheckout = async () => {
     const activeAddress = addresses.find((a) => a.id === selectedAddressId);
     if (!activeAddress) {
-      alert("Please select a delivery address.");
+      toast.error("Please select a delivery address.");
       return;
     }
 
@@ -165,7 +166,7 @@ export default function CartPage() {
         order_type: user?.role === "vendor" ? "b2b" : "b2c",
       });
       await clearCart();
-      alert("Order placed successfully!");
+      toast.success("Order placed successfully!");
       router.replace("/client/dashboard");
     } catch (err: any) {
       setCheckoutError(err?.message ?? "Checkout failed.");

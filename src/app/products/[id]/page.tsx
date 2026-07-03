@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,7 @@ export default function ProductDetailsPage() {
       return;
     }
     if (newRating < 1 || newRating > 5) {
-      alert("Please select a rating between 1 and 5 stars.");
+      toast.error("Please select a rating between 1 and 5 stars.");
       return;
     }
     setSubmittingReview(true);
@@ -62,9 +63,9 @@ export default function ProductDetailsPage() {
       setNewReviewText("");
       setNewRating(5);
       loadReviews();
-      alert("Review submitted successfully!");
+      toast.success("Review submitted successfully!");
     } catch (err: any) {
-      alert(err?.message ?? "Failed to submit review.");
+      toast.error(err?.message ?? "Failed to submit review.");
     } finally {
       setSubmittingReview(false);
     }
@@ -122,7 +123,7 @@ export default function ProductDetailsPage() {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err: any) {
-      alert(err?.message ?? "Failed to add item to cart.");
+      toast.error(err?.message ?? "Failed to add item to cart.");
     } finally {
       setAdding(false);
     }
@@ -138,7 +139,7 @@ export default function ProductDetailsPage() {
       await addToCart(product.id, quantity, selectedPackId);
       router.push("/cart");
     } catch (err: any) {
-      alert(err?.message ?? "Failed to proceed to buy.");
+      toast.error(err?.message ?? "Failed to proceed to buy.");
     }
   };
 
@@ -349,7 +350,7 @@ export default function ProductDetailsPage() {
 
               {/* Wishlist Heart Icon button */}
               <button 
-                onClick={() => alert("Added to Wishlist!")}
+                onClick={() => toast.success("Added to Wishlist!")}
                 className="w-[66px] h-[47px] rounded-[30px] bg-[#103F5E]/20 flex items-center justify-center text-[#103F5E] hover:opacity-90 active:scale-95 transition-all"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -572,9 +573,9 @@ export default function ProductDetailsPage() {
                         if (isMock) return;
                         try {
                           await addToCart(p.id, 1);
-                          alert("Added to cart!");
+                          toast.success("Added to cart!");
                         } catch (e: any) {
-                          alert(e.message || "Failed to add product to cart.");
+                          toast.error(e.message || "Failed to add product to cart.");
                         }
                       }}
                       className="w-[155px] h-[58px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] text-black font-normal flex items-center justify-center shadow-sm hover:bg-neutral-100 active:scale-95 transition-all"

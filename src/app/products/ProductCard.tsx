@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -49,7 +50,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err: any) {
-      alert(err?.message ?? "Failed to add item to cart.");
+      toast.error(err?.message ?? "Failed to add item to cart.");
     } finally {
       setAdding(false);
     }

@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 
 import React from "react";
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
@@ -96,7 +97,7 @@ function CategoriesContent() {
       await deleteCategory(id);
       load();
     } catch (e: unknown) {
-      alert((e as { message?: string })?.message ?? "Failed to delete category.");
+      toast.error((e as { message?: string })?.message ?? "Failed to delete category.");
     }
   }
 

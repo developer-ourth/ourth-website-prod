@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 
 import {
   createContext,
@@ -87,7 +88,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (item && user?.role === "vendor") {
         const minQty = item.product?.min_order_quantity ?? 1;
         if (quantity < minQty) {
-          alert(`Minimum order quantity for "${item.product?.name}" is ${minQty} units.`);
+          toast.error(`Minimum order quantity for "${item.product?.name}" is ${minQty} units.`);
           return;
         }
       }

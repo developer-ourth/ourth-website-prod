@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export const dynamic = "force-dynamic";
 
@@ -48,9 +49,9 @@ export default function ProductsPage() {
     try {
       const packId = selectedPacks[productId] ?? null;
       await addToCart(productId, 1, packId);
-      alert("Added to cart!");
+      toast.success("Added to cart!");
     } catch (err: any) {
-      alert(err?.message ?? "Failed to add product to cart.");
+      toast.error(err?.message ?? "Failed to add product to cart.");
     }
   };
 

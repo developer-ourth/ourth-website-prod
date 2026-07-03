@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/image";
@@ -56,9 +57,9 @@ export default function ProductsSection() {
     try {
       const packId = selectedPacks[productId] ?? null;
       await addToCart(productId, 1, packId);
-      alert("Added to cart!");
+      toast.success("Added to cart!");
     } catch (err: any) {
-      alert(err?.message ?? "Failed to add product to cart.");
+      toast.error(err?.message ?? "Failed to add product to cart.");
     }
   };
 
