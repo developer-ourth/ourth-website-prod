@@ -23,7 +23,7 @@ export default function Navbar() {
   const cartCount = cart?.total_items ?? 0;
 
   useEffect(() => {
-    getMarketplaceProducts({ per_page: 100 })
+    getMarketplaceProducts({ per_page: 40 })
       .then(res => setProducts(res.data || []))
       .catch(console.error);
   }, []);
