@@ -21,6 +21,7 @@ export default function ProductsPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   // Track selected pack per product ID: { [productId]: packId }
   const [selectedPacks, setSelectedPacks] = useState<Record<number, number>>({});
 
@@ -54,10 +55,15 @@ export default function ProductsPage() {
     }
   };
 
-  // Filtered products for "All Products" section based on category selection
-  const filteredProducts = selectedCategory
-    ? products.filter((p) => p.category_id === selectedCategory)
-    : products;
+  // Filtered products for "All Products" section based on category selection and search
+  const filteredProducts = products.filter((p) => {
+    const matchesCategory = selectedCategory ? p.category_id === selectedCategory : true;
+    const matchesSearch = searchQuery 
+      ? p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      : true;
+    return matchesCategory && matchesSearch;
+  });
 
   // Best selling products (top 4)
   const bestSellers = products.slice(0, 4);
@@ -270,13 +276,29 @@ export default function ProductsPage() {
           </section>
 
           {/* 5. All Products */}
-          <section className="py-20 max-w-[1400px] mx-auto px-6 border-t border-gray-100">
-            <h2
-              className="text-center text-3xl lg:text-[40px] font-bold text-[#5E3A16] mb-12"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              All Products
-            </h2>
+          <section className="py-20 max-w-[1400px] mx-auto px-6 border-t border-gray-100" id="all-products">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+              <h2
+                className="text-3xl lg:text-[40px] font-bold text-[#5E3A16]"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+              >
+                All Products
+              </h2>
+              
+              <div className="relative w-full max-w-md">
+                <input 
+                  type="text" 
+                  placeholder="Search products..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-6 py-3.5 text-[18px] text-black outline-none focus:ring-2 focus:ring-[#76A52E] transition-all"
+                  style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                />
+                <svg className="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 text-black/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
 
             {filteredProducts.length === 0 ? (
               <div className="text-center py-12 bg-gray-50 border border-gray-100 rounded-2xl">

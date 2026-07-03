@@ -23,72 +23,22 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between font-['IBM_Plex_Sans']">
-      <div>
-
-        {/* Top Sky Section (Contains Tree, Grass, and Title) */}
-        <section
-          className="relative overflow-hidden pt-44 pb-36 flex items-center min-h-[1000px]"
-          style={{
-            background: "linear-gradient(180deg, #9BDFF2 0%, #E8F8FC 100%)",
-          }}
+    <main className="min-h-screen bg-[#FAF8F3] pt-36 pb-24 font-['IBM_Plex_Sans']">
+      <div className="mx-auto max-w-[1625px] px-4 lg:px-[146px] w-full">
+        {/* Title */}
+        <h1 
+          className="font-semibold text-[48px] leading-[62px] mb-10 text-left"
+          style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: "#2B4D0E" }}
         >
-          {/* Tree Image (Left side) - Figma (X: 0, Y: 0, W: 1003, H: 943) */}
-          <div className="absolute left-0 top-0 w-[100%] max-w-[100%] h-[100%] pointer-events-none z-10 select-none hidden md:block">
-            <Image
-              src="/images/contact/tree.webp"
-              alt="Green Tree"
-              fill
-              className="object-contain object-left-top"
-              priority
-            />
-          </div>
+          Contact Us
+        </h1>
 
-          {/* Grass Image (Bottom span) */}
-          <div className="absolute left-0 right-0 bottom-0 h-[40%] pointer-events-none z-10 select-none">
-            <Image
-              src="/images/contact/grass.webp"
-              alt="Lush green grass"
-              fill
-              className="object-cover object-bottom"
-              priority
-            />
-          </div>
-
-          {/* Headline (Right aligned) */}
-          <div className="relative z-20 mx-auto max-w-[1580px] w-full px-8 lg:px-16 flex justify-end">
-            <h1
-              className="text-[#2B4D0E] font-black text-4xl sm:text-5xl lg:text-6xl text-right max-w-4xl leading-[1.1] tracking-tight"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-            >
-              We are always happy to hear <br />
-              and meet up with you
-            </h1>
-          </div>
-        </section>
-
-        {/* Transition Boundary (Cloud Mask) */}
-        <div className="relative w-full h-[60px] bg-[#FAF8F3] -mt-1 z-20">
-          <div className="absolute top-[-150px] left-0 right-0 h-[300px] pointer-events-none select-none">
-            <Image
-              src="/images/contact/clouds.png"
-              alt="Cloud boundary"
-              fill
-              className="object-stretch"
-            />
-          </div>
-        </div>
-
-        {/* Bottom Sage Green Section (Contains the Cards) */}
-        <section className="bg-[#FAF8F3] pt-8 pb-24 px-6 relative z-20">
-          <div
-            className="mx-auto max-w-[1506px] min-h-[595px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-14 flex flex-col md:flex-row gap-12 items-center justify-between"
-          >
+        <div className="mx-auto w-full max-w-[1200px] min-h-[595px] bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-14 flex flex-col md:flex-row gap-12 items-center justify-between">
             {/* Left Column (Contact Details) */}
             <div className="w-full md:w-[45%] flex flex-col justify-center pr-0 md:pr-8">
               <h2 className="text-[#2B4D0E] font-bold text-3xl mb-10 tracking-tight" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 <span>
-                  Contact Us:
+                  We are always happy to hear and meet up with you
                 </span>
               </h2>
 
@@ -185,12 +135,7 @@ export default function ContactPage() {
                     )}
                   </button>
                 </form>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
-
     </main>
   );
 }
