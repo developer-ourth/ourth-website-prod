@@ -164,6 +164,7 @@ export default function CartPage() {
         delivery_phone: activeAddress.mobile ?? "",
         payment_method: paymentMethod === "cod" ? "cod" : "upi",
         order_type: user?.role === "vendor" ? "b2b" : "b2c",
+        source: "website",
       });
       await clearCart();
       toast.success("Order placed successfully!");

@@ -49,6 +49,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading]       = useState(true);
   const [tab, setTab]               = useState<Tab>("all");
   const [typeFilter, setTypeFilter] = useState<"all" | "b2c" | "b2b">("all");
+  const [platformFilter, setPlatformFilter] = useState<"all" | "app" | "website">("all");
   const [page, setPage]             = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal]           = useState(0);
@@ -60,7 +61,7 @@ export default function AdminOrdersPage() {
 
   async function load(p = page) {
     try {
-      const res = await getAdminOrders({ status: tab === "all" ? undefined : tab, page: p, per_page: 20 });
+      const res = await getAdminOrders({ status: tab === "all" ? undefined : tab, source: platformFilter === "all" ? undefined : platformFilter, page: p, per_page: 20 });
       setOrders(res.data);
       setTotalPages(res.meta.last_page);
       setTotal(res.meta.total);
@@ -78,7 +79,7 @@ export default function AdminOrdersPage() {
     pollRef.current = setInterval(() => load(1), 15_000);
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab]);
+  }, [tab, platformFilter]);
 
   useEffect(() => {
     if (!loading) load(page);
@@ -184,6 +185,21 @@ export default function AdminOrdersPage() {
                 </button>
               ))}
             </div>
+            <div className="flex rounded-lg bg-gray-100 p-0.5 dark:bg-dark-2">
+              {(["all", "app", "website"] as const).map((pFilter) => (
+                <button
+                  key={pFilter}
+                  onClick={() => setPlatformFilter(pFilter)}
+                  className={`rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-wider transition ${
+                    platformFilter === pFilter
+                      ? "bg-white text-dark shadow-sm dark:bg-gray-dark dark:text-white"
+                      : "text-dark-4 hover:text-dark dark:hover:text-white"
+                  }`}
+                >
+                  {pFilter === "all" ? "All Platforms" : pFilter === "app" ? "App" : "Website"}
+                </button>
+              ))}
+            </div>
             {pendingCount > 0 && (
               <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
                 {pendingCount} Pending
@@ -227,6 +243,7 @@ export default function AdminOrdersPage() {
                   <tr className="border-b border-stroke bg-gray-50 dark:border-dark-3 dark:bg-gray-dark">
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Order #</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Vendor</th>
+                    <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Platform</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Type</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Status</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Payment</th>
@@ -261,6 +278,15 @@ export default function AdminOrdersPage() {
                                 </div>
                               )}
                             </div>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span className={`rounded-md px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase ${
+                              order.source === "app" 
+                                ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400" 
+                                : "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400"
+                            }`}>
+                              {order.source ?? "website"}
+                            </span>
                           </td>
                           <td className="px-6 py-4 text-center">
                             <span className={`rounded-md px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase ${

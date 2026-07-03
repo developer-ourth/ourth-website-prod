@@ -28,6 +28,7 @@ const EMPTY_FORM: ProductPayload = {
   wholesale_discounted_price: null,
   min_order_quantity: 1,
   primary_image_url: "",
+  app_primary_image_url: "",
   secondary_images: [],
   sku: "",
   unit: "piece",
@@ -101,6 +102,7 @@ function ProductsContent() {
       wholesale_discounted_price: p.wholesale_discounted_price ? parseFloat(p.wholesale_discounted_price) : null,
       min_order_quantity: p.min_order_quantity ?? 1,
       primary_image_url: p.primary_image_url ?? "",
+      app_primary_image_url: p.app_primary_image_url ?? "",
       secondary_images: p.secondary_images ?? [],
       sku: p.sku ?? "",
       unit: p.unit,
@@ -331,13 +333,22 @@ function ProductsContent() {
                   <input type="number" min="0" value={form.weight_grams ?? ""} onChange={(e) => setForm((f) => ({ ...f, weight_grams: e.target.value ? parseFloat(e.target.value) : null }))} className={inputCls} placeholder="Optional" />
                 </Field>
               </div>
-              <Field label="Product Image">
-                <ImageUpload
-                  value={form.primary_image_url}
-                  onChange={(url) => setForm((f) => ({ ...f, primary_image_url: url }))}
-                  aspectHint="PNG, JPG, WEBP — max 2 MB"
-                />
-              </Field>
+              <div className="grid gap-4 md:grid-cols-2">
+                <Field label="Website Product Image (Primary)">
+                  <ImageUpload
+                    value={form.primary_image_url}
+                    onChange={(url) => setForm((f) => ({ ...f, primary_image_url: url }))}
+                    aspectHint="PNG, JPG, WEBP • max 2 MB"
+                  />
+                </Field>
+                <Field label="App Product Image">
+                  <ImageUpload
+                    value={form.app_primary_image_url}
+                    onChange={(url) => setForm((f) => ({ ...f, app_primary_image_url: url }))}
+                    aspectHint="PNG, JPG, WEBP • max 2 MB (Fallback to Website image if empty)"
+                  />
+                </Field>
+              </div>
               <Field label="Additional Product Images">
                 <MultiImageUpload
                   values={form.secondary_images ?? []}

@@ -343,6 +343,7 @@ export interface AdminOrder {
   created_at: string;
   order_type?: "b2c" | "b2b";
   buyer_gstin?: string | null;
+  source?: "app" | "website";
 }
 
 export interface AdminOrderListResponse {
@@ -351,9 +352,10 @@ export interface AdminOrderListResponse {
   meta: { current_page: number; total: number; per_page: number; last_page: number };
 }
 
-export function getAdminOrders(params?: { status?: string; page?: number; per_page?: number }) {
+export function getAdminOrders(params?: { status?: string; page?: number; per_page?: number; source?: "all" | "app" | "website" }) {
   const q = new URLSearchParams({ per_page: String(params?.per_page ?? 20), page: String(params?.page ?? 1) });
   if (params?.status && params.status !== "all") q.set("status", params.status);
+  if (params?.source && params.source !== "all") q.set("source", params.source);
   return request<AdminOrderListResponse>(`/orders?${q}`);
 }
 
@@ -475,6 +477,7 @@ export interface MarketProduct {
   wholesale_discounted_price: string | null;
   min_order_quantity: number;
   primary_image_url: string | null;
+  app_primary_image_url?: string | null;
   secondary_images: string[];
   unit: string;
   stock_quantity: number;
@@ -496,6 +499,7 @@ export interface ProductPayload {
   wholesale_discounted_price?: number | null;
   min_order_quantity?: number;
   primary_image_url?: string;
+  app_primary_image_url?: string;
   secondary_images?: string[];
   sku?: string;
   unit?: string;
@@ -683,6 +687,7 @@ export interface OrderPayload {
   notes?: string;
   order_type?: "b2c" | "b2b";
   buyer_gstin?: string;
+  source?: "app" | "website";
 }
 
 export function placeOrder(payload: OrderPayload) {
