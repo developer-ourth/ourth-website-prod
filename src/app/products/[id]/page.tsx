@@ -28,6 +28,7 @@ export default function ProductDetailsPage() {
   const [activeTab, setActiveTab] = useState<"description" | "info" | "reviews">("reviews");
   const [adding, setAdding] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [trendingSelectedPacks, setTrendingSelectedPacks] = useState<Record<number, number>>({});
 
   // Reviews State
   const [reviews, setReviews] = useState<ProductReview[]>([]);
@@ -564,15 +565,47 @@ export default function ProductDetailsPage() {
                   </div>
 
                   <div className="flex items-end justify-between pt-2">
-                    <div className="text-[24px] text-black font-normal font-['IBM_Plex_Sans'] leading-none">
-                      <p>Pack of 100</p>
-                      <p className="mt-1">Pack of 50</p>
+                    <div className="text-[14px] text-black font-semibold space-y-1">
+                      {!isMock && p.packs && p.packs.filter((pack: any) => pack.is_active).slice(0, 2).map((pack: any) => {
+                        const isSelected = trendingSelectedPacks[p.id] === pack.id;
+                        return (
+                          <button
+                            key={pack.id}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setTrendingSelectedPacks(prev => ({
+                                ...prev,
+                                [p.id]: prev[p.id] === pack.id ? undefined! : pack.id
+                              }));
+                            }}
+                            className={`block text-left px-2 py-0.5 rounded-md transition-all ${
+                              isSelected
+                                ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
+                                : "text-gray-700 hover:bg-gray-100/50"
+                            }`}
+                          >
+                            {pack.name}
+                          </button>
+                        );
+                      })}
+                      {isMock && (
+                        <>
+                          <button className="block text-left px-2 py-0.5 rounded-md text-gray-700">Pack of 100</button>
+                          <button className="block text-left px-2 py-0.5 rounded-md text-gray-700 mt-1">Pack of 50</button>
+                        </>
+                      )}
                     </div>
                     <button
                       onClick={async () => {
                         if (isMock) return;
+                        if (!user) {
+                          router.push("/client/login");
+                          return;
+                        }
                         try {
-                          await addToCart(p.id, 1);
+                          const packId = trendingSelectedPacks[p.id] ?? null;
+                          await addToCart(p.id, 1, packId);
+                          toast.success("Added to cart");
                         } catch (e: any) {
                           // Context handles error
                         }

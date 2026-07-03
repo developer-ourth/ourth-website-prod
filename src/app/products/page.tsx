@@ -384,6 +384,9 @@ function ProductsPageContent() {
                             </div>
                           );
                         })}
+                        {Array.from({ length: 4 - row.length }).map((_, i) => (
+                          <div key={`empty-${i}`} className="flex-1 border-b md:border-b-0 md:border-r border-transparent md:border-black last:border-0 hidden md:block p-8 h-[430px]"></div>
+                        ))}
                       </div>
                     );
                   });
