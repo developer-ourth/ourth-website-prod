@@ -98,199 +98,164 @@ export default function ClientLoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] flex flex-col justify-between font-['IBM_Plex_Sans']">
-      <Navbar />
-
-      <div className="flex-grow flex items-center justify-center px-4 pt-36 pb-24">
-        <div className="w-full max-w-[480px]">
-          <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8 md:p-10 relative overflow-hidden">
-            
-            <div className="mb-8 text-center">
-              <div className="mb-4 inline-flex items-center justify-center">
-                <Image 
-                  src="/images/logo/HOIPL_3DIndia.webp" 
-                  alt="Healing Ourth Logo" 
-                  width={80} 
-                  height={80} 
-                  className="object-contain drop-shadow-md"
-                />
-              </div>
-              <h1 className="text-3xl font-bold text-[#2B4D0E]">
-                Welcome Back
-              </h1>
-              <p className="mt-2 text-sm text-[#444444]">
-                Sign in to your account to order tableware
-              </p>
-            </div>
-
-            {error && (
-              <div className="mb-6 rounded-[5px] border-[1.5px] border-red-600 bg-red-50 px-4 py-3 text-sm text-red-600 font-bold">
-                {error}
-              </div>
-            )}
-
-            {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
-            <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  if (credentialResponse.credential) {
-                    try {
-                      await loginWithGoogleToken(credentialResponse.credential);
-                    } catch (err: any) {
-                      setError(err?.message || "Google login failed.");
-                    }
-                  }
-                }}
-                onError={() => setError("Google Login Failed")}
+    <div className="flex min-h-screen items-center justify-center bg-[#FAF8F3] px-4 font-['IBM_Plex_Sans']">
+      <div className="w-full max-w-md">
+        <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
+          <div className="mb-8 text-center">
+            <div className="mb-4 inline-flex items-center justify-center">
+              <Image 
+                src="/images/logo/HOIPL_3DIndia.webp" 
+                alt="Healing Ourth Logo" 
+                width={80} 
+                height={80} 
+                className="object-contain drop-shadow-md"
               />
             </div>
-          )}
-            
-            <div className="mb-6 flex space-x-2">
-              <button
-                className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "password" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
-                onClick={() => { setTab("password"); setError(""); }}
-              >
-                Password
-              </button>
-              <button
-                className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "otp" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
-                onClick={() => { setTab("otp"); setError(""); }}
-              >
-                Phone OTP
-              </button>
-            </div>
-
-            {tab === "password" ? (
-              <form onSubmit={handlePasswordSubmit} className="space-y-6">
-                <div>
-                  <label className="mb-2 block text-sm font-bold text-black pl-1">
-                    Email Address or Mobile Number
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com or +91 9876543210"
-                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
-                  />
-                </div>
-
-                <div>
-                  <div className="mb-2 flex items-center justify-between pl-1">
-                    <label className="block text-sm font-bold text-black">
-                      Password
-                    </label>
-                    <Link 
-                      href="/forgot-password" 
-                      className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <input
-                    type="password"
-                    required
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black text-white font-bold transition hover:opacity-90 active:translate-y-[1px] py-3.5 flex justify-center items-center gap-2 text-lg"
-                >
-                  {submitting ? (
-                    <>
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      <span>Signing in...</span>
-                    </>
-                  ) : (
-                    "Sign In"
-                  )}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleOtpSubmit} className="space-y-6">
-                <div>
-                  <label className="mb-2 block text-sm font-bold text-black pl-1">Phone Number</label>
-                  <input
-                    type="text"
-                    required
-                    disabled={otpSent}
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+919876543210"
-                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition disabled:opacity-70"
-                  />
-                </div>
-
-                {otpSent && (
-                  <div>
-                    <label className="mb-2 block text-sm font-bold text-black pl-1">Enter OTP</label>
-                    <input
-                      type="text"
-                      required
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      placeholder="6-digit OTP"
-                      className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
-                    />
-                    <div className="mt-2 text-right">
-                      <button type="button" onClick={handleSendOtp} className="text-xs font-bold text-[#2B4D0E] hover:underline">
-                        Resend OTP
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black text-white font-bold transition hover:opacity-90 active:translate-y-[1px] py-3.5 flex justify-center items-center gap-2 text-lg"
-                >
-                  {submitting ? (
-                    <>
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      <span>Processing...</span>
-                    </>
-                  ) : otpSent ? (
-                    "Verify & Sign In"
-                  ) : (
-                    "Send OTP"
-                  )}
-                </button>
-              </form>
-            )}
-
-            <p className="mt-8 text-center text-sm text-[#444444]">
-              New here?{" "}
-              <Link 
-                href="/client/register" 
-                className="font-bold text-[#2B4D0E] hover:underline"
-              >
-                Create an account
-              </Link>
+            <h1 className="text-3xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">Welcome Back</h1>
+            <p className="mt-2 text-sm text-[#444444] font-['IBM_Plex_Sans']">
+              Sign in to your account to order tableware
             </p>
+          </div>
 
-            <div className="mt-6 pt-4 text-center">
-              <Link 
-                href="/login" 
-                className="text-xs font-bold text-gray-500 hover:text-black transition"
-              >
-                Are you a team member or vendor? Go to Portal
-              </Link>
+          {error && (
+            <div className="mb-5 rounded-[5px] bg-red-50 border border-red-500 px-4 py-3 text-sm text-red-600 font-['IBM_Plex_Sans']">
+              {error}
             </div>
+          )}
+
+          {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+          <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                if (credentialResponse.credential) {
+                  try {
+                    await loginWithGoogleToken(credentialResponse.credential);
+                  } catch (err: any) {
+                    setError(err?.message || "Google login failed.");
+                  }
+                }
+              }}
+              onError={() => setError("Google Login Failed")}
+            />
+          </div>
+          )}
+          
+          <div className="mb-6 flex space-x-2">
+            <button
+              className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "password" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+              onClick={() => { setTab("password"); setError(""); }}
+            >
+              Password
+            </button>
+            <button
+              className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "otp" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+              onClick={() => { setTab("otp"); setError(""); }}
+            >
+              Phone OTP
+            </button>
+          </div>
+
+          {tab === "password" ? (
+            <form onSubmit={handlePasswordSubmit} className="space-y-5">
+              <div>
+                <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Email / Phone</label>
+                <input
+                  type="text"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com or +91 9876543210"
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
+                />
+              </div>
+
+              <div>
+                <div className="mb-2 flex items-center justify-between">
+                  <label className="block text-sm font-bold text-black font-['IBM_Plex_Sans']">Password</label>
+                  <a href="/forgot-password" className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']">
+                    Forgot password?
+                  </a>
+                </div>
+                <input
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black px-6 py-3.5 font-bold text-white transition hover:opacity-90 active:translate-y-[1px] disabled:opacity-60 font-['IBM_Plex_Sans'] text-[18px]"
+              >
+                {submitting ? "Signing in..." : "Sign In"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleOtpSubmit} className="space-y-5">
+              <div>
+                <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Phone Number</label>
+                <input
+                  type="text"
+                  required
+                  disabled={otpSent}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+919876543210"
+                  className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans'] disabled:opacity-70"
+                />
+              </div>
+
+              {otpSent && (
+                <div>
+                  <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Enter OTP</label>
+                  <input
+                    type="text"
+                    required
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="6-digit OTP"
+                    className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans']"
+                  />
+                  <div className="mt-2 text-right">
+                    <button type="button" onClick={handleSendOtp} className="text-xs font-bold text-[#2B4D0E] hover:underline">
+                      Resend OTP
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full rounded-[30px] bg-[#25784C] border-[1.5px] border-black px-6 py-3.5 font-bold text-white transition hover:opacity-90 active:translate-y-[1px] disabled:opacity-60 font-['IBM_Plex_Sans'] text-[18px]"
+              >
+                {submitting ? "Processing..." : otpSent ? "Verify & Sign In" : "Send OTP"}
+              </button>
+            </form>
+          )}
+
+          <p className="mt-6 text-center text-sm text-[#444444] font-['IBM_Plex_Sans']">
+            New here?{" "}
+            <Link href="/client/register" className="font-bold text-[#2B4D0E] hover:underline">
+              Create an account
+            </Link>
+          </p>
+
+          <div className="mt-6 pt-4 text-center border-t border-gray-100">
+            <Link 
+              href="/login" 
+              className="text-xs font-bold text-gray-500 hover:text-black transition"
+            >
+              Are you a team member or vendor? Go to Portal
+            </Link>
           </div>
         </div>
       </div>
-
-      <Footer />
-    </main>
+    </div>
   );
 }
