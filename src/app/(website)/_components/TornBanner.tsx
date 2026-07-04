@@ -54,7 +54,7 @@ export default function TornBanner() {
             stroke="none"
             d="M 60,225 C 380,140, 880,115, 1380,75"
           />
-          <text
+          {/* <text
             className="fill-[#4E3629] font-black tracking-tight"
             style={{
               fontFamily: "var(--font-poppins), Poppins, sans-serif",
@@ -66,7 +66,7 @@ export default function TornBanner() {
             <textPath href="#textPath-torn" startOffset="50%">
               Be the Generation That Changed Everything.
             </textPath>
-          </text>
+          </text> */}
         </svg>
       </div>
     </section>
