@@ -68,7 +68,7 @@ export default function Journey() {
         </h2>
 
         {/* ========== DESKTOP ORBITAL LAYOUT ========== */}
-        <div className="hidden lg:block relative w-full" style={{ height: "850px" }}>
+        <div className="hidden 2xl:block relative w-full" style={{ height: "850px" }}>
 
           {/* Central Globe — 676/1920 ≈ 35.2% width, vertically centred */}
           <div
@@ -231,29 +231,32 @@ export default function Journey() {
 
         </div>
 
-        {/* ========== MOBILE / TABLET LINEAR LAYOUT ========== */}
-        <div className="lg:hidden grid grid-cols-1 gap-6 mt-8 w-full max-w-[500px] mx-auto">
-          {/* Globe on mobile */}
-          <div className="flex justify-center mb-4">
+        {/* ========== MOBILE / TABLET / LAPTOP LINEAR GRID LAYOUT ========== */}
+        <div className="2xl:hidden flex flex-col gap-8 mt-8 w-full max-w-[1000px] mx-auto px-4">
+          {/* Globe on mobile/tablet/laptop */}
+          <div className="flex justify-center">
             <Image
               src="/images/home/HOIPL_3DIndia.webp"
               alt="Healing Ourth Globe"
-              width={200}
-              height={200}
-              className="w-[200px] h-[200px] object-contain"
+              width={240}
+              height={240}
+              className="w-[200px] h-[200px] md:w-[240px] md:h-[240px] object-contain"
             />
           </div>
-          {steps.map((s) => (
-            <div key={s.id} className="flex items-center gap-4 bg-white p-4 border border-black/10 rounded-xl shadow-sm">
-              <div className="w-[90px] h-[90px] flex-shrink-0">
-                <Image src={s.image} alt={s.title} width={90} height={90} className="w-full h-full object-contain" />
+          {/* Steps Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            {steps.map((s) => (
+              <div key={s.id} className="flex items-center gap-4 bg-white p-5 border border-black/10 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-[80px] h-[80px] md:w-[90px] md:h-[90px] flex-shrink-0">
+                  <Image src={s.image} alt={s.title} width={90} height={90} className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <p className="text-base md:text-lg font-bold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.title}</p>
+                  <p className="text-sm text-gray-600 mt-1 leading-relaxed" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.desc}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-base font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.title}</p>
-                <p className="text-sm text-gray-600 mt-0.5" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.desc}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
       </div>
