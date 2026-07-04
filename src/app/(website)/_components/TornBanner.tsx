@@ -52,7 +52,7 @@ export default function TornBanner() {
             id="textPath-torn"
             fill="none"
             stroke="none"
-            d="M 60,210 Q 380,155 720,165 T 1380,95"
+            d="M 60,225 C 380,140, 880,115, 1380,75"
           />
           <text
             className="fill-[#4E3629] font-black tracking-tight"
