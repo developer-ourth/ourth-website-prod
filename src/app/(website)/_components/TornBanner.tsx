@@ -48,7 +48,7 @@ export default function TornBanner() {
         className="absolute inset-0 flex items-center justify-center px-4 md:px-16 text-center"
       >
         <h2
-          className="text-[#4E3629] text-3xl md:text-5xl lg:text-[60px] lg:leading-[70px] font-black tracking-tight drop-shadow-[0px_2px_4px_rgba(0,0,0,0.08)] max-w-5xl"
+          className="text-[#4E3629] text-3xl md:text-5xl lg:text-[47px] lg:leading-[70px] font-black tracking-tight drop-shadow-[0px_2px_4px_rgba(0,0,0,0.08)] max-w-5xl"
           style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
         >
           Be the Generation That Changed Everything.
