@@ -42,7 +42,7 @@ function isPublicRoute(pathname: string): boolean {
 
 function getPublicRouteBg(pathname: string): string {
   const normalized = pathname.toLowerCase().replace(/\/$/, "");
-  if (normalized === "/know-us" || normalized.startsWith("/know-us/")) return "bg-[#FAF8F3]";
+  if (normalized === "/know-us" || normalized.startsWith("/know-us/") || normalized === "/terms" || normalized === "/privacy-policy") return "bg-[#FAF8F3]";
   if (normalized === "/cart") return "bg-[#FBEFC9]";
   if (normalized === "/products") return "bg-[#E8F0D8]";
   if (normalized.startsWith("/products/") || normalized === "/client/dashboard") return "bg-[#DCEEFB]";
