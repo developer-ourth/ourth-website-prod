@@ -43,19 +43,31 @@ export default function TornBanner() {
         />
       </div>
 
-      {/* Text centered in the transparent gap between the two torn edges */}
+      {/* Text centered in the transparent gap, curved to follow the wave pattern using SVG textPath */}
       <div
-        className="absolute inset-0 flex items-center justify-center px-4 md:px-16 text-center"
+        className="absolute inset-0 flex items-center justify-center px-4 md:px-16 text-center select-none pointer-events-none"
       >
-        <h2
-          className="text-[#4E3629] text-3xl md:text-5xl lg:text-[60px] xl:text-[64px] lg:leading-[70px] font-black tracking-tight drop-shadow-[0px_2px_4px_rgba(0,0,0,0.08)] max-w-none"
-          style={{ 
-            fontFamily: "var(--font-poppins), Poppins, sans-serif",
-            transform: "rotate(-2.4deg)"
-          }}
-        >
-          Be the Generation That Changed Everything.
-        </h2>
+        <svg viewBox="0 0 1440 320" className="w-full h-full max-h-[680px]">
+          <path
+            id="textPath-torn"
+            fill="none"
+            stroke="none"
+            d="M 60,210 Q 380,155 720,165 T 1380,95"
+          />
+          <text
+            className="fill-[#4E3629] font-black tracking-tight"
+            style={{
+              fontFamily: "var(--font-poppins), Poppins, sans-serif",
+              fontSize: "clamp(20px, 4.4vw, 56px)",
+              textAnchor: "middle",
+              dominantBaseline: "middle"
+            }}
+          >
+            <textPath href="#textPath-torn" startOffset="50%">
+              Be the Generation That Changed Everything.
+            </textPath>
+          </text>
+        </svg>
       </div>
     </section>
   );
