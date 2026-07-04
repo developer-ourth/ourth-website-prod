@@ -324,7 +324,7 @@ function ProductsPageContent() {
 
                   return rows.map((row, rowIndex) => {
                     return (
-                      <div key={rowIndex} className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+                      <div key={rowIndex} className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] w-fit md:w-max max-w-full mx-auto overflow-hidden rounded-[5px]">
                         {row.map((product) => {
                           const image = getProductImageUrl(product.primary_image_url, product.name);
                           const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
@@ -335,7 +335,7 @@ function ProductsPageContent() {
                             : Math.round(parseFloat(product.discounted_price ?? product.base_price));
 
                           return (
-                            <div key={product.id} className="w-full md:w-[25%] md:flex-none border-b md:border-b-0 md:border-r border-black last:border-b-0 md:last:border-r-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+                            <div key={product.id} className="w-full md:w-[280px] lg:w-[338px] md:flex-none border-b md:border-b-0 md:border-r border-black last:border-b-0 md:last:border-r-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                               {/* Centered rounded-rect product image container */}
                               <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
                                 <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
