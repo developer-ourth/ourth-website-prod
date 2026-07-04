@@ -67,7 +67,7 @@ export default function ProductsSection() {
   const leafInnerPath = "M 225,10 C 150,10 10,40 10,100 C 10,130 18,155 10,160 C 50,160 225,130 225,80 C 225,50 225,20 225,10 Z";
 
   return (
-    <section className="bg-[#FAF8F3] py-20 relative overflow-hidden">
+    <section className="bg-[#FAF8F3] pt-4 pb-20 relative overflow-hidden">
       <div className="mx-auto max-w-[1400px] px-6">
         
         {/* Section Heading */}
