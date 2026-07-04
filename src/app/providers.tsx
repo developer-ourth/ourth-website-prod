@@ -23,22 +23,30 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Using a mock client ID or env var
-  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "MOCK_CLIENT_ID";
+  // Only wrap with GoogleOAuthProvider if we have a real client ID to avoid crashing the app
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  return (
-    <GoogleOAuthProvider clientId={googleClientId}>
-      <ThemeProvider defaultTheme="light" attribute="class">
-        <AuthProvider>
-          <CartProvider>
-            <SidebarProvider>
-              {children}
-              <Toaster position="bottom-right" toastOptions={{ style: { background: '#FAF8F3', color: '#000', border: '1px solid #76A52E' } }} />
-            </SidebarProvider>
-          </CartProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </GoogleOAuthProvider>
+  const appContent = (
+    <ThemeProvider defaultTheme="light" attribute="class">
+      <AuthProvider>
+        <CartProvider>
+          <SidebarProvider>
+            {children}
+            <Toaster position="bottom-right" toastOptions={{ style: { background: '#FAF8F3', color: '#000', border: '1px solid #76A52E' } }} />
+          </SidebarProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
+
+  if (googleClientId && googleClientId !== "MOCK_CLIENT_ID") {
+    return (
+      <GoogleOAuthProvider clientId={googleClientId}>
+        {appContent}
+      </GoogleOAuthProvider>
+    );
+  }
+
+  return appContent;
 }
 

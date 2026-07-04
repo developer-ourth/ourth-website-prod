@@ -48,7 +48,7 @@ export default function Navbar() {
     <div className="w-full bg-transparent fixed top-0 left-0 right-0 z-[9999]">
       {/* Header Container with Glassmorphism Effect */}
       <header
-        className="w-full flex h-[70px] lg:h-[95px] items-center justify-between px-6 lg:px-12 box-sizing-border-box backdrop-blur-[12px]"
+        className="w-full flex h-[70px] lg:h-[80px] xl:h-[95px] items-center justify-between px-4 lg:px-6 xl:px-12 box-sizing-border-box backdrop-blur-[12px]"
         style={{
           backgroundColor: "rgba(250, 248, 243, 0.55)", // translucent cream background
           backdropFilter: "blur(12px)",
@@ -62,10 +62,10 @@ export default function Navbar() {
             alt="Healing Ourth"
             width={79}
             height={79}
-            className="w-10 h-10 lg:w-[79px] lg:h-[79px] object-contain drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]"
+            className="w-10 h-10 lg:w-[60px] lg:h-[60px] xl:w-[79px] xl:h-[79px] object-contain drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]"
           />
           <span
-            className="text-2xl lg:text-[40px] font-bold text-[#0D3A27] tracking-tight leading-[34px] flex items-center"
+            className="text-2xl lg:text-[24px] xl:text-[32px] 2xl:text-[40px] font-bold text-[#0D3A27] tracking-tight leading-[1.1] flex items-center whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Healing Ourth
@@ -73,24 +73,24 @@ export default function Navbar() {
         </Link>
 
         {/* Center: Simplified Text Links (No pill borders, bold) */}
-        <nav className="hidden items-center gap-12 lg:flex">
+        <nav className="hidden items-center gap-3 lg:gap-5 xl:gap-8 2xl:gap-12 lg:flex">
           <Link
             href="/know-us"
-            className="text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all"
+            className="text-[16px] lg:text-[17px] xl:text-[20px] 2xl:text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Know Us
           </Link>
           <Link
             href="/products"
-            className="text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all"
+            className="text-[16px] lg:text-[17px] xl:text-[20px] 2xl:text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Marketplace
           </Link>
           <Link
             href="/campaigns"
-            className="text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all"
+            className="text-[16px] lg:text-[17px] xl:text-[20px] 2xl:text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             Campaigns
@@ -98,7 +98,7 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Cart & Sign In CTAs */}
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-2 lg:gap-3 xl:gap-4 2xl:gap-6 lg:flex">
           {/* Search Bar */}
           <div ref={searchRefDesktop} className="relative flex items-center">
             <form 
@@ -120,7 +120,7 @@ export default function Navbar() {
                   setSearchQuery(e.target.value);
                   setShowDropdown(true);
                 }}
-                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-4 py-2 text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[220px]"
+                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-3 xl:px-4 py-2 text-[14px] xl:text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[140px] xl:w-[220px]"
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               />
               <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-[#25784C] transition-colors">
@@ -216,7 +216,7 @@ export default function Navbar() {
           {/* Sign In Solid Green Capsule Button */}
           <Link
             href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
-            className="inline-flex w-[146px] h-[47px] items-center justify-center rounded-[30px] bg-[#25784C] text-[24px] font-bold text-white hover:opacity-90 transition-all"
+            className="inline-flex w-[110px] xl:w-[146px] h-[36px] xl:h-[47px] items-center justify-center rounded-[30px] bg-[#25784C] text-[16px] xl:text-[24px] font-bold text-white hover:opacity-90 transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
             {user ? "Dashboard" : "Sign in"}

@@ -118,6 +118,7 @@ export default function LoginPage() {
             </div>
           )}
 
+          {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
           <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
@@ -132,6 +133,7 @@ export default function LoginPage() {
               onError={() => setError("Google Login Failed")}
             />
           </div>
+          )}
           
           <div className="mb-6 flex space-x-2">
             <button

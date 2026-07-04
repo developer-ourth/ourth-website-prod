@@ -129,6 +129,7 @@ function RegisterForm() {
             </div>
           )}
 
+          {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
           <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
@@ -143,6 +144,7 @@ function RegisterForm() {
               onError={() => setError("Google Login Failed")}
             />
           </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
