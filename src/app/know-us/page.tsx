@@ -41,8 +41,8 @@ const slides = [
     ctaText: "text-white"
   },
   {
-    title: "Actionable",
-    description: "Making sustainable living affordable and accessible to everyone.",
+    title: "Transformative",
+    description: "We don't just replace products. We transform behaviour, businesses, and environmental impact.",
     image: "/images/about/banner_yellow.webp",
     activeTitleColor: "text-[#EBB339]",
     rightSloganColor: "text-[#664C12]",
