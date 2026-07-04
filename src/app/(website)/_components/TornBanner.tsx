@@ -49,7 +49,10 @@ export default function TornBanner() {
       >
         <h2
           className="text-[#4E3629] text-3xl md:text-5xl lg:text-[60px] xl:text-[64px] lg:leading-[70px] font-black tracking-tight drop-shadow-[0px_2px_4px_rgba(0,0,0,0.08)] max-w-none"
-          style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+          style={{ 
+            fontFamily: "var(--font-poppins), Poppins, sans-serif",
+            transform: "rotate(-2.4deg)"
+          }}
         >
           Be the Generation That Changed Everything.
         </h2>
