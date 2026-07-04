@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,24 +13,87 @@ const teamMembers = [
   { name: "Asteria Xing", image: "/images/team/team-07.webp" }
 ];
 
+const slides = [
+  {
+    title: "Purposeful",
+    description: "Everything we build solves a real environmental problem right at core",
+    image: "/images/about/banner.webp",
+    activeTitleColor: "text-[#A4CC55]",
+    rightSloganColor: "text-[#2B4D0E]",
+    coreStatementColor: "text-[#76A52E]",
+    headingColor: "text-[#2B4D0E]",
+    boxBg: "bg-[#C7E08E]/20",
+    textColor: "text-[#4C7A1A]",
+    ctaBg: "bg-[#C7E08E]",
+    ctaText: "text-[#2B4D0E]"
+  },
+  {
+    title: "Trustworthy",
+    description: "Scientific, transparent, and honest.",
+    image: "/images/about/water_banner.webp",
+    activeTitleColor: "text-[#29A6FF]",
+    rightSloganColor: "text-[#103F5E]",
+    coreStatementColor: "text-[#2693D6]",
+    headingColor: "text-[#103F5E]",
+    boxBg: "bg-[#9DCEEE]/20",
+    textColor: "text-[#1B6F9A]",
+    ctaBg: "bg-[#9DCEEE]",
+    ctaText: "text-[#103F5E]"
+  },
+  {
+    title: "Actionable",
+    description: "Making sustainable living affordable and accessible to everyone.",
+    image: "/images/about/earth_banner.webp",
+    activeTitleColor: "text-[#F0A02E]",
+    rightSloganColor: "text-[#8A5200]",
+    coreStatementColor: "text-[#C98A2E]",
+    headingColor: "text-[#8A5200]",
+    boxBg: "bg-[#FADAA6]/20",
+    textColor: "text-[#A86400]",
+    ctaBg: "bg-[#FADAA6]",
+    ctaText: "text-[#8A5200]"
+  }
+];
+
 export default function KnowUsPage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const slide = slides[currentSlide];
+
   return (
-    <main className="relative min-h-screen w-full bg-white overflow-x-hidden">
+    <main className="relative min-h-screen w-full bg-white overflow-x-hidden transition-colors duration-1000">
 
       {/* ===== 1. HERO BANNER ===== */}
-      <section className="relative w-full h-[320px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
-        {/* Background Image */}
+      <section className="relative w-full h-[320px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+        {/* Background Images with Fade Transition */}
         <div className="absolute inset-0">
-          <Image
-            src="/images/about/banner.webp"
-            alt="Know Us Banner"
-            fill
-            className="object-cover"
-            priority
-          />
+          {slides.map((s, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                currentSlide === idx ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <Image
+                src={s.image}
+                alt="Know Us Banner"
+                fill
+                className="object-cover"
+                priority={idx === 0}
+              />
+            </div>
+          ))}
         </div>
-        {/* Green Overlay */}
-        <div className="absolute inset-0" />
+        
+        {/* Transparent Overlay */}
+        <div className="absolute inset-0 bg-black/10" />
 
         {/* Hero Content */}
         <div className="relative z-10 h-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 flex items-center">
@@ -39,38 +103,55 @@ export default function KnowUsPage() {
               <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[48px] leading-tight sm:leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] max-w-[695px]">
                 What does &quot;Healing OURTH&quot;<br />mean to US?
               </h1>
+              
+              {/* Dynamic Text Box Card */}
               <div
-                className="w-full max-w-[558px] h-[70px] sm:h-[80px] md:h-[100px] lg:h-[138px] rounded-[20px] sm:rounded-[30px] flex items-center px-4 sm:px-6 md:px-8 border border-white/20"
+                className="w-full max-w-[558px] h-[70px] sm:h-[80px] md:h-[100px] lg:h-[138px] rounded-[20px] sm:rounded-[30px] flex items-center px-4 sm:px-6 md:px-8 border border-white/20 transition-all duration-1000"
                 style={{
-                  background: "rgba(43, 77, 14, 0.15)",
-                  backdropFilter: "blur(5px)",
-                  WebkitBackdropFilter: "blur(5px)",
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
+                  background: "rgba(255, 255, 255, 0.12)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15)"
                 }}
               >
-                <span className="font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[48px] leading-tight text-[#A4CC55] font-['IBM_Plex_Sans']">
-                  Purposeful
+                <span className={`font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[48px] leading-tight font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.activeTitleColor}`}>
+                  {slide.title}
                 </span>
               </div>
             </div>
-            {/* Right */}
-            <p className="text-[#2B4D0E] font-semibold text-base sm:text-lg md:text-2xl lg:text-[40px] lg:leading-[46px] text-left md:text-right max-w-[503px] font-['IBM_Plex_Sans']">
-              Everything we build solves a real environmental problem right at core
+
+            {/* Right Slogan */}
+            <p className={`font-semibold text-base sm:text-lg md:text-2xl lg:text-[40px] lg:leading-[46px] text-left md:text-right max-w-[503px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.rightSloganColor}`}>
+              {slide.description}
             </p>
           </div>
+        </div>
+
+        {/* Slide Indicators / Dots (Manual Controls) */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                currentSlide === idx ? "w-6 bg-white" : "w-2.5 bg-white/50"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </section>
 
       {/* ===== 2. CORE STATEMENT ===== */}
       <section className="w-full py-6 sm:py-8 md:py-10 px-4 sm:px-6">
-        <p className="max-w-[1747px] mx-auto text-center text-[#76A52E] font-bold text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans']">
+        <p className={`max-w-[1747px] mx-auto text-center font-bold text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.coreStatementColor}`}>
           Ourth aims to build the world&apos;s most trusted climate-tech ecosystem that makes sustainable living affordable, accessible, and actionable for every citizen, every business, and every community—creating a Clean, Green, Single-Use Plastic-Free Bharat, and inspiring the world to heal OURTH together.
         </p>
       </section>
 
       {/* ===== 3. WHAT IS HEALING OURTH? ===== */}
       <section className="w-full py-8 sm:py-10 md:py-12 px-4 sm:px-6 relative overflow-visible">
-        <h2 className="text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] text-[#2B4D0E] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12">
+        <h2 className={`text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12 transition-all duration-1000 ${slide.headingColor}`}>
           What is Healing OURTH?
         </h2>
 
@@ -78,25 +159,25 @@ export default function KnowUsPage() {
           {/* Left: 2x2 Grid of Objective Boxes */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-[30px] flex-shrink-0">
             {/* Box 1 */}
-            <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
+            <div className={`w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-all duration-1000 ${slide.boxBg}`}>
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
                 <Image src="/images/about/Element1.webp" alt="Eco Products" fill className="object-contain" />
               </div>
             </div>
             {/* Box 2 */}
-            <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
+            <div className={`w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-all duration-1000 ${slide.boxBg}`}>
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
                 <Image src="/images/about/Element2.webp" alt="Waste Disposal" fill className="object-contain" />
               </div>
             </div>
             {/* Box 3 */}
-            <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
+            <div className={`w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-all duration-1000 ${slide.boxBg}`}>
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
                 <Image src="/images/about/Element3.webp" alt="Tech Integration" fill className="object-contain" />
               </div>
             </div>
             {/* Box 4 */}
-            <div className="w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-transform">
+            <div className={`w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[248px] lg:h-[248px] rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center hover:scale-105 transition-all duration-1000 ${slide.boxBg}`}>
               <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[140px] lg:h-[140px]">
                 <Image src="/images/about/Element4.webp" alt="Community" fill className="object-contain" />
               </div>
@@ -119,7 +200,7 @@ export default function KnowUsPage() {
 
       {/* ===== 4. OUR FOUNDER'S VISION ===== */}
       <section className="w-full py-10 sm:py-12 md:py-16 px-4 sm:px-6">
-        <h2 className="text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] text-[#2B4D0E] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12">
+        <h2 className={`text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12 transition-all duration-1000 ${slide.headingColor}`}>
           Our Founder&apos;s Vision
         </h2>
 
@@ -136,8 +217,8 @@ export default function KnowUsPage() {
           </div>
 
           {/* Vision Text */}
-          <div className="flex-grow bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] p-5 sm:p-6 md:p-8 lg:p-10 flex items-center">
-            <p className="text-[#4C7A1A] font-medium text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans']">
+          <div className={`flex-grow rounded-[20px] sm:rounded-[25px] md:rounded-[30px] p-5 sm:p-6 md:p-8 lg:p-10 flex items-center transition-all duration-1000 ${slide.boxBg}`}>
+            <p className={`font-medium text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.textColor}`}>
               After spending nearly three decades working across global paper, plastic, packaging, nonwoven and recycling industries, I witnessed the environmental damage caused by single-use plastics firsthand.
               <br /><br />
               I realized that despite billions being invested in recycling and waste management, the core problem remained unchanged: we continued producing disposable products that were never designed for sustainability. Most sustainable alternatives were expensive and targeted only a small premium market.
@@ -150,8 +231,8 @@ export default function KnowUsPage() {
         </div>
 
         {/* Statement Banner */}
-        <div className="max-w-[1437px] mx-auto mt-6 sm:mt-8 bg-[#C7E08E]/20 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center px-5 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 text-center">
-          <p className="text-[#4C7A1A] font-bold text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans']">
+        <div className={`max-w-[1437px] mx-auto mt-6 sm:mt-8 rounded-[20px] sm:rounded-[25px] md:rounded-[30px] flex items-center justify-center px-5 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 text-center transition-all duration-1000 ${slide.boxBg}`}>
+          <p className={`font-bold text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.textColor}`}>
             Replace single-use plastic at the source with affordable, scalable, truly sustainable alternatives while empowering businesses, communities, and governments to transition toward a circular economy.
           </p>
         </div>
@@ -160,7 +241,7 @@ export default function KnowUsPage() {
       {/* ===== 5. HOW ELSE YOU CAN HELP EARTH WITH? ===== */}
       <section className="w-full py-12">
         <div className="max-w-[1437px] mx-auto px-4 sm:px-6">
-          <h2 className="text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] text-[#2B4D0E] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12">
+          <h2 className={`text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] mb-8 sm:mb-10 md:mb-12 transition-all duration-1000 ${slide.headingColor}`}>
             How else you can help earth with?
           </h2>
         </div>
@@ -175,21 +256,21 @@ export default function KnowUsPage() {
           </div>
 
           {/* Centered text container */}
-          <div className="relative z-10 max-w-[1437px] mx-auto text-[#2B4D0E] font-medium text-xs sm:text-sm md:text-base lg:text-[18px] leading-normal sm:leading-relaxed lg:leading-[28px] font-['IBM_Plex_Sans'] space-y-2 lg:space-y-3">
-            <p className="text-sm sm:text-base md:text-lg lg:text-[22px] font-bold text-[#103F5E] leading-normal lg:leading-[32px]">
+          <div className={`relative z-10 max-w-[1437px] mx-auto font-medium text-xs sm:text-sm md:text-base lg:text-[18px] leading-normal sm:leading-relaxed lg:leading-[28px] font-['IBM_Plex_Sans'] space-y-2 lg:space-y-3 transition-all duration-1000 ${slide.rightSloganColor}`}>
+            <p className="text-sm sm:text-base md:text-lg lg:text-[22px] font-bold leading-normal lg:leading-[32px]">
               The Harit Bharat Movement is India&apos;s national push for environmental sustainability, deeply rooted in the country&apos;s National Action Plan on Climate Change (NAPCC).
             </p>
 
             <div className="border-t border-black/10 my-2" />
 
-            <p className="font-bold text-[#103F5E] lg:text-[20px]">The NAPCC Connection</p>
+            <p className="font-bold lg:text-[20px]">The NAPCC Connection</p>
             <ul className="list-disc pl-4 sm:pl-6 space-y-1 lg:space-y-1.5">
               <li><strong>Core Foundation:</strong> The movement directly supports the NAPCC, which is India&apos;s master plan to combat climate change while maintaining economic growth.</li>
               <li><strong>Green India Mission (GIM):</strong> This is one of the eight core missions under the NAPCC. It serves as the primary engine for Harit Bharat by focusing on restoring degraded forests and increasing India&apos;s forest cover.</li>
               <li><strong>Carbon Sinks:</strong> Under the NAPCC framework, Harit Bharat initiatives help India meet its international climate goals by creating massive natural carbon sinks through afforestation.</li>
             </ul>
 
-            <p className="font-bold text-[#103F5E] lg:text-[20px] pt-1">Key Pillars</p>
+            <p className="font-bold lg:text-[20px] pt-1">Key Pillars</p>
             <ul className="list-disc pl-4 sm:pl-6 space-y-1 lg:space-y-1.5">
               <li><strong>Mass Afforestation:</strong> Scaling up tree-planting drives like the public &quot;Ek Ped Maa Ke Naam&quot; campaign to meet NAPCC forest targets.</li>
               <li><strong>Green Financing:</strong> Funding eco-friendly startups and landscape restoration through initiatives like the Harit Bharat Fund.</li>
@@ -202,7 +283,7 @@ export default function KnowUsPage() {
 
       {/* ===== 6. OUR VISIONARY TEAM ===== */}
       <section className="w-full py-10 sm:py-12 md:py-16 px-4 sm:px-6">
-        <h2 className="text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] text-[#2B4D0E] font-['IBM_Plex_Sans'] mb-10 sm:mb-12 md:mb-16">
+        <h2 className={`text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] mb-10 sm:mb-12 md:mb-16 transition-all duration-1000 ${slide.headingColor}`}>
           Our Visionary Team
         </h2>
 
@@ -228,9 +309,9 @@ export default function KnowUsPage() {
         <div className="max-w-[1400px] mx-auto flex justify-center sm:justify-end">
           <Link
             href="/contact"
-            className="w-[200px] sm:w-[240px] md:w-[274px] h-[50px] sm:h-[60px] md:h-[70px] bg-[#C7E08E] rounded-[25px] sm:rounded-[30px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-between px-5 sm:px-6 md:px-8 hover:translate-y-[-2px] active:translate-y-0 transition-all"
+            className={`w-[200px] sm:w-[240px] md:w-[274px] h-[50px] sm:h-[60px] md:h-[70px] rounded-[25px] sm:rounded-[30px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-between px-5 sm:px-6 md:px-8 hover:translate-y-[-2px] active:translate-y-0 transition-all duration-1000 ${slide.ctaBg}`}
           >
-            <span className="font-bold text-lg sm:text-xl md:text-[24px] text-[#2B4D0E] font-['IBM_Plex_Sans']">
+            <span className={`font-bold text-lg sm:text-xl md:text-[24px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.ctaText}`}>
               Join Us
             </span>
             <span className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center border border-black/10 shadow-sm">
