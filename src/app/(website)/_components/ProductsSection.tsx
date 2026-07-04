@@ -120,12 +120,12 @@ export default function ProductsSection() {
                     {/* Top Leaf Image Container (Clickable link to details page) */}
                     <NextLink href={`/products/${id}`} className="relative w-full h-[180px] mt-2 flex items-center justify-center hover:opacity-90 block">
                       {/* Product Image */}
-                      <div className="relative z-10 w-[140px] h-[110px] flex items-center justify-center">
+                      <div className="relative z-10 w-[190px] h-[150px] flex items-center justify-center">
                         <Image 
                           src={image} 
                           alt={name}
-                          width={140}
-                          height={110} 
+                          width={190}
+                          height={150} 
                           className="max-w-full max-h-full object-contain transform group-hover:scale-105 transition-all duration-300"
                         />
                       </div>
@@ -251,8 +251,8 @@ export default function ProductsSection() {
                       />
                       <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
                         <NextLink href={`/products/${id}`} className="relative w-full h-[40%] mt-1 flex items-center justify-center hover:opacity-90 block">
-                          <div className="relative z-10 w-[100px] sm:w-[130px] h-[80px] sm:h-[100px] flex items-center justify-center">
-                            <Image src={image} alt={name} width={130} height={100} className="max-w-full max-h-full object-contain" />
+                          <div className="relative z-10 w-[130px] sm:w-[170px] h-[100px] sm:h-[130px] flex items-center justify-center">
+                            <Image src={image} alt={name} width={170} height={130} className="max-w-full max-h-full object-contain" />
                           </div>
                         </NextLink>
                         <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
