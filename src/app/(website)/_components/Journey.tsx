@@ -67,13 +67,13 @@ export default function Journey() {
           Our product&apos;s JOURNEY
         </h2>
 
-        {/* ========== DESKTOP ORBITAL LAYOUT ========== */}
-        <div className="hidden 2xl:block relative w-full" style={{ height: "850px" }}>
+        {/* ========== DESKTOP/LAPTOP ORBITAL LAYOUT ========== */}
+        <div className="hidden lg:block relative w-full h-[600px] xl:h-[720px] 2xl:h-[850px]">
 
           {/* Central Globe — 676/1920 ≈ 35.2% width, vertically centred */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 z-10"
-            style={{ top: "22%", width: "35.2%", maxWidth: "676px" }}
+            className="absolute left-1/2 -translate-x-1/2 z-10 w-[26%] xl:w-[30%] 2xl:w-[35.2%] max-w-[676px]"
+            style={{ top: "22%" }}
           >
             <Image
               src="/images/home/HOIPL_3DIndia.webp"
@@ -85,28 +85,26 @@ export default function Journey() {
           </div>
 
           {/* ---------- icon3 — Top Center ---------- */}
-          {/* Figma: icon at x≈883 (46%), y offset 7% ; text to the right */}
           <div
-            className="absolute flex flex-row items-center gap-4 z-20"
-            style={{ left: "42%", top: "4%" }}
+            className="absolute flex flex-row items-center gap-2 xl:gap-4 z-20 left-[34%] xl:left-[38%] 2xl:left-[42%] top-[4%]"
           >
             <Image
               src={steps[2].image}
               alt={steps[2].title}
               width={160}
               height={160}
-              className="w-[160px] h-[160px] object-contain flex-shrink-0"
+              className="w-[90px] h-[90px] xl:w-[125px] xl:h-[125px] 2xl:w-[160px] 2xl:h-[160px] object-contain flex-shrink-0"
             />
-            <div className="text-left" style={{ maxWidth: "205px" }}>
+            <div className="text-left w-[120px] xl:w-[170px] 2xl:w-[205px]">
               <p
-                className="text-[20px] font-semibold text-black"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[14px] xl:text-[17px] 2xl:text-[20px] font-semibold text-black leading-snug"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[2].title}
               </p>
               <p
-                className="text-[16px] font-normal text-black mt-1"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[11px] xl:text-[13px] 2xl:text-[16px] font-normal text-black mt-1 leading-normal"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[2].desc}
               </p>
@@ -114,28 +112,26 @@ export default function Journey() {
           </div>
 
           {/* ---------- icon2 — Middle Left ---------- */}
-          {/* Figma: text right-aligned at x=230, icon at x=478, y offset ≈25% */}
           <div
-            className="absolute flex flex-row-reverse items-center gap-4 z-20"
-            style={{ left: "12%", top: "25%" }}
+            className="absolute flex flex-row-reverse items-center gap-2 xl:gap-4 z-20 left-[1%] xl:left-[6%] 2xl:left-[12%] top-[24%]"
           >
             <Image
               src={steps[1].image}
               alt={steps[1].title}
               width={160}
               height={160}
-              className="w-[160px] h-[160px] object-contain flex-shrink-0"
+              className="w-[90px] h-[90px] xl:w-[125px] xl:h-[125px] 2xl:w-[160px] 2xl:h-[160px] object-contain flex-shrink-0"
             />
-            <div className="text-right" style={{ maxWidth: "205px" }}>
+            <div className="text-right w-[120px] xl:w-[170px] 2xl:w-[205px]">
               <p
-                className="text-[20px] font-semibold text-black"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[14px] xl:text-[17px] 2xl:text-[20px] font-semibold text-black leading-snug"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[1].title}
               </p>
               <p
-                className="text-[16px] font-normal text-black mt-1"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[11px] xl:text-[13px] 2xl:text-[16px] font-normal text-black mt-1 leading-normal"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[1].desc}
               </p>
@@ -143,28 +139,26 @@ export default function Journey() {
           </div>
 
           {/* ---------- icon4 — Middle Right ---------- */}
-          {/* Figma: icon at x=1284 (66.9%), text at x=1482, y offset ≈25% */}
           <div
-            className="absolute flex flex-row items-center gap-4 z-20"
-            style={{ right: "10%", top: "25%" }}
+            className="absolute flex flex-row items-center gap-2 xl:gap-4 z-20 right-[1%] xl:right-[5%] 2xl:right-[10%] top-[24%]"
           >
             <Image
               src={steps[3].image}
               alt={steps[3].title}
               width={160}
               height={160}
-              className="w-[160px] h-[160px] object-contain flex-shrink-0"
+              className="w-[90px] h-[90px] xl:w-[125px] xl:h-[125px] 2xl:w-[160px] 2xl:h-[160px] object-contain flex-shrink-0"
             />
-            <div className="text-left" style={{ maxWidth: "205px" }}>
+            <div className="text-left w-[120px] xl:w-[170px] 2xl:w-[205px]">
               <p
-                className="text-[20px] font-semibold text-black"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[14px] xl:text-[17px] 2xl:text-[20px] font-semibold text-black leading-snug"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[3].title}
               </p>
               <p
-                className="text-[16px] font-normal text-black mt-1"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[11px] xl:text-[13px] 2xl:text-[16px] font-normal text-black mt-1 leading-normal"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[3].desc}
               </p>
@@ -172,28 +166,26 @@ export default function Journey() {
           </div>
 
           {/* ---------- icon1 — Lower Left ---------- */}
-          {/* Figma: text right-aligned at x=42, icon at x=285, y offset ≈69% */}
           <div
-            className="absolute flex flex-row-reverse items-center gap-4 z-20"
-            style={{ left: "2%", top: "68%" }}
+            className="absolute flex flex-row-reverse items-center gap-2 xl:gap-4 z-20 left-0 xl:left-[1%] 2xl:left-[2%] top-[66%]"
           >
             <Image
               src={steps[0].image}
               alt={steps[0].title}
               width={160}
               height={160}
-              className="w-[160px] h-[160px] object-contain flex-shrink-0"
+              className="w-[90px] h-[90px] xl:w-[125px] xl:h-[125px] 2xl:w-[160px] 2xl:h-[160px] object-contain flex-shrink-0"
             />
-            <div className="text-right" style={{ maxWidth: "205px" }}>
+            <div className="text-right w-[120px] xl:w-[170px] 2xl:w-[205px]">
               <p
-                className="text-[20px] font-semibold text-black"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[14px] xl:text-[17px] 2xl:text-[20px] font-semibold text-black leading-snug"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[0].title}
               </p>
               <p
-                className="text-[16px] font-normal text-black mt-1"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[11px] xl:text-[13px] 2xl:text-[16px] font-normal text-black mt-1 leading-normal"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[0].desc}
               </p>
@@ -201,28 +193,26 @@ export default function Journey() {
           </div>
 
           {/* ---------- icon5 — Lower Right ---------- */}
-          {/* Figma: icon at x=1448 (75.4%), text at x=1643, y offset ≈69% */}
           <div
-            className="absolute flex flex-row items-center gap-4 z-20"
-            style={{ right: "2%", top: "68%" }}
+            className="absolute flex flex-row items-center gap-2 xl:gap-4 z-20 right-0 xl:right-[1%] 2xl:right-[2%] top-[66%]"
           >
             <Image
               src={steps[4].image}
               alt={steps[4].title}
               width={160}
               height={160}
-              className="w-[160px] h-[160px] object-contain flex-shrink-0"
+              className="w-[90px] h-[90px] xl:w-[125px] xl:h-[125px] 2xl:w-[160px] 2xl:h-[160px] object-contain flex-shrink-0"
             />
-            <div className="text-left" style={{ maxWidth: "205px" }}>
+            <div className="text-left w-[120px] xl:w-[170px] 2xl:w-[205px]">
               <p
-                className="text-[20px] font-semibold text-black"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[14px] xl:text-[17px] 2xl:text-[20px] font-semibold text-black leading-snug"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[4].title}
               </p>
               <p
-                className="text-[16px] font-normal text-black mt-1"
-                style={{ lineHeight: "26px", fontFamily: "'IBM Plex Sans', sans-serif" }}
+                className="text-[11px] xl:text-[13px] 2xl:text-[16px] font-normal text-black mt-1 leading-normal"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               >
                 {steps[4].desc}
               </p>
@@ -231,9 +221,9 @@ export default function Journey() {
 
         </div>
 
-        {/* ========== MOBILE / TABLET / LAPTOP LINEAR GRID LAYOUT ========== */}
-        <div className="2xl:hidden flex flex-col gap-8 mt-8 w-full max-w-[1000px] mx-auto px-4">
-          {/* Globe on mobile/tablet/laptop */}
+        {/* ========== MOBILE / TABLET LINEAR LAYOUT ========== */}
+        <div className="lg:hidden flex flex-col gap-8 mt-8 w-full max-w-[1000px] mx-auto px-4">
+          {/* Globe on mobile/tablet */}
           <div className="flex justify-center">
             <Image
               src="/images/home/HOIPL_3DIndia.webp"
