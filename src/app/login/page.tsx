@@ -100,13 +100,13 @@ export default function LoginPage() {
             <div className="mb-4 inline-flex items-center justify-center">
               <Image 
                 src="/images/logo/HOIPL_3DIndia.webp" 
-                alt="Healing Ourth Logo" 
+                alt="Healing OURTH Logo" 
                 width={80} 
                 height={80} 
                 className="object-contain drop-shadow-md"
               />
             </div>
-            <h1 className="text-3xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">Sign in to Ourth</h1>
+            <h1 className="text-3xl font-bold text-[#2B4D0E] font-['IBM_Plex_Sans']">Sign in to OURTH</h1>
             <p className="mt-2 text-sm text-[#444444] font-['IBM_Plex_Sans']">
               Welcome back! Please enter your details.
             </p>

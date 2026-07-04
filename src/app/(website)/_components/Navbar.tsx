@@ -59,7 +59,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/images/logo/HOIPL_3DIndia.webp"
-            alt="Healing Ourth"
+            alt="Healing OURTH"
             width={79}
             height={79}
             className="w-10 h-10 lg:w-[60px] lg:h-[60px] xl:w-[79px] xl:h-[79px] object-contain drop-shadow-[0px_4px_4px_rgba(250,248,243,0.25)]"
@@ -68,7 +68,7 @@ export default function Navbar() {
             className="text-2xl lg:text-[24px] xl:text-[32px] 2xl:text-[40px] font-bold text-[#0D3A27] tracking-tight leading-[1.1] flex items-center whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
-            Healing Ourth
+            Healing OURTH
           </span>
         </Link>
 

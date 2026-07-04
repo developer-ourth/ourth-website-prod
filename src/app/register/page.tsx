@@ -107,7 +107,7 @@ function RegisterForm() {
             <div className="flex items-center justify-center">
               <Image 
                 src="/images/logo/HOIPL_3DIndia.webp" 
-                alt="Healing Ourth Logo" 
+                alt="Healing OURTH Logo" 
                 width={64} 
                 height={64} 
                 className="object-contain drop-shadow-md"

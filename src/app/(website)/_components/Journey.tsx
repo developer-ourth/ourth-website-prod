@@ -77,7 +77,7 @@ export default function Journey() {
           >
             <Image
               src="/images/home/HOIPL_3DIndia.webp"
-              alt="Healing Ourth Globe"
+              alt="Healing OURTH Globe"
               width={676}
               height={669}
               className="w-full h-auto object-contain"
@@ -227,7 +227,7 @@ export default function Journey() {
           <div className="flex justify-center">
             <Image
               src="/images/home/HOIPL_3DIndia.webp"
-              alt="Healing Ourth Globe"
+              alt="Healing OURTH Globe"
               width={240}
               height={240}
               className="w-[200px] h-[200px] md:w-[240px] md:h-[240px] object-contain"

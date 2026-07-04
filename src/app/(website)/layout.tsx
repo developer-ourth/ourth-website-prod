@@ -21,7 +21,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Healing OURTH",
   description:
-    "Ourth crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic.",
+    "OURTH crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic.",
 };
 
 export default function WebsiteLayout({ children }: PropsWithChildren) {

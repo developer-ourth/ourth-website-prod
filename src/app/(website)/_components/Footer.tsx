@@ -17,14 +17,14 @@ export default function Footer() {
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white p-2.5 border-2 border-[#2C1F13] shadow-[3px_3px_0px_0px_#2C1F13]">
             <Image 
               src="/images/logo/HOIPL_3DIndia.webp" 
-              alt="Healing Ourth Logo" 
+              alt="Healing OURTH Logo" 
               width={48} 
               height={48} 
               className="object-contain" 
             />
           </div>
           <span className="text-2xl font-black text-[#0D3A27] tracking-tight uppercase">
-            Healing Ourth
+            Healing OURTH
           </span>
           <p className="text-xs font-bold text-[#0D3A27]/70 max-w-md mt-1">
             sustainable leaf tableware crafted for a plastic-free future.
@@ -92,7 +92,7 @@ export default function Footer() {
 
         {/* Bottom line */}
         <div className="text-xs font-bold text-[#0D3A27]/50 flex flex-col md:flex-row items-center gap-2 select-none">
-          <span>© {new Date().getFullYear()} Healing Ourth. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Healing OURTH. All rights reserved.</span>
           <span className="hidden md:inline">•</span>
           <span>crafted for a plastic-free future 💚</span>
         </div>

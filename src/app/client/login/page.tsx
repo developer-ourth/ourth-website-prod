@@ -105,7 +105,7 @@ export default function ClientLoginPage() {
             <div className="mb-4 inline-flex items-center justify-center">
               <Image 
                 src="/images/logo/HOIPL_3DIndia.webp" 
-                alt="Healing Ourth Logo" 
+                alt="Healing OURTH Logo" 
                 width={80} 
                 height={80} 
                 className="object-contain drop-shadow-md"

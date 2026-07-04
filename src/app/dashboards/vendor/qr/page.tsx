@@ -63,7 +63,7 @@ export default function VendorQRPage() {
                 </span>
               </div>
               <p className="text-xs text-dark-4">
-                Customers can scan this QR code to view your store and place orders on the Ourth app.
+                Customers can scan this QR code to view your store and place orders on the OURTH app.
               </p>
             </div>
           </div>

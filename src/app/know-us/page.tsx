@@ -145,7 +145,7 @@ export default function KnowUsPage() {
       {/* ===== 2. CORE STATEMENT ===== */}
       <section className="w-full py-6 sm:py-8 md:py-10 px-4 sm:px-6">
         <p className={`max-w-[1747px] mx-auto text-center font-bold text-sm sm:text-base md:text-lg lg:text-[24px] leading-relaxed sm:leading-relaxed md:leading-[34px] font-['IBM_Plex_Sans'] transition-all duration-1000 ${slide.coreStatementColor}`}>
-          Ourth aims to build the world&apos;s most trusted climate-tech ecosystem that makes sustainable living affordable, accessible, and actionable for every citizen, every business, and every community—creating a Clean, Green, Single-Use Plastic-Free Bharat, and inspiring the world to heal OURTH together.
+          OURTH aims to build the world&apos;s most trusted climate-tech ecosystem that makes sustainable living affordable, accessible, and actionable for every citizen, every business, and every community—creating a Clean, Green, Single-Use Plastic-Free Bharat, and inspiring the world to heal OURTH together.
         </p>
       </section>
 
