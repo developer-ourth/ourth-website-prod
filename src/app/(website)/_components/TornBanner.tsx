@@ -34,7 +34,7 @@ export default function TornBanner() {
         }}
       >
         <Image
-          src="/images/home/torn.png"
+          src="/images/home/torn.webp"
           alt="Torn paper banner"
           fill
           className="object-cover"
