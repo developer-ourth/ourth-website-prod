@@ -18,40 +18,40 @@ const slides = [
     title: "Purposeful",
     description: "Everything we build solves a real environmental problem right at core",
     image: "/images/about/banner.webp",
-    activeTitleColor: "text-[#A4CC55]",
+    activeTitleColor: "text-[#76A52E]",
     rightSloganColor: "text-[#2B4D0E]",
     coreStatementColor: "text-[#76A52E]",
     headingColor: "text-[#2B4D0E]",
-    boxBg: "bg-[#C7E08E]/20",
-    textColor: "text-[#4C7A1A]",
-    ctaBg: "bg-[#C7E08E]",
-    ctaText: "text-[#2B4D0E]"
+    boxBg: "bg-[#76A52E]/15",
+    textColor: "text-[#2B4D0E]",
+    ctaBg: "bg-[#76A52E]",
+    ctaText: "text-white"
   },
   {
     title: "Trustworthy",
     description: "Scientific, transparent, and honest.",
-    image: "/images/about/water_banner.webp",
-    activeTitleColor: "text-[#29A6FF]",
-    rightSloganColor: "text-[#103F5E]",
-    coreStatementColor: "text-[#2693D6]",
-    headingColor: "text-[#103F5E]",
-    boxBg: "bg-[#9DCEEE]/20",
-    textColor: "text-[#1B6F9A]",
-    ctaBg: "bg-[#9DCEEE]",
-    ctaText: "text-[#103F5E]"
+    image: "/images/about/banner_blue.webp",
+    activeTitleColor: "text-[#5CB6E8]",
+    rightSloganColor: "text-[#154B68]",
+    coreStatementColor: "text-[#5CB6E8]",
+    headingColor: "text-[#154B68]",
+    boxBg: "bg-[#5CB6E8]/15",
+    textColor: "text-[#154B68]",
+    ctaBg: "bg-[#5CB6E8]",
+    ctaText: "text-white"
   },
   {
     title: "Actionable",
     description: "Making sustainable living affordable and accessible to everyone.",
-    image: "/images/about/earth_banner.webp",
-    activeTitleColor: "text-[#F0A02E]",
-    rightSloganColor: "text-[#8A5200]",
-    coreStatementColor: "text-[#C98A2E]",
-    headingColor: "text-[#8A5200]",
-    boxBg: "bg-[#FADAA6]/20",
-    textColor: "text-[#A86400]",
-    ctaBg: "bg-[#FADAA6]",
-    ctaText: "text-[#8A5200]"
+    image: "/images/about/banner_yellow.webp",
+    activeTitleColor: "text-[#EBB339]",
+    rightSloganColor: "text-[#664C12]",
+    coreStatementColor: "text-[#EBB339]",
+    headingColor: "text-[#664C12]",
+    boxBg: "bg-[#EBB339]/15",
+    textColor: "text-[#664C12]",
+    ctaBg: "bg-[#EBB339]",
+    ctaText: "text-white"
   }
 ];
 
