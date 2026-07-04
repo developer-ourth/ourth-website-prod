@@ -9,11 +9,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-r from-[#76A52E]/20 via-[#C98A2E]/20 to-[#2693D6]/20 text-[#2C1F13] border-t border-black/10 py-12">
+    <footer className="relative overflow-hidden bg-gradient-to-r from-[#76A52E]/20 via-[#C98A2E]/20 to-[#2693D6]/20 text-[#2C1F13] border-t border-black/10 py-6">
       <div className="mx-auto max-w-[1200px] px-6 flex flex-col items-center text-center">
         
         {/* Brand Logo & Name */}
-        <div className="flex flex-col items-center gap-3 mb-8">
+        <div className="flex flex-col items-center gap-3 mb-4">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white p-2.5 border-2 border-[#2C1F13] shadow-[3px_3px_0px_0px_#2C1F13]">
             <Image 
               src="/images/logo/HOIPL_3DIndia.webp" 
@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         {/* Links Navigation */}
-        <nav className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-8 border-y border-black/10 py-6 w-full max-w-2xl">
+        <nav className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-4 border-y border-black/10 py-3 w-full max-w-2xl">
           <Link href="/" className="text-sm font-bold text-[#0D3A27]/90 hover:text-[#76A52E] transition-colors">
             Home
           </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
         </nav>
 
         {/* Social Icons & Contact */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-4">
           <a 
             href="https://instagram.com" 
             target="_blank" 
