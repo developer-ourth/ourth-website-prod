@@ -103,6 +103,7 @@ const ROLE_NAV: Record<UserRole, NavSection[]> = {
         { title: "Alerts & System", url: "/dashboards/admin/alerts", icon: Icons.PieChart, items: [] },
         { title: "Products", url: "/dashboards/admin/products", icon: Icons.PieChart, items: [] },
         { title: "Categories", url: "/dashboards/admin/categories", icon: Icons.FourCircle, items: [] },
+        { title: "App Settings", url: "/dashboards/admin/settings", icon: Icons.Settings, items: [] },
       ],
     },
   ],

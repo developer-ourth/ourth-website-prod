@@ -20,7 +20,7 @@ export default function ClientLoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -84,7 +84,7 @@ export default function ClientLoginPage() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otpSent) return handleSendOtp();
-    
+
     setError("");
     setSubmitting(true);
     try {
@@ -103,11 +103,11 @@ export default function ClientLoginPage() {
         <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-8">
           <div className="mb-8 text-center">
             <div className="mb-4 inline-flex items-center justify-center">
-              <Image 
-                src="/images/logo/HOIPL_3DIndia.webp" 
-                alt="Healing OURTH Logo" 
-                width={80} 
-                height={80} 
+              <Image
+                src="/images/logo/HOIPL_3DIndia.webp"
+                alt="Healing OURTH Logo"
+                width={80}
+                height={80}
                 className="object-contain drop-shadow-md"
               />
             </div>
@@ -124,22 +124,22 @@ export default function ClientLoginPage() {
           )}
 
           {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
-          <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
-            <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                if (credentialResponse.credential) {
-                  try {
-                    await loginWithGoogleToken(credentialResponse.credential);
-                  } catch (err: any) {
-                    setError(err?.message || "Google login failed.");
+            <div className="mb-6 flex justify-center pb-6 border-b border-gray-200">
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    try {
+                      await loginWithGoogleToken(credentialResponse.credential);
+                    } catch (err: any) {
+                      setError(err?.message || "Google login failed.");
+                    }
                   }
-                }
-              }}
-              onError={() => setError("Google Login Failed")}
-            />
-          </div>
+                }}
+                onError={() => setError("Google Login Failed")}
+              />Z
+            </div>
           )}
-          
+
           <div className="mb-6 flex space-x-2">
             <button
               className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "password" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
@@ -247,8 +247,8 @@ export default function ClientLoginPage() {
           </p>
 
           <div className="mt-6 pt-4 text-center border-t border-gray-100">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="text-xs font-bold text-gray-500 hover:text-black transition"
             >
               Are you a team member or vendor? Go to Portal

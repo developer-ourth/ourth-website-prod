@@ -38,7 +38,7 @@ export function ImageUpload({ value, onChange, aspectHint }: ImageUploadProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/gif,image/webp"
+        accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/x-msvideo,video/webm,video/x-matroska"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -52,11 +52,22 @@ export function ImageUpload({ value, onChange, aspectHint }: ImageUploadProps) {
       >
         {value ? (
           <div className="group relative w-full">
-            <img
-              src={value}
-              alt="Preview"
-              className="max-h-40 w-full object-contain p-2"
-            />
+            {/\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(value) ? (
+              <video
+                src={value}
+                className="max-h-40 w-full object-contain p-2"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img
+                src={value}
+                alt="Preview"
+                className="max-h-40 w-full object-contain p-2"
+              />
+            )}
             <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/40 group-hover:opacity-100">
               <span className="rounded-md bg-white/90 px-3 py-1 text-xs font-semibold text-gray-800">
                 Click to replace
