@@ -9,6 +9,7 @@ export default function AdminSettings() {
   const [settings, setSettings] = useState({
     app_background_color: "#FAF8F3",
     header_background_color: "#0d3a27",
+    app_text_color: "#2C1F13",
     banner_tagline: "Healing OURTH Tableware",
     banner_subtagline: "100% Organic, Natural & Compostable",
     banner_image_url: "",
@@ -30,6 +31,7 @@ export default function AdminSettings() {
         setSettings({
           app_background_color: data.app_background_color ?? "#FAF8F3",
           header_background_color: data.header_background_color ?? "#0d3a27",
+          app_text_color: data.app_text_color ?? "#2C1F13",
           banner_tagline: data.banner_tagline ?? "",
           banner_subtagline: data.banner_subtagline ?? "",
           banner_image_url: data.banner_image_url ?? "",
@@ -121,6 +123,26 @@ export default function AdminSettings() {
               />
             </div>
             <p className="text-xs text-gray-500 mt-1">Default: #0d3a27 (Frosted Green). Will apply opacity in-app.</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">App Text Color</label>
+            <div className="mt-1 flex items-center space-x-2">
+              <input
+                type="color"
+                value={settings.app_text_color.startsWith('#') ? settings.app_text_color.slice(0, 7) : "#000000"}
+                onChange={e => setSettings({...settings, app_text_color: e.target.value})}
+                className="w-12 h-10 p-0 border-0 rounded cursor-pointer"
+              />
+              <input
+                type="text"
+                value={settings.app_text_color}
+                onChange={e => setSettings({...settings, app_text_color: e.target.value})}
+                className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border"
+                placeholder="#HexCode"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Default: #2C1F13 (Dark Coffee/Charcoal)</p>
           </div>
 
           <div>
