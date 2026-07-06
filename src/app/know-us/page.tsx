@@ -77,9 +77,8 @@ export default function KnowUsPage() {
           {slides.map((s, idx) => (
             <div
               key={idx}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                currentSlide === idx ? "opacity-100" : "opacity-0"
-              }`}
+              className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === idx ? "opacity-100" : "opacity-0"
+                }`}
             >
               <Image
                 src={s.image}
@@ -91,7 +90,7 @@ export default function KnowUsPage() {
             </div>
           ))}
         </div>
-        
+
         {/* Transparent Overlay */}
         <div className="absolute inset-0 bg-black/10" />
 
@@ -103,7 +102,7 @@ export default function KnowUsPage() {
               <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[48px] leading-tight sm:leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] max-w-[695px]">
                 What does &quot;Healing OURTH&quot;<br />mean to US?
               </h1>
-              
+
               {/* Dynamic Text Box Card */}
               <div
                 className="w-full max-w-[558px] h-[70px] sm:h-[80px] md:h-[100px] lg:h-[138px] rounded-[20px] sm:rounded-[30px] flex items-center px-4 sm:px-6 md:px-8 border border-white/20 transition-all duration-1000"
@@ -133,9 +132,8 @@ export default function KnowUsPage() {
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                currentSlide === idx ? "w-6 bg-white" : "w-2.5 bg-white/50"
-              }`}
+              className={`h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx ? "w-6 bg-white" : "w-2.5 bg-white/50"
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
@@ -282,12 +280,11 @@ export default function KnowUsPage() {
       </section>
 
       {/* ===== 6. OUR VISIONARY TEAM ===== */}
-      <section className="w-full py-10 sm:py-12 md:py-16 px-4 sm:px-6">
+      {/* <section className="w-full py-10 sm:py-12 md:py-16 px-4 sm:px-6">
         <h2 className={`text-center font-bold text-2xl sm:text-3xl md:text-[36px] lg:text-[40px] leading-tight md:leading-[46px] font-['IBM_Plex_Sans'] mb-10 sm:mb-12 md:mb-16 transition-all duration-1000 ${slide.headingColor}`}>
           Our Visionary Team
         </h2>
 
-        {/* Team Grid */}
         <div className="max-w-[1400px] mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center mb-10 sm:mb-12 md:mb-16">
           {teamMembers.map((member, idx) => (
             <div key={idx} className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
@@ -305,7 +302,6 @@ export default function KnowUsPage() {
           ))}
         </div>
 
-        {/* Join Us CTA */}
         <div className="max-w-[1400px] mx-auto flex justify-center sm:justify-end">
           <Link
             href="/contact"
@@ -321,7 +317,7 @@ export default function KnowUsPage() {
             </span>
           </Link>
         </div>
-      </section>
+      </section> */}
 
     </main>
   );
