@@ -73,7 +73,7 @@ export default function Navbar() {
         </Link>
 
         {/* Center: Simplified Text Links (No pill borders, bold) */}
-        <nav className="hidden items-center gap-3 lg:gap-5 xl:gap-8 2xl:gap-12 lg:flex">
+        <nav className="hidden items-center gap-3 lg:gap-5 xl:gap-8 2xl:gap-12 xl:flex">
           <Link
             href="/know-us"
             className="text-[16px] lg:text-[17px] xl:text-[20px] 2xl:text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all whitespace-nowrap"
@@ -98,7 +98,7 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Cart & Sign In CTAs */}
-        <div className="hidden items-center gap-2 lg:gap-3 xl:gap-4 2xl:gap-6 lg:flex">
+        <div className="hidden items-center gap-2 lg:gap-3 xl:gap-4 2xl:gap-6 xl:flex">
           {/* Search Bar */}
           <div ref={searchRefDesktop} className="relative flex items-center">
             <form 
@@ -226,7 +226,7 @@ export default function Navbar() {
         {/* Mobile menu trigger */}
         <button
           onClick={() => setOpen(!open)}
-          className="rounded-lg border-2 border-black p-1.5 lg:hidden bg-white/80"
+          className="rounded-lg border-2 border-black p-1.5 xl:hidden bg-white/80"
         >
           <svg
             className="h-6 w-6 text-black"
@@ -246,7 +246,7 @@ export default function Navbar() {
 
       {/* Mobile Menu dropdown */}
       {open && (
-        <div className="mt-4 flex flex-col gap-3 rounded-2xl border-2 border-black bg-white/95 p-4 shadow-[4px_4px_0px_0px_#000000] lg:hidden backdrop-blur-md">
+        <div className="mt-4 flex flex-col gap-3 rounded-2xl border-2 border-black bg-white/95 p-4 shadow-[4px_4px_0px_0px_#000000] xl:hidden backdrop-blur-md">
           <nav className="flex flex-col gap-2.5">
             <Link
               href="/know-us"

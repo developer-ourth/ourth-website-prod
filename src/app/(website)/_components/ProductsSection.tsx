@@ -86,7 +86,7 @@ export default function ProductsSection() {
         ) : (
           <>
           {/* Desktop: 4-col grid */}
-          <div className="hidden lg:grid grid-cols-4 gap-8 justify-items-center">
+          <div className="hidden xl:grid grid-cols-4 gap-8 justify-items-center">
             {/* Render 4 cards, fill in with mocks if database has less than 4 */}
             {Array.from({ length: 4 }).map((_, index) => {
               const product = products[index];
@@ -189,7 +189,7 @@ export default function ProductsSection() {
           </div>
 
           {/* Mobile/Tablet: Carousel showing 2 at a time */}
-          <div className="lg:hidden relative">
+          <div className="xl:hidden relative">
             {/* Left Arrow */}
             {carouselIndex > 0 && (
               <button

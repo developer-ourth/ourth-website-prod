@@ -117,9 +117,9 @@ function ProductsPageContent() {
       {/* Loading state indicator */}
       {loading ? (
         <div className="py-20 max-w-[1400px] mx-auto px-6">
-          <div className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px] border-t border-l border-black">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+              <div key={i} className="border-b border-r border-black flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                 <Skeleton className="w-[171px] h-[154px] bg-gray-200 mx-auto" />
                 <div className="mt-4 space-y-2">
                   <Skeleton className="h-6 w-3/4 bg-gray-200" />
@@ -140,7 +140,7 @@ function ProductsPageContent() {
             >
               Our Best selling Products
             </h2>
-            <div className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px] border-t border-l border-black">
               {bestSellers.map((product) => {
                 const image = getProductImageUrl(product.primary_image_url, product.name);
                 const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
@@ -151,7 +151,7 @@ function ProductsPageContent() {
                   : Math.round(parseFloat(product.discounted_price ?? product.base_price));
 
                 return (
-                  <div key={product.id} className="flex-1 border-b md:border-b-0 md:border-r border-black last:border-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+                  <div key={product.id} className="border-b border-r border-black flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
                     {/* Centered rounded-rect product image container */}
                     <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
                       <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
@@ -310,84 +310,66 @@ function ProductsPageContent() {
                 <p className="text-gray-500 font-semibold">No products found in this category.</p>
               </div>
             ) : (
-              <div className="space-y-8">
-                {(() => {
-                  const chunkProducts = (arr: any[], size: number) => {
-                    const chunks = [];
-                    for (let i = 0; i < arr.length; i += size) {
-                      chunks.push(arr.slice(i, i + size));
-                    }
-                    return chunks;
-                  };
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 bg-[#FAF8F3] w-full max-w-[1580px] mx-auto overflow-hidden rounded-[5px] border-t border-l border-black">
+                {filteredProducts.map((product) => {
+                  const image = getProductImageUrl(product.primary_image_url, product.name);
+                  const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
+                  const selPackId = product ? selectedPacks[product.id] : undefined;
+                  const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
+                  const price = selPack
+                    ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
+                    : Math.round(parseFloat(product.discounted_price ?? product.base_price));
 
-                  const rows = chunkProducts(filteredProducts, 4);
+                  return (
+                    <div key={product.id} className="w-full border-b border-r border-black flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+                      {/* Centered rounded-rect product image container */}
+                      <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
+                        <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
+                      </Link>
 
-                  return rows.map((row, rowIndex) => {
-                    return (
-                      <div key={rowIndex} className="border border-black flex flex-col md:flex-row bg-[#FAF8F3] w-fit md:w-max max-w-full mx-auto overflow-hidden rounded-[5px]">
-                        {row.map((product) => {
-                          const image = getProductImageUrl(product.primary_image_url, product.name);
-                          const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
-                          const selPackId = product ? selectedPacks[product.id] : undefined;
-                          const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
-                          const price = selPack
-                            ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
-                            : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+                      {/* Product details */}
+                      <div className="space-y-1 text-left w-full mt-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                        <Link href={`/products/${product.id}`} className="hover:underline block">
+                          <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
+                        </Link>
+                        <p className="text-[20px] font-semibold text-black">₹{price}</p>
 
-                          return (
-                            <div key={product.id} className="w-full md:w-[280px] lg:w-[338px] md:flex-none border-b md:border-b-0 md:border-r border-black last:border-b-0 md:last:border-r-0 flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
-                              {/* Centered rounded-rect product image container */}
-                              <Link href={`/products/${product.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 transition-opacity block">
-                                <Image src={image} alt={product.name} width={140} height={130} className="max-w-[140px] max-h-[130px] object-contain p-2" />
-                              </Link>
-
-                              {/* Product details */}
-                              <div className="space-y-1 text-left w-full mt-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                                <Link href={`/products/${product.id}`} className="hover:underline block">
-                                  <h3 className="text-[20px] font-medium text-black line-clamp-1">{product.name}</h3>
-                                </Link>
-                                <p className="text-[20px] font-semibold text-black">₹{price}</p>
-
-                                <div className="flex items-end justify-between pt-2">
-                                  <div className="text-[14px] text-black font-semibold space-y-1">
-                                    {packs.length > 0 && packs.slice(0, 2).map((pack: any) => {
-                                      const isSelected = selPackId === pack.id;
-                                      return (
-                                        <button
-                                          key={pack.id}
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            setSelectedPacks(prev => ({
-                                              ...prev,
-                                              [product.id]: prev[product.id] === pack.id ? undefined! : pack.id
-                                            }));
-                                          }}
-                                          className={`block text-left px-2 py-0.5 rounded-md transition-all ${
-                                            isSelected
-                                              ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
-                                              : "text-gray-700 hover:bg-gray-100/50"
-                                          }`}
-                                        >
-                                          {pack.name}
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                  <button
-                                    onClick={() => handleAdd(product.id)}
-                                    className="w-[125px] h-[36px] bg-[#FAF8F3] border-[1.5px] border-black rounded-[5px] text-[16px] font-normal text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
-                                  >
-                                    Add
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                        <div className="flex items-end justify-between pt-2">
+                          <div className="text-[14px] text-black font-semibold space-y-1">
+                            {packs.length > 0 && packs.slice(0, 2).map((pack: any) => {
+                              const isSelected = selPackId === pack.id;
+                              return (
+                                <button
+                                  key={pack.id}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setSelectedPacks(prev => ({
+                                      ...prev,
+                                      [product.id]: prev[product.id] === pack.id ? undefined! : pack.id
+                                    }));
+                                  }}
+                                  className={`block text-left px-2 py-0.5 rounded-md transition-all ${
+                                    isSelected
+                                      ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
+                                      : "text-gray-700 hover:bg-gray-100/50"
+                                  }`}
+                                >
+                                  {pack.name}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <button
+                            onClick={() => handleAdd(product.id)}
+                            className="w-[125px] h-[36px] bg-[#FAF8F3] border-[1.5px] border-black rounded-[5px] text-[16px] font-normal text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
+                          >
+                            Add
+                          </button>
+                        </div>
                       </div>
-                    );
-                  });
-                })()}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </section>
