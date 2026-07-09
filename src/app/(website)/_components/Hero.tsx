@@ -22,7 +22,7 @@ export default function Hero() {
       <div
         className="relative w-full h-[260px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end"
         style={{
-          backgroundImage: "url('/images/hero/hero.webp')",
+          backgroundImage: "url('/images/hero/hero.gif')",
           backgroundColor: "#7c5835"
         }}
       >
