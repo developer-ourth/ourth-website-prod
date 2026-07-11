@@ -22,12 +22,10 @@ export default function Hero() {
       >
         {/* Earth globe */}
         <div
-          className="absolute pointer-events-none z-[2]"
+          className="absolute pointer-events-none z-[2] left-[-120px] top-[-50px] sm:left-[-200px] sm:top-[-150px] xl:left-[-400px] xl:top-[-390px]"
           style={{
-            width: "clamp(600px, 85vw, 1650px)",
-            height: "clamp(600px, 85vw, 1650px)",
-            left: "clamp(-300px, -21vw, -400px)",
-            top: "clamp(-280px, -20vw, -390px)",
+            width: "clamp(550px, 85vw, 1650px)",
+            height: "clamp(550px, 85vw, 1650px)",
           }}
         >
           <Image
