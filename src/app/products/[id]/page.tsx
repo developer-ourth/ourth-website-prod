@@ -179,6 +179,11 @@ export default function ProductDetailsPage() {
 
   const displayPrice = activeSalePrice ?? activeBasePrice;
 
+  // Compute dynamic review stats
+  const totalReviews = reviews.length;
+  const avgRating = totalReviews > 0 
+    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1) 
+    : "0";
 
   return (
     <main className="min-h-screen bg-[#FAF8F3] w-full pt-28 pb-16">
@@ -228,14 +233,40 @@ export default function ProductDetailsPage() {
           <div className="lg:col-span-6 space-y-6">
             
             {/* Rating Stars and Count */}
-            <div className="flex items-center gap-2">
-              <div className="flex text-[#76A52E] text-xl gap-0.5">
-                ★ ★ ★ ★ ★
-              </div>
-              <span className="text-sm font-normal text-black font-['IBM_Plex_Sans']">4/5</span>
-              <span className="text-sm text-black font-normal font-['IBM_Plex_Sans'] border-b border-dashed border-black pb-0.5 cursor-pointer">
-                1,999 Reviews
-              </span>
+            <div className="flex items-center gap-2 h-7">
+              {!reviewsLoading && totalReviews > 0 ? (
+                <>
+                  <div className="flex text-xl gap-0.5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star} className={star <= Math.round(Number(avgRating)) ? "text-[#76A52E]" : "text-gray-300"}>
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-sm font-normal text-black font-['IBM_Plex_Sans']">{avgRating}/5</span>
+                  <span 
+                    onClick={() => {
+                      setActiveTab("reviews");
+                      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }}
+                    className="text-sm text-black font-normal font-['IBM_Plex_Sans'] border-b border-dashed border-black pb-0.5 cursor-pointer"
+                  >
+                    {totalReviews} {totalReviews === 1 ? "Review" : "Reviews"}
+                  </span>
+                </>
+              ) : !reviewsLoading && totalReviews === 0 ? (
+                <span 
+                  onClick={() => {
+                    setActiveTab("reviews");
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                  }}
+                  className="text-sm text-gray-500 font-normal font-['IBM_Plex_Sans'] border-b border-dashed border-gray-500 pb-0.5 cursor-pointer hover:text-black hover:border-black transition-colors"
+                >
+                  0 Reviews - Be the first to review
+                </span>
+              ) : (
+                <div className="h-4 w-32 bg-gray-200 animate-pulse rounded"></div>
+              )}
             </div>
 
             {/* Eco Badge */}
