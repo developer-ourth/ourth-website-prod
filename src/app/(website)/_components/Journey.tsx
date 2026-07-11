@@ -53,12 +53,12 @@ export default function Journey() {
    */
 
   return (
-    <section className="bg-[#FAF8F3] pt-16 pb-20 relative overflow-hidden">
+    <section className="bg-[#FAF8F3] pt-8 sm:pt-16 pb-12 sm:pb-20 relative overflow-hidden">
       <div className="mx-auto max-w-[1920px] px-4">
 
         {/* Section Title */}
         <h2
-          className="text-center text-4xl lg:text-[40px] font-bold text-[#2B4D0E] mb-4 tracking-tight"
+          className="text-center text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#2B4D0E] mb-4 tracking-tight"
           style={{
             fontFamily: "'IBM Plex Sans', sans-serif",
             textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
@@ -222,7 +222,7 @@ export default function Journey() {
         </div>
 
         {/* ========== MOBILE / TABLET LINEAR LAYOUT ========== */}
-        <div className="lg:hidden flex flex-col gap-8 mt-8 w-full max-w-[1000px] mx-auto px-4">
+        <div className="lg:hidden flex flex-col gap-4 sm:gap-8 mt-4 sm:mt-8 w-full max-w-[1000px] mx-auto px-2 sm:px-4">
           {/* Globe on mobile/tablet */}
           <div className="flex justify-center">
             <Image
@@ -230,19 +230,19 @@ export default function Journey() {
               alt="Healing OURTH Globe"
               width={240}
               height={240}
-              className="w-[200px] h-[200px] md:w-[240px] md:h-[240px] object-contain"
+              className="w-[140px] h-[140px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] object-contain"
             />
           </div>
           {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 w-full">
             {steps.map((s) => (
-              <div key={s.id} className="flex items-center gap-4 bg-white p-5 border border-black/10 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-[80px] h-[80px] md:w-[90px] md:h-[90px] flex-shrink-0">
+              <div key={s.id} className="flex items-center gap-3 sm:gap-4 bg-white p-3 sm:p-5 border border-black/10 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-[55px] h-[55px] sm:w-[80px] sm:h-[80px] md:w-[90px] md:h-[90px] flex-shrink-0">
                   <Image src={s.image} alt={s.title} width={90} height={90} className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <p className="text-base md:text-lg font-bold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.title}</p>
-                  <p className="text-sm text-gray-600 mt-1 leading-relaxed" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.desc}</p>
+                  <p className="text-sm sm:text-base md:text-lg font-bold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.title}</p>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 leading-relaxed" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>{s.desc}</p>
                 </div>
               </div>
             ))}

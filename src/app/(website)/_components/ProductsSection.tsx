@@ -3,7 +3,6 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import Link from "next/image";
 import NextLink from "next/link";
 import { getMarketplaceProducts, getProductImageUrl, type MarketProduct } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
@@ -67,12 +66,12 @@ export default function ProductsSection() {
   const leafInnerPath = "M 225,10 C 150,10 10,40 10,100 C 10,130 18,155 10,160 C 50,160 225,130 225,80 C 225,50 225,20 225,10 Z";
 
   return (
-    <section className="bg-[#FAF8F3] pt-4 pb-20 relative overflow-hidden">
-      <div className="mx-auto max-w-[1400px] px-6">
+    <section className="bg-[#FAF8F3] pt-4 pb-10 sm:pb-20 relative overflow-hidden">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         
         {/* Section Heading */}
         <h2 
-          className="text-center text-4xl lg:text-[48px] font-bold text-[#0D3A27] mb-16 tracking-tight"
+          className="text-center text-2xl sm:text-4xl lg:text-[48px] font-bold text-[#0D3A27] mb-8 sm:mb-16 tracking-tight"
           style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
         >
           Our Products
@@ -313,14 +312,14 @@ export default function ProductsSection() {
         )}
 
         {/* Bottom Marketplace Navigation Link */}
-        <div className="flex justify-end mt-16 max-w-[1200px] mx-auto">
+        <div className="flex justify-center sm:justify-end mt-8 sm:mt-16 max-w-[1200px] mx-auto">
           <NextLink
             href="/products"
-            className="flex items-center justify-between px-6 w-[200px] h-[48px] bg-[#9BDFF2] rounded-[30px] text-[18px] font-bold text-black hover:opacity-90 transition-all"
+            className="flex items-center justify-between px-5 sm:px-6 w-[180px] sm:w-[200px] h-[42px] sm:h-[48px] bg-[#9BDFF2] rounded-[30px] text-[16px] sm:text-[18px] font-bold text-black hover:opacity-90 transition-all"
           >
             <span>Marketplace</span>
-            <div className="w-8 h-8 rounded-full bg-[#EBF4FC] flex items-center justify-center">
-              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#EBF4FC] flex items-center justify-center">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </div>

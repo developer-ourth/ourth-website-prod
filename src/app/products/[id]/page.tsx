@@ -375,7 +375,7 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* Tab Selection Section */}
-        <div className="mt-20 border-b border-[#444444] relative flex justify-center gap-16">
+        <div className="mt-12 sm:mt-20 border-b border-[#444444] relative flex justify-center gap-4 sm:gap-8 lg:gap-16">
           {["Description", "Additional Information", "Reviews"].map((tabName) => {
             const tabId = tabName.toLowerCase() === "description" ? "description" : tabName.toLowerCase() === "additional information" ? "info" : "reviews";
             const isActive = activeTab === tabId;
@@ -383,7 +383,7 @@ export default function ProductDetailsPage() {
               <button
                 key={tabName}
                 onClick={() => setActiveTab(tabId as any)}
-                className={`pb-3 text-[24px] font-normal font-['IBM_Plex_Sans'] transition-all relative ${
+                className={`pb-3 text-[13px] sm:text-[16px] lg:text-[24px] font-normal font-['IBM_Plex_Sans'] transition-all relative whitespace-nowrap ${
                   isActive ? "text-black font-semibold" : "text-[#444444] hover:text-black"
                 }`}
               >
