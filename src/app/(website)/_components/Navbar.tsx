@@ -120,10 +120,14 @@ export default function Navbar() {
                   setSearchQuery(e.target.value);
                   setShowDropdown(true);
                 }}
-                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-3 xl:px-4 py-2 text-[14px] xl:text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[140px] xl:w-[220px]"
+                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-3 xl:px-4 py-[10px] min-h-[44px] text-[14px] xl:text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[140px] xl:w-[220px]"
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               />
-              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-[#25784C] transition-colors">
+              <button 
+                type="submit" 
+                aria-label="Search"
+                className="absolute right-1 top-1/2 -translate-y-1/2 w-[44px] h-[44px] flex items-center justify-center text-black hover:text-[#25784C] transition-colors"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -298,10 +302,14 @@ export default function Navbar() {
                     setSearchQuery(e.target.value);
                     setShowDropdown(true);
                   }}
-                  className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-2 w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
+                  className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-[10px] min-h-[44px] w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-black">
+                <button 
+                  type="submit" 
+                  aria-label="Search"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 w-[44px] h-[44px] flex items-center justify-center text-black"
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>

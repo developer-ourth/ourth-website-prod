@@ -179,33 +179,6 @@ export default function ProductDetailsPage() {
 
   const displayPrice = activeSalePrice ?? activeBasePrice;
 
-  // Mock reviews content for display matching figma specs
-  const mockReviews = [
-    {
-      id: 1,
-      title: "Generic Hype",
-      rating: 4,
-      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
-    },
-    {
-      id: 2,
-      title: "Generic Hype",
-      rating: 4,
-      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
-    },
-    {
-      id: 3,
-      title: "Generic Hype",
-      rating: 4,
-      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
-    },
-    {
-      id: 4,
-      title: "Generic Hype",
-      rating: 4,
-      text: "Wow, this is truly the best product ever! It changed my life completely from day one. I cannot imagine living without it now. Everyone needs to buy this right now!"
-    }
-  ];
 
   return (
     <main className="min-h-screen bg-[#FAF8F3] w-full pt-28 pb-16">
@@ -283,10 +256,7 @@ export default function ProductDetailsPage() {
             {/* Description list */}
             <div className="text-lg lg:text-[24px] text-[#2B4D0E] font-normal leading-[34px] font-['IBM_Plex_Sans'] space-y-4">
               <p>
-                1. {product.description || "Pressed entirely from natural leaves, this organic tableware is heat-treated for strength and certified food-safe. A beautiful, compostable alternative to paper and plastic."}
-              </p>
-              <p>
-                2. Made from eco-friendly sugarcane fiber , Paper Disposable , Microwave Safe | Leak Proof
+                {product.description || "Pressed entirely from natural leaves, this organic tableware is heat-treated for strength and certified food-safe. A beautiful, compostable alternative to paper and plastic."}
               </p>
             </div>
 
@@ -429,24 +399,11 @@ export default function ProductDetailsPage() {
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
                   </div>
                 ) : reviews.length === 0 ? (
-                  // Fall back to mock reviews if no reviews are in the database yet
-                  mockReviews.map((r) => (
-                    <div
-                      key={r.id}
-                      className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col justify-start gap-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="font-semibold text-black text-[24px] font-['IBM_Plex_Sans']">{r.title}</span>
-                        <div className="flex text-[#76A52E] text-[20px] gap-0.5">
-                          ★ ★ ★ ★ ★
-                        </div>
-                        <span className="text-[20px] text-black font-normal font-['IBM_Plex_Sans']">4/5</span>
-                      </div>
-                      <p className="text-black text-[24px] font-medium leading-[34px] font-['IBM_Plex_Sans']">
-                        "{r.text}"
-                      </p>
-                    </div>
-                  ))
+                  <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col items-center justify-center gap-4 text-center">
+                    <p className="text-black text-[20px] font-medium font-['IBM_Plex_Sans']">
+                      No reviews yet. Be the first to review!
+                    </p>
+                  </div>
                 ) : (
                   reviews.map((r) => (
                     <div

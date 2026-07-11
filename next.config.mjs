@@ -1,6 +1,8 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    dangerouslyAllowLocalIP: true,
     qualities: [75, 100],
     remotePatterns: [
       {
