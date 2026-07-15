@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct, getProductRatings, submitProductRating, type ProductReview } from "@/lib/api";
+import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct, getProductRatings, submitProductRating, type ProductReview, addToWishlistApi, removeFromWishlistApi, getConsumerWishlistApi } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 
@@ -28,6 +28,9 @@ export default function ProductDetailsPage() {
   const [activeTab, setActiveTab] = useState<"description" | "info" | "reviews">("reviews");
   const [adding, setAdding] = useState(false);
   const [success, setSuccess] = useState(false);
+  
+  const [inWishlist, setInWishlist] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
   const [trendingSelectedPacks, setTrendingSelectedPacks] = useState<Record<number, number>>({});
 
   // Reviews State
@@ -98,7 +101,16 @@ export default function ProductDetailsPage() {
       .catch((err) => console.error("Failed to load trending products:", err));
 
     loadReviews();
-  }, [productId, loadReviews]);
+
+    if (user && productId) {
+      getConsumerWishlistApi()
+        .then(wRes => {
+          const isWished = wRes.data.some((w: any) => w.product_id === productId);
+          setInWishlist(isWished);
+        })
+        .catch(() => {});
+    }
+  }, [productId, loadReviews, user]);
 
   // Adjust quantity based on B2B min order quantity
   const selectedPack = product?.packs?.find((p) => p.id === selectedPackId);
@@ -141,6 +153,29 @@ export default function ProductDetailsPage() {
       router.push("/cart");
     } catch (err: any) {
       // Context handles error
+    }
+  };
+
+  const toggleWishlist = async () => {
+    if (!user) {
+      router.push("/client/login");
+      return;
+    }
+    setWishlistLoading(true);
+    try {
+      if (inWishlist) {
+        await removeFromWishlistApi(productId);
+        setInWishlist(false);
+        toast.success("Removed from wishlist");
+      } else {
+        await addToWishlistApi(productId);
+        setInWishlist(true);
+        toast.success("Added to wishlist");
+      }
+    } catch (err) {
+      toast.error("Failed to update wishlist");
+    } finally {
+      setWishlistLoading(false);
     }
   };
 
@@ -204,6 +239,17 @@ export default function ProductDetailsPage() {
                 alt={product.name}
                 className="max-h-full max-w-full object-contain"
               />
+              <button 
+                onClick={toggleWishlist}
+                disabled={wishlistLoading}
+                className="absolute top-4 right-4 h-12 w-12 bg-white rounded-full flex items-center justify-center border border-black shadow-md hover:scale-110 active:scale-95 transition-all z-10"
+              >
+                {inWishlist ? (
+                  <span className="text-2xl text-red-500">❤️</span>
+                ) : (
+                  <span className="text-2xl text-gray-300">🤍</span>
+                )}
+              </button>
             </div>
 
             {/* Thumbnails Row */}

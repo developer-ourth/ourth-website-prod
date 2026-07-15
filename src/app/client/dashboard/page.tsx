@@ -51,6 +51,30 @@ export default function ClientDashboardPage() {
     country: "India",
   });
 
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
+  const openOrderModal = (order: any) => {
+    setSelectedOrder(order);
+    setIsOrderModalOpen(true);
+  };
+
+  // Support Form state
+  const [supportMessage, setSupportMessage] = useState("");
+  const [supportSubmitting, setSupportSubmitting] = useState(false);
+
+  const handleSupportSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!supportMessage.trim()) return;
+    setSupportSubmitting(true);
+    // Mock API call
+    setTimeout(() => {
+      toast.success("Message sent! Our team will get back to you shortly.");
+      setSupportMessage("");
+      setSupportSubmitting(false);
+    }, 1000);
+  };
+
   useEffect(() => {
     if (!isLoading && !user) {
       router.replace("/client/login");
@@ -424,9 +448,17 @@ export default function ClientDashboardPage() {
                           </div>
                         ))}
                       </div>
-                      <div className="flex justify-between border-t border-black/10 pt-4 font-bold text-lg text-black">
-                        <span>Total Paid</span>
-                        <span>₹{order.total_amount}</span>
+                      <div className="flex justify-between items-center border-t border-black/10 pt-4 font-bold text-lg text-black mt-2">
+                        <div>
+                          <span className="text-sm font-normal text-gray-600 block">Total Paid</span>
+                          <span>₹{order.total_amount}</span>
+                        </div>
+                        <button
+                          onClick={() => openOrderModal(order)}
+                          className="px-4 py-2 bg-[#76A52E] hover:bg-[#5f8624] text-white text-sm font-bold rounded-[30px] transition-colors"
+                        >
+                          View Details
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -477,7 +509,15 @@ export default function ClientDashboardPage() {
                           <p className="font-bold text-black font-mono">#{order.order_code || `ORD-${order.id}`}</p>
                           <p className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</p>
                         </div>
-                        <span className="text-[#4C7A1A] font-bold">₹{order.total_amount}</span>
+                        <div className="flex items-center gap-4">
+                          <span className="text-[#4C7A1A] font-bold">₹{order.total_amount}</span>
+                          <button
+                            onClick={() => openOrderModal(order)}
+                            className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold rounded-[30px] transition-colors border border-gray-300"
+                          >
+                            Details
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -493,7 +533,15 @@ export default function ClientDashboardPage() {
                           <p className="font-bold text-black font-mono">#{order.order_code || `ORD-${order.id}`}</p>
                           <p className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</p>
                         </div>
-                        <span className="text-red-500 font-bold">Canceled</span>
+                        <div className="flex items-center gap-4">
+                          <span className="text-red-500 font-bold">Canceled</span>
+                          <button
+                            onClick={() => openOrderModal(order)}
+                            className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold rounded-[30px] transition-colors border border-gray-300"
+                          >
+                            Details
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -531,15 +579,40 @@ export default function ClientDashboardPage() {
               <p className="text-[#4C7A1A] font-bold">We're here to help you heal the earth, one plate at a time!</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
-                  <h4 className="font-bold text-black text-lg mb-2">📧 Email Support</h4>
-                  <p className="text-sm text-gray-700">Send us a message and we'll reply within 24 hours.</p>
-                  <p className="font-bold mt-2 text-black">support@healingourth.com</p>
+                <div className="space-y-4">
+                  <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
+                    <h4 className="font-bold text-black text-lg mb-2">📧 Email Support</h4>
+                    <p className="text-sm text-gray-700">Send us a message and we'll reply within 24 hours.</p>
+                    <p className="font-bold mt-2 text-black">support@healingourth.com</p>
+                  </div>
+                  <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
+                    <h4 className="font-bold text-black text-lg mb-2">📞 Phone Support</h4>
+                    <p className="text-sm text-gray-700">Talk to our customer care team (9 AM - 6 PM).</p>
+                    <p className="font-bold mt-2 text-black">+91 1800-OURTH-CARE</p>
+                  </div>
                 </div>
-                <div className="p-6 rounded-[5px] bg-[#E8F0D8]">
-                  <h4 className="font-bold text-black text-lg mb-2">📞 Phone Support</h4>
-                  <p className="text-sm text-gray-700">Talk to our customer care team (9 AM - 6 PM).</p>
-                  <p className="font-bold mt-2 text-black">+91 1800-OURTH-CARE</p>
+                
+                <div className="p-6 rounded-[5px] bg-white border border-black/10 shadow-sm">
+                  <h4 className="font-bold text-black text-lg mb-4">Send us a message</h4>
+                  <form onSubmit={handleSupportSubmit} className="space-y-4">
+                    <div>
+                      <textarea 
+                        rows={4}
+                        required
+                        value={supportMessage}
+                        onChange={(e) => setSupportMessage(e.target.value)}
+                        placeholder="How can we help you?"
+                        className="w-full rounded-[5px] bg-gray-50 border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-[#76A52E] resize-none"
+                      />
+                    </div>
+                    <button 
+                      type="submit"
+                      disabled={supportSubmitting}
+                      className="w-full py-3 bg-[#76A52E] text-white font-bold rounded-[30px] hover:bg-[#689327] transition-colors disabled:opacity-70"
+                    >
+                      {supportSubmitting ? "Sending..." : "Send Message"}
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -591,6 +664,136 @@ export default function ClientDashboardPage() {
                 Save Address
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ORDER DETAILS MODAL */}
+      {isOrderModalOpen && selectedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          <div className="w-full max-w-2xl bg-[#FAF8F3] rounded-[5px] p-8 shadow-xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto font-['IBM_Plex_Sans'] border-[1.5px] border-black">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-black/10">
+              <div>
+                <h3 className="text-2xl font-bold text-black">Order Details</h3>
+                <p className="text-sm font-mono text-gray-600 mt-1">#{selectedOrder.order_code || `ORD-${selectedOrder.id}`}</p>
+              </div>
+              <button 
+                onClick={() => setIsOrderModalOpen(false)} 
+                className="text-3xl text-black hover:scale-110 transition -translate-y-2"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Order Tracking Timeline */}
+              <div className="bg-white p-6 rounded-[5px] border border-black/10 shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h4 className="font-bold text-lg text-black">Order Status</h4>
+                  <span className="text-xs font-bold text-gray-500 uppercase">Placed On: {new Date(selectedOrder.created_at).toLocaleDateString()}</span>
+                </div>
+                
+                {selectedOrder.status === 'cancelled' ? (
+                   <div className="text-red-600 font-bold text-center py-4 bg-red-50 rounded">This order was cancelled.</div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between relative gap-6 sm:gap-0 px-2 sm:px-8">
+                    {/* Horizontal Line for Desktop */}
+                    <div className="hidden sm:block absolute left-8 right-8 top-1/2 -translate-y-1/2 h-[3px] bg-gray-200 z-0"></div>
+                    
+                    {/* Vertical Line for Mobile */}
+                    <div className="sm:hidden absolute left-[15px] top-2 bottom-2 w-[3px] bg-gray-200 z-0"></div>
+                    
+                    {['pending', 'confirmed', 'processing', 'out_for_delivery', 'delivered'].map((step, idx) => {
+                      const statuses = ['pending', 'confirmed', 'processing', 'out_for_delivery', 'delivered'];
+                      const currentIdx = statuses.indexOf(selectedOrder.status);
+                      const isCompleted = idx <= currentIdx;
+                      const isActive = idx === currentIdx;
+                      
+                      const labels: Record<string, string> = {
+                        'pending': 'Placed',
+                        'confirmed': 'Confirmed',
+                        'processing': 'Packed',
+                        'out_for_delivery': 'Shipped',
+                        'delivered': 'Delivered'
+                      };
+                      return (
+                        <div key={step} className="relative z-10 flex flex-row sm:flex-col items-center gap-4 sm:gap-2 w-full sm:w-auto bg-white sm:bg-transparent">
+                          <div className={`w-8 h-8 rounded-full flex flex-shrink-0 items-center justify-center border-2 transition-colors ${
+                            isCompleted ? 'bg-[#76A52E] border-[#76A52E] text-white' : 'bg-white border-gray-300'
+                          } ${isActive ? 'ring-4 ring-[#76A52E]/20' : ''}`}>
+                            {isCompleted && <span className="text-sm">✓</span>}
+                          </div>
+                          <span className={`text-sm font-bold ${isCompleted ? 'text-black' : 'text-gray-400'}`}>
+                            {labels[step]}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Items */}
+              <div>
+                <h4 className="font-bold text-lg text-black mb-3">Items</h4>
+                <div className="space-y-3">
+                  {selectedOrder.items?.map((item: any) => (
+                    <div key={item.id} className="flex items-center gap-4 bg-white p-3 rounded-[5px] border border-black/10 shadow-sm">
+                      <div className="w-16 h-16 bg-gray-100 rounded flex-shrink-0 flex items-center justify-center border border-black/10">
+                        {item.product?.primary_image_url ? (
+                          <img src={item.product.primary_image_url} alt={item.product.name} className="max-w-full max-h-full object-contain" />
+                        ) : (
+                          <span className="text-2xl">🌱</span>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <p className="font-bold text-black">{item.product?.name}</p>
+                        <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                      </div>
+                      <div className="font-bold text-black">
+                        ₹{parseFloat(item.price) * item.quantity}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Summary and Delivery */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-black/10">
+                <div>
+                  <h4 className="font-bold text-lg text-black mb-3">Delivery Address</h4>
+                  <div className="text-sm text-gray-700 bg-white p-4 rounded-[5px] border border-black/10 shadow-sm space-y-1">
+                    <p>{selectedOrder.delivery_address_line1}</p>
+                    {selectedOrder.delivery_address_line2 && <p>{selectedOrder.delivery_address_line2}</p>}
+                    <p>{selectedOrder.delivery_city}, {selectedOrder.delivery_state} - {selectedOrder.delivery_postal_code}</p>
+                    <p className="pt-2 font-semibold text-black">Phone: {selectedOrder.delivery_phone}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-lg text-black mb-3">Order Summary</h4>
+                  <div className="bg-white p-4 rounded-[5px] border border-black/10 shadow-sm space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span className="font-semibold">₹{selectedOrder.subtotal}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Tax</span>
+                      <span className="font-semibold">₹{selectedOrder.tax_amount}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-semibold">₹{selectedOrder.shipping_cost}</span>
+                    </div>
+                    <div className="flex justify-between pt-2 border-t border-black/10 text-base font-bold text-black">
+                      <span>Total</span>
+                      <span>₹{selectedOrder.total_amount}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
       )}

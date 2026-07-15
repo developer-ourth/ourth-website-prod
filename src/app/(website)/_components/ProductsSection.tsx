@@ -82,26 +82,32 @@ export default function ProductsSection() {
           <div className="flex h-64 items-center justify-center">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
           </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12 bg-white/60 rounded-2xl border border-[#0D3A27]/10 max-w-md mx-auto p-6">
+            <p className="text-gray-600 font-medium font-['IBM_Plex_Sans'] mb-4">
+              Our latest products are currently being updated. Visit our marketplace or check back shortly!
+            </p>
+            <NextLink
+              href="/products"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#0D3A27] text-white font-bold text-sm hover:bg-[#155338] transition"
+            >
+              Go to Marketplace →
+            </NextLink>
+          </div>
         ) : (
           <>
           {/* Desktop: 4-col grid */}
           <div className="hidden xl:grid grid-cols-4 gap-8 justify-items-center">
-            {/* Render 4 cards, fill in with mocks if database has less than 4 */}
-            {Array.from({ length: 4 }).map((_, index) => {
-              const product = products[index];
-
-              // Mock details if no database product is found at this slot
-              const id = product?.id ?? 999 + index;
-              const name = product?.name ?? "6N Panipuri Bowls";
-              const isReal = !!product;
+            {products.slice(0, 4).map((product) => {
+              const id = product.id;
+              const name = product.name;
               const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
-              const selPackId = product ? selectedPacks[product.id] : undefined;
+              const selPackId = selectedPacks[product.id];
               const selPack = selPackId ? activePacks.find(p => p.id === selPackId) : undefined;
-              // Show selected pack price, fallback to product price
               const price = selPack
                 ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
-                : product ? Math.round(parseFloat(product.discounted_price ?? product.base_price)) : 500;
-              const image = product ? getProductImageUrl(product.primary_image_url, product.name) : "/images/decor/product_stack.webp";
+                : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+              const image = getProductImageUrl(product.primary_image_url, product.name);
 
               return (
                 <div key={id} className="relative w-[280px] h-[480px] flex-shrink-0 select-none group">
@@ -153,7 +159,7 @@ export default function ProductsSection() {
                                   e.preventDefault();
                                   setSelectedPacks(prev => ({
                                     ...prev,
-                                    [product!.id]: prev[product!.id] === pk.id ? undefined! : pk.id
+                                    [product.id]: prev[product.id] === pk.id ? undefined! : pk.id
                                   }));
                                 }}
                                 className={`block w-full text-left px-2 py-0.5 rounded-md transition-all ${
@@ -171,11 +177,11 @@ export default function ProductsSection() {
                     </div>
 
 
-                    {/* Centered Add Button */}
+                    {/* Action Button: White pill button with black border matching Figma */}
                     <div className="w-full flex justify-center pb-6">
                       <button
-                        onClick={() => isReal ? handleAdd(product.id) : router.push("/client/login")}
-                        className="w-[125px] h-[36px] bg-white border-[1.5px] border-black rounded-[30px] text-[16px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
+                        onClick={() => handleAdd(product.id)}
+                        className="w-[115px] h-[34px] bg-white border-[1.5px] border-black rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                       >
                         Add
                       </button>
@@ -221,18 +227,16 @@ export default function ProductsSection() {
               className="flex gap-4 overflow-x-hidden scroll-smooth px-2"
               style={{ scrollSnapType: "x mandatory" }}
             >
-              {Array.from({ length: 4 }).map((_, index) => {
-                const product = products[index];
-                const id = product?.id ?? 999 + index;
-                const name = product?.name ?? "6N Panipuri Bowls";
-                const isReal = !!product;
+              {products.slice(0, 4).map((product) => {
+                const id = product.id;
+                const name = product.name;
                 const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
-                const selPackId = product ? selectedPacks[product.id] : undefined;
+                const selPackId = selectedPacks[product.id];
                 const selPack = selPackId ? activePacks.find(p => p.id === selPackId) : undefined;
                 const price = selPack
                   ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
-                  : product ? Math.round(parseFloat(product.discounted_price ?? product.base_price)) : 500;
-                const image = product ? getProductImageUrl(product.primary_image_url, product.name) : "/images/decor/product_stack.webp";
+                  : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+                const image = getProductImageUrl(product.primary_image_url, product.name);
 
                 return (
                   <div
@@ -268,7 +272,7 @@ export default function ProductsSection() {
                                     key={pk.id}
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      setSelectedPacks(prev => ({ ...prev, [product!.id]: prev[product!.id] === pk.id ? undefined! : pk.id }));
+                                      setSelectedPacks(prev => ({ ...prev, [product.id]: prev[product.id] === pk.id ? undefined! : pk.id }));
                                     }}
                                     className={`block w-full text-left px-1.5 py-0.5 rounded-md transition-all ${isSelected ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40" : "text-gray-700 hover:bg-gray-100"}`}
                                   >
@@ -281,8 +285,8 @@ export default function ProductsSection() {
                         </div>
                         <div className="w-full flex justify-center pb-3 sm:pb-5">
                           <button
-                            onClick={() => isReal ? handleAdd(product.id) : router.push("/client/login")}
-                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white border-[1.5px] border-black rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center"
+                            onClick={() => handleAdd(product.id)}
+                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white border-[1.5px] border-black rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                           >
                             Add
                           </button>

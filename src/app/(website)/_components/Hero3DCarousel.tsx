@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Center, Environment, useGLTF } from "@react-three/drei";
+import { OrbitControls, Center, Environment, useGLTF, Float } from "@react-three/drei";
 import * as THREE from "three";
 
 // The user's provided 3D product model
@@ -38,9 +38,16 @@ export default function Hero3DCarousel() {
 
 
         <Suspense fallback={null}>
-          <Center>
-            <ProductModel />
-          </Center>
+          <Float
+            speed={1.6}
+            rotationIntensity={0.25}
+            floatIntensity={0.7}
+            floatingRange={[-0.1, 0.1]}
+          >
+            <Center>
+              <ProductModel />
+            </Center>
+          </Float>
         </Suspense>
 
         {/* Only rotates horizontally when user interacts with mouse, plus automatic spinning */}

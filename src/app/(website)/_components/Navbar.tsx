@@ -223,7 +223,7 @@ export default function Navbar() {
             className="inline-flex w-[110px] xl:w-[146px] h-[36px] xl:h-[47px] items-center justify-center rounded-[30px] bg-[#25784C] text-[16px] xl:text-[24px] font-bold text-white hover:opacity-90 transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
-            {user ? "Dashboard" : "Sign in"}
+            {user ? (user.role === "admin" ? "Admin Panel" : "Dashboard") : "Sign in"}
           </Link>
         </div>
 
@@ -376,7 +376,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="flex-1 flex items-center justify-center rounded-xl bg-[#1A5C2E] py-2 text-sm font-bold text-white border border-black"
             >
-              {user ? "Dashboard" : "Sign in"}
+              {user ? (user.role === "admin" ? "Admin Panel" : "Dashboard") : "Sign in"}
             </Link>
           </div>
         </div>

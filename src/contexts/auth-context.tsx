@@ -15,7 +15,7 @@ import {
   getMeApi,
   loginApi,
   loginWithGoogle as apiLoginWithGoogle,
-  verifyOtp as apiVerifyOtp,
+  apiVerifyOtp,
   logoutApi,
   setToken,
 } from "@/lib/api";
@@ -34,7 +34,7 @@ interface AuthContextValue {
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogleToken: (idToken: string) => Promise<void>;
-  loginWithOtp: (phone: string, otp: string) => Promise<void>;
+  loginWithOtp: (identifier: string, otp: string, type: "email" | "phone") => Promise<any>;
   logout: () => Promise<void>;
   isLoading: boolean;
 }
@@ -130,8 +130,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     toast.success(`Welcome back, ${u.name}!`);
   }, []);
 
-  const loginWithOtp = useCallback(async (phone: string, otp: string) => {
-    const res = await apiVerifyOtp(phone, otp);
+  const loginWithOtp = useCallback(async (identifier: string, otp: string, type: "email" | "phone") => {
+    const res = await apiVerifyOtp(identifier, otp, type);
+    
+    if (res.requires_profile_completion) {
+      return res; // Let the component handle the redirect
+    }
+    
     setToken(res.data.token);
     const u = res.data.user;
     const authUser: AuthUser = {
@@ -145,6 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem(USER_KEY, JSON.stringify(authUser));
     setUser(authUser);
     toast.success(`Welcome back, ${u.name}!`);
+    return res;
   }, []);
 
   const logout = useCallback(async () => {

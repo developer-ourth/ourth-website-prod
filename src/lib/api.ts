@@ -79,17 +79,17 @@ export function loginWithGoogle(idToken: string) {
   });
 }
 
-export function sendOtp(phone: string) {
-  return request<{ success: boolean; message: string }>("/auth/otp/send", {
+export function sendEmailOtp(email: string) {
+  return request<{ success: boolean; message: string }>("/auth/otp/send-email", {
     method: "POST",
-    body: JSON.stringify({ phone }),
+    body: JSON.stringify({ email }),
   });
 }
 
-export function verifyOtp(phone: string, otp: string) {
-  return request<LoginResponse>("/auth/otp/verify", {
+export function apiVerifyOtp(identifier: string, otp: string, type: "email" | "phone") {
+  return request<any>("/auth/otp/verify", {
     method: "POST",
-    body: JSON.stringify({ phone, otp }),
+    body: JSON.stringify({ identifier, otp, type }),
   });
 }
 
@@ -852,3 +852,25 @@ export function removeFromWishlistApi(productId: number) {
   });
 }
 
+// ── Payments ─────────────────────────────────────────────────────────────────
+
+export function initiateRazorpayPayment(orderId: number) {
+  return request<{
+    success: boolean;
+    data: {
+      razorpay_order_id: string;
+      amount: number;
+      currency: string;
+      key: string;
+    }
+  }>(`/me/orders/${orderId}/payments/razorpay/initiate`, {
+    method: "POST",
+  });
+}
+
+export function verifyRazorpayPayment(orderId: number, data: { razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string }) {
+  return request<{ success: boolean; message: string }>(`/me/orders/${orderId}/payments/razorpay/verify`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

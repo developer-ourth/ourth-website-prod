@@ -8,6 +8,7 @@ import Footer from "@/app/(website)/_components/Footer";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import {
   getAddresses,
   createAddress,
@@ -15,6 +16,8 @@ import {
   registerApi,
   setToken,
   getProductImageUrl,
+  initiateRazorpayPayment,
+  verifyRazorpayPayment,
   type UserAddress,
 } from "@/lib/api";
 
@@ -155,7 +158,8 @@ export default function CartPage() {
     setCheckoutSubmitting(true);
     setCheckoutError("");
     try {
-      await placeOrder({
+      // 1. Create the base order on our backend
+      const res = await placeOrder({
         delivery_address_line1: activeAddress.address_line1,
         delivery_address_line2: activeAddress.address_line2,
         delivery_city: activeAddress.city ?? "",
@@ -166,12 +170,63 @@ export default function CartPage() {
         order_type: user?.role === "vendor" ? "b2b" : "b2c",
         source: "website",
       });
-      await clearCart();
-      toast.success("Order placed successfully!");
-      router.replace("/client/dashboard");
+
+      const orderId = res.data.id;
+
+      // 2. If it's online payment, initiate Razorpay flow
+      if (paymentMethod === "online") {
+        const rzpInit = await initiateRazorpayPayment(orderId);
+        
+        const options = {
+          key: rzpInit.data.key,
+          amount: rzpInit.data.amount,
+          currency: rzpInit.data.currency,
+          name: "Ourth",
+          description: "Order Payment",
+          order_id: rzpInit.data.razorpay_order_id,
+          handler: async function (response: any) {
+            try {
+              setCheckoutSubmitting(true);
+              await verifyRazorpayPayment(orderId, {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
+              
+              await clearCart();
+              toast.success("Payment successful! Order placed.");
+              router.replace("/client/dashboard");
+            } catch (err: any) {
+              setCheckoutError(err?.message ?? "Payment verification failed.");
+              setCheckoutSubmitting(false);
+            }
+          },
+          prefill: {
+            name: user?.name,
+            email: user?.email,
+            contact: activeAddress.mobile,
+          },
+          theme: {
+            color: "#25784C",
+          },
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.on('payment.failed', function (response: any){
+           setCheckoutError(response.error.description || "Payment failed");
+           setCheckoutSubmitting(false);
+        });
+        rzp.open();
+        
+      } else {
+        // COD logic
+        await clearCart();
+        toast.success("Order placed successfully!");
+        router.replace("/client/dashboard");
+      }
+
     } catch (err: any) {
       setCheckoutError(err?.message ?? "Checkout failed.");
-    } finally {
       setCheckoutSubmitting(false);
     }
   };
@@ -180,7 +235,9 @@ export default function CartPage() {
   const total = cart?.total_amount ?? "0.00";
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pt-36 pb-24 font-['IBM_Plex_Sans']">
+    <>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
+      <main className="min-h-screen bg-[#FAF8F3] pt-36 pb-24 font-['IBM_Plex_Sans']">
       <div className="mx-auto max-w-[1625px] px-4 lg:px-[146px] w-full">
         {/* Title */}
         <h1 
@@ -725,5 +782,6 @@ export default function CartPage() {
         )}
       </div>
     </main>
+    </>
   );
 }

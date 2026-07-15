@@ -4,29 +4,19 @@ import Image from "next/image";
 
 export default function TornBanner() {
   return (
-    <section className="relative w-full bg-[#FAF8F3] overflow-hidden">
+    <section className="relative w-full bg-[#FAF8F3] overflow-x-clip overflow-y-visible -mt-6 md:-mt-12 xl:-mt-20 z-20">
 
-      {/* Desktop/Tablet: Show the torn paper image (768px+) */}
-      <div
-        className="hidden md:block relative w-full"
-        style={{ height: "clamp(180px, 30vw, 680px)" }}
-      >
-        <div
-          className="absolute left-0 w-full pointer-events-none select-none"
-          style={{
-            height: "clamp(460px, 62vw, 940px)",
-            top: "clamp(-100px, -13vw, -200px)",
-          }}
-        >
-          <Image
-            src="/images/home/torn.webp"
-            alt="Torn paper banner"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-        </div>
+      {/* Desktop/Tablet: Show the cropped torn paper image (768px+) */}
+      <div className="hidden md:block relative w-full pointer-events-none select-none">
+        <Image
+          src="/images/home/torn1.webp"
+          alt="Torn paper banner"
+          width={1920}
+          height={450}
+          className="w-full h-auto object-contain"
+          sizes="100vw"
+          priority
+        />
       </div>
 
       {/* Mobile: Clean text-only version (<768px) */}

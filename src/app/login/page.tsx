@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
-import { sendOtp } from "@/lib/api";
+import { sendEmailOtp } from "@/lib/api";
 import toast from "react-hot-toast";
+import { auth } from "@/lib/firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 
 export default function LoginPage() {
   const { user, isLoading, login, loginWithGoogleToken, loginWithOtp } = useAuth();
@@ -20,9 +22,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   
   // OTP state
-  const [phone, setPhone] = useState("");
+  const [otpType, setOtpType] = useState<"phone" | "email">("phone");
+  const [identifier, setIdentifier] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -57,20 +61,50 @@ export default function LoginPage() {
     }
   };
 
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        'size': 'invisible',
+      });
+    }
+  };
+
   const handleSendOtp = async () => {
-    if (!phone.trim()) {
-      setError("Please enter a valid phone number.");
+    if (!identifier.trim()) {
+      setError(`Please enter a valid ${otpType === 'email' ? 'email address' : 'phone number'}.`);
       return;
     }
+    
     setError("");
     setSubmitting(true);
+    
     try {
-      const res = await sendOtp(phone.trim());
-      setOtpSent(true);
-      toast.success(res.message || "OTP sent successfully!");
-    } catch (err: unknown) {
-      const msg = err as { message?: string };
-      setError(msg?.message ?? "Failed to send OTP.");
+      if (otpType === 'phone') {
+        let finalPhone = identifier.trim();
+        // Auto-prepend +91 if they just typed a 10 digit number
+        if (/^\d{10}$/.test(finalPhone)) {
+          finalPhone = "+91" + finalPhone;
+          setIdentifier(finalPhone);
+        }
+
+        // Simple regex check for E.164 format (+91...)
+        if (!/^\+[1-9]\d{1,14}$/.test(finalPhone)) {
+          throw new Error("Please enter a valid 10-digit phone number.");
+        }
+        setupRecaptcha();
+        const appVerifier = window.recaptchaVerifier;
+        const confirmation = await signInWithPhoneNumber(auth, finalPhone, appVerifier);
+        setConfirmationResult(confirmation);
+        setOtpSent(true);
+        toast.success("OTP sent to your phone!");
+      } else {
+        const res = await sendEmailOtp(identifier.trim());
+        setOtpSent(true);
+        toast.success(res.message || "OTP sent successfully!");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message ?? "Failed to send OTP.");
     } finally {
       setSubmitting(false);
     }
@@ -83,10 +117,27 @@ export default function LoginPage() {
     setError("");
     setSubmitting(true);
     try {
-      await loginWithOtp(phone.trim(), otp.trim());
-    } catch (err: unknown) {
-      const msg = err as { message?: string };
-      setError(msg?.message ?? "Invalid OTP.");
+      let finalOtp = otp.trim();
+      
+      if (otpType === 'phone') {
+        if (!confirmationResult) throw new Error("Please resend the OTP.");
+        const result = await confirmationResult.confirm(finalOtp);
+        finalOtp = await result.user.getIdToken();
+      }
+      
+      const res = await loginWithOtp(identifier.trim(), finalOtp, otpType);
+      
+      if (res?.requires_profile_completion) {
+        toast.success("OTP verified! Let's complete your profile.");
+        // Store identifier in sessionStorage so the next page knows who it is
+        sessionStorage.setItem("complete_profile_identifier", identifier.trim());
+        sessionStorage.setItem("complete_profile_type", otpType);
+        router.push("/complete-profile");
+      }
+      
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message ?? "Invalid OTP.");
     } finally {
       setSubmitting(false);
     }
@@ -146,7 +197,7 @@ export default function LoginPage() {
               className={`flex-1 py-2 text-sm font-bold border-b-2 transition ${tab === "otp" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
               onClick={() => { setTab("otp"); setError(""); }}
             >
-              Phone OTP
+              Login via OTP
             </button>
           </div>
 
@@ -193,15 +244,44 @@ export default function LoginPage() {
             </form>
           ) : (
             <form onSubmit={handleOtpSubmit} className="space-y-5">
+              {!otpSent && (
+                <div className="flex space-x-4 mb-4">
+                  <label className="flex items-center space-x-2 text-sm font-bold cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="otpType" 
+                      value="phone" 
+                      checked={otpType === 'phone'} 
+                      onChange={() => { setOtpType('phone'); setIdentifier(''); setError(''); }}
+                      className="accent-[#25784C]"
+                    />
+                    <span>Phone Number</span>
+                  </label>
+                  <label className="flex items-center space-x-2 text-sm font-bold cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="otpType" 
+                      value="email" 
+                      checked={otpType === 'email'} 
+                      onChange={() => { setOtpType('email'); setIdentifier(''); setError(''); }}
+                      className="accent-[#25784C]"
+                    />
+                    <span>Email Address</span>
+                  </label>
+                </div>
+              )}
+
               <div>
-                <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Phone Number</label>
+                <label className="mb-2 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
+                  {otpType === 'phone' ? 'Phone Number' : 'Email Address'}
+                </label>
                 <input
-                  type="text"
+                  type={otpType === 'email' ? 'email' : 'text'}
                   required
                   disabled={otpSent}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+919876543210"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder={otpType === 'phone' ? "+919876543210" : "you@example.com"}
                   className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-black outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans'] disabled:opacity-70"
                 />
               </div>
@@ -234,6 +314,8 @@ export default function LoginPage() {
               </button>
             </form>
           )}
+
+          <div id="recaptcha-container"></div>
 
           <p className="mt-6 text-center text-sm text-[#444444] font-['IBM_Plex_Sans']">
             New user?{" "}

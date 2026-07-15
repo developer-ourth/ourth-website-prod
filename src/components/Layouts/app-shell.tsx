@@ -17,6 +17,7 @@ function isAuthRoute(pathname: string): boolean {
     normalized === "/register" ||
     normalized === "/forgot-password" ||
     normalized === "/reset-password" ||
+    normalized === "/complete-profile" ||
     normalized === "/client/login" ||
     normalized === "/client/register"
   );
