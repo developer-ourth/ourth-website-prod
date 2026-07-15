@@ -371,6 +371,7 @@ export default function ClientLoginPage() {
             </div>
           </div>
         </div>
+      </div>
     </div>
   );
 }
