@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { getRoleConfig } from "@/lib/roles";
 import { getMarketplaceProducts, getProductImageUrl, type MarketProduct } from "@/lib/api";
+import QuickCartDrawer from "@/app/(website)/_components/QuickCartDrawer";
+import ProductQuickViewModal from "@/app/(website)/_components/ProductQuickViewModal";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -18,7 +20,7 @@ export default function Navbar() {
   const searchRefMobile = useRef<HTMLDivElement>(null);
   
   const router = useRouter();
-  const { cart } = useCart();
+  const { cart, openDrawer } = useCart();
   const { user } = useAuth();
   const cartCount = cart?.total_items ?? 0;
 
@@ -195,9 +197,11 @@ export default function Navbar() {
           </Link>
 
           {/* Cart Icon */}
-          <Link
-            href="/cart"
-            className="relative flex items-center justify-center w-[40px] h-[44px] text-[#2C1F13] hover:opacity-85 transition-all"
+          <button
+            type="button"
+            onClick={openDrawer}
+            className="relative flex items-center justify-center w-[40px] h-[44px] text-[#2C1F13] hover:opacity-85 transition-all cursor-pointer"
+            aria-label="View Eco-Cart"
           >
             <svg
               className="w-9 h-9"
@@ -215,7 +219,7 @@ export default function Navbar() {
             <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold">
               {cartCount}
             </span>
-          </Link>
+          </button>
 
           {/* Sign In Solid Green Capsule Button */}
           <Link
@@ -363,14 +367,18 @@ export default function Navbar() {
             </div>
           </nav>
           <div className="my-2 border-t border-black/10" />
+          <div className="my-2 border-t border-black/10" />
           <div className="flex gap-3">
-            <Link
-              href="/cart"
-              onClick={() => setOpen(false)}
-              className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-black py-2 text-sm font-bold text-black hover:bg-[#E8F0D8] transition-all"
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openDrawer();
+              }}
+              className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-black py-2 text-sm font-bold text-black hover:bg-[#E8F0D8] transition-all cursor-pointer"
             >
               Cart ({cartCount})
-            </Link>
+            </button>
             <Link
               href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
               onClick={() => setOpen(false)}
@@ -381,6 +389,9 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      <QuickCartDrawer />
+      <ProductQuickViewModal />
     </div>
   );
 }

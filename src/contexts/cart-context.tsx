@@ -16,11 +16,18 @@ import {
   removeCartItem,
   clearCart as clearCartApi,
   type Cart,
+  type MarketProduct,
 } from "@/lib/api";
 
 interface CartContextValue {
   cart: Cart | null;
   loading: boolean;
+  isDrawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+  quickViewProduct: MarketProduct | null;
+  openQuickView: (product: MarketProduct) => void;
+  closeQuickView: () => void;
   fetchCart: () => Promise<void>;
   addToCart: (productId: number, quantity?: number, packId?: number | null) => Promise<void>;
   updateQty: (itemId: number, quantity: number) => Promise<void>;
@@ -34,6 +41,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading } = useAuth();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<MarketProduct | null>(null);
+
+  const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setIsDrawerOpen(false), []);
+
+  const openQuickView = useCallback((product: MarketProduct) => setQuickViewProduct(product), []);
+  const closeQuickView = useCallback(() => setQuickViewProduct(null), []);
 
   const fetchCart = useCallback(async () => {
     if (authLoading) return;
@@ -70,6 +85,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       try {
         const res = await addCartItem(productId, quantity, packId);
         setCart(res.data);
+        setIsDrawerOpen(true);
         toast.success("Added to cart! 🌿");
       } catch (err: any) {
         toast.error(err.message || "Failed to add to cart");
@@ -148,6 +164,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         cart,
         loading,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
+        quickViewProduct,
+        openQuickView,
+        closeQuickView,
         fetchCart,
         addToCart,
         updateQty,

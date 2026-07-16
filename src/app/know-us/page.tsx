@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+// import ProductComparisonMatrix from "@/app/(website)/_components/ProductComparisonMatrix";
 
 const teamMembers = [
   { name: "Riya Goyal", image: "/images/team/team-02.webp" },
@@ -195,6 +196,9 @@ export default function KnowUsPage() {
           </div>
         </div>
       </section>
+
+      {/* ===== SCIENTIFIC COMPARISON MATRIX ===== */}
+      {/* <ProductComparisonMatrix /> */}
 
       {/* ===== 4. OUR FOUNDER'S VISION ===== */}
       <section className="w-full py-10 sm:py-12 md:py-16 px-4 sm:px-6">

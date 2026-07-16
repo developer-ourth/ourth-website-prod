@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProductsSection() {
   const { user } = useAuth();
-  const { addToCart } = useCart();
+  const { addToCart, openQuickView } = useCart();
   const router = useRouter();
 
   const [products, setProducts] = useState<MarketProduct[]>([]);
@@ -122,19 +122,26 @@ export default function ProductsSection() {
 
                   {/* Card Content overlay */}
                   <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between items-start">
-                    {/* Top Leaf Image Container (Clickable link to details page) */}
-                    <NextLink href={`/products/${id}`} className="relative w-full h-[180px] mt-2 flex items-center justify-center hover:opacity-90 block">
-                      {/* Product Image */}
+                    {/* Top Leaf Image Container with Quick View Trigger */}
+                    <div
+                      onClick={() => openQuickView(product)}
+                      className="relative w-full h-[180px] mt-2 flex items-center justify-center cursor-pointer group/img block"
+                    >
                       <div className="relative z-10 w-[190px] h-[150px] flex items-center justify-center">
                         <Image 
                           src={image} 
                           alt={name}
                           width={190}
                           height={150} 
-                          className="max-w-full max-h-full object-contain transform group-hover:scale-105 transition-all duration-300"
+                          className="max-w-full max-h-full object-contain transform group-hover/img:scale-105 transition-all duration-300"
                         />
                       </div>
-                    </NextLink>
+                      <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl z-20">
+                        <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+                          ⚡ Quick View
+                        </span>
+                      </div>
+                    </div>
  
                     {/* Product Metadata (Clickable link to details page) */}
                     <div className="w-full px-4 space-y-2 mt-4 flex-grow flex flex-col justify-start">
@@ -253,11 +260,19 @@ export default function ProductsSection() {
                         className="object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] pointer-events-none"
                       />
                       <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
-                        <NextLink href={`/products/${id}`} className="relative w-full h-[40%] mt-1 flex items-center justify-center hover:opacity-90 block">
+                        <div
+                          onClick={() => openQuickView(product)}
+                          className="relative w-full h-[40%] mt-1 flex items-center justify-center cursor-pointer group/img block"
+                        >
                           <div className="relative z-10 w-[130px] sm:w-[170px] h-[100px] sm:h-[130px] flex items-center justify-center">
                             <Image src={image} alt={name} width={170} height={130} className="max-w-full max-h-full object-contain" />
                           </div>
-                        </NextLink>
+                          <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl z-20">
+                            <span className="px-3 py-1 rounded-full bg-white text-[#0D3A27] font-extrabold text-[11px] shadow-md flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+                              ⚡ Quick View
+                            </span>
+                          </div>
+                        </div>
                         <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
                           <NextLink href={`/products/${id}`} className="hover:underline block">
                             <h3 className="text-[14px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>

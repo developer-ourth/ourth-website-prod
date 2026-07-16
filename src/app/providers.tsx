@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -31,7 +32,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         <CartProvider>
           <SidebarProvider>
-            {children}
+            <SmoothScrollProvider>
+              {children}
+            </SmoothScrollProvider>
             <Toaster position="bottom-right" toastOptions={{ style: { background: '#FAF8F3', color: '#000', border: '1px solid #76A52E' } }} />
           </SidebarProvider>
         </CartProvider>

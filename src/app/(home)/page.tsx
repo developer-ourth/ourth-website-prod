@@ -2,6 +2,7 @@ import Hero from "@/app/(website)/_components/Hero";
 import Journey from "@/app/(website)/_components/Journey";
 import ProductsSection from "@/app/(website)/_components/ProductsSection";
 import TornBanner from "@/app/(website)/_components/TornBanner";
+// import EcoImpactCalculator from "@/app/(website)/_components/EcoImpactCalculator";
 
 export default function LandingPage() {
 
@@ -10,6 +11,7 @@ export default function LandingPage() {
       <Hero />
       <Journey />
       <TornBanner />
+      {/* <EcoImpactCalculator /> */}
       <ProductsSection />
     </main>
   );

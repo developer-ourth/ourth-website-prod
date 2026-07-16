@@ -13,6 +13,99 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+function ProductCardCell({
+  product,
+  selectedPacks,
+  setSelectedPacks,
+  handleAdd,
+}: {
+  product: MarketProduct;
+  selectedPacks: Record<number, number>;
+  setSelectedPacks: React.Dispatch<React.SetStateAction<Record<number, number>>>;
+  handleAdd: (productId: number) => Promise<void>;
+}) {
+  const { openQuickView } = useCart();
+  const image = getProductImageUrl(product.primary_image_url, product.name);
+  const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
+  const selPackId = selectedPacks[product.id];
+  const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
+  const price = selPack
+    ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
+    : Math.round(parseFloat(product.discounted_price ?? product.base_price));
+
+  return (
+    <div className="border-b border-r border-black flex flex-col justify-between p-6 sm:p-8 bg-[#FAF8F3] transition-colors hover:bg-[#FAF5EC]">
+      {/* Top Image box with Quick View Overlay */}
+      <div
+        onClick={() => openQuickView(product)}
+        className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] bg-white rounded-xl overflow-hidden mx-auto shadow-md border-[1.5px] border-black flex items-center justify-center p-2 group/img transition-all cursor-pointer"
+      >
+        <Image
+          src={image}
+          alt={product.name}
+          width={150}
+          height={150}
+          className="max-w-[140px] max-h-[140px] object-contain transition-transform duration-300 group-hover/img:scale-105"
+        />
+        <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+            ⚡ Quick View
+          </span>
+        </div>
+      </div>
+
+      {/* Product Title & Price */}
+      <div className="mt-6 text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+        <Link href={`/products/${product.id}`} className="block">
+          <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{product.name}</h3>
+        </Link>
+        <p className="font-bold text-base sm:text-lg text-gray-900 mt-1">₹{price}</p>
+      </div>
+
+      {/* Bottom Pack Options & Add Button */}
+      <div className="mt-6 flex items-end justify-between gap-4 pt-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+        {/* Left: Stacked pack options */}
+        <div className="flex flex-col gap-1 text-left text-sm sm:text-base text-gray-800">
+          {packs.length > 0 ? (
+            packs.map((pack: any) => {
+              const isSelected = selPackId === pack.id || (!selPackId && pack === packs[0]);
+              return (
+                <button
+                  key={pack.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedPacks(prev => ({
+                      ...prev,
+                      [product.id]: pack.id
+                    }));
+                  }}
+                  className={`text-left transition-all ${
+                    isSelected
+                      ? "font-bold text-black underline underline-offset-4 decoration-2 decoration-[#0D3A27]"
+                      : "text-gray-600 hover:text-black"
+                  }`}
+                >
+                  {pack.name}
+                </button>
+              );
+            })
+          ) : (
+            <span className="text-gray-700">Standard Pack</span>
+          )}
+        </div>
+
+        {/* Right: Add Button exactly like image */}
+        <button
+          onClick={() => handleAdd(product.id)}
+          className="px-6 py-2 border border-black rounded-lg text-sm sm:text-base font-medium text-black bg-[#FAF8F3] hover:bg-white shadow-sm hover:shadow active:scale-95 transition-all flex-shrink-0"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ProductsPageContent() {
   const { user } = useAuth();
   const { addToCart } = useCart();
@@ -145,99 +238,22 @@ function ProductsPageContent() {
                 Customer favorites across India — 100% natural, leak-proof, and compostable right after your meal.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1580px] mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] border-t border-l border-black max-w-[1580px] mx-auto overflow-hidden">
               {bestSellers.length === 0 ? (
                 <div className="col-span-full text-center py-12 bg-white/70 rounded-2xl border border-[#2B4D0E]/20 p-8 max-w-xl mx-auto shadow-sm">
                   <p className="text-gray-700 text-lg font-bold mb-2">No products loaded right now</p>
                   <p className="text-gray-500 text-sm">Please ensure the local API server (<code className="bg-gray-100 px-1.5 py-0.5 rounded">php artisan serve</code>) is active on port 8000.</p>
                 </div>
               ) : (
-                bestSellers.map((product) => {
-                  const image = getProductImageUrl(product.primary_image_url, product.name);
-                  const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
-                const selPackId = product ? selectedPacks[product.id] : undefined;
-                const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
-                const price = selPack
-                  ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
-                  : Math.round(parseFloat(product.discounted_price ?? product.base_price));
-
-                return (
-                  <div
+                bestSellers.map((product) => (
+                  <ProductCardCell
                     key={product.id}
-                    className="group bg-white rounded-[20px] border border-[#2B4D0E]/15 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between p-6 relative overflow-hidden"
-                  >
-                    {/* Bestseller badge */}
-                    <div className="absolute top-4 left-4 z-10 bg-[#E8F0D8] text-[#2B4D0E] font-bold text-xs px-3 py-1 rounded-full border border-[#2B4D0E]/20 shadow-sm flex items-center gap-1">
-                      <span>🔥</span>
-                      <span>Bestseller</span>
-                    </div>
-
-                    {/* Product image box */}
-                    <Link
-                      href={`/products/${product.id}`}
-                      className="w-full h-[190px] bg-[#FAF8F3] rounded-[14px] flex items-center justify-center overflow-hidden mb-5 group-hover:bg-[#F5F2EA] transition-colors relative"
-                    >
-                      <Image
-                        src={image}
-                        alt={product.name}
-                        width={160}
-                        height={150}
-                        className="max-w-[160px] max-h-[150px] object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </Link>
-
-                    {/* Product details */}
-                    <div className="space-y-2 text-left w-full flex-1 flex flex-col justify-between" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      <div>
-                        <Link href={`/products/${product.id}`} className="hover:text-[#0D3A27] transition-colors block">
-                          <h3 className="text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-[#0D3A27] transition-colors">{product.name}</h3>
-                        </Link>
-                        <p className="text-2xl font-black text-[#0D3A27] mt-1">₹{price}</p>
-                      </div>
-
-                      {/* Pack Selection & Add CTA */}
-                      <div className="pt-4 border-t border-gray-100 mt-3 space-y-3">
-                        {packs.length > 0 && (
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            {packs.slice(0, 3).map((pack: any) => {
-                              const isSelected = selPackId === pack.id || (!selPackId && pack === packs[0]);
-                              return (
-                                <button
-                                  key={pack.id}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setSelectedPacks(prev => ({
-                                      ...prev,
-                                      [product.id]: pack.id
-                                    }));
-                                  }}
-                                  className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                                    isSelected
-                                      ? "bg-[#0D3A27] text-white shadow-sm ring-1 ring-[#0D3A27]"
-                                      : "bg-[#FAF8F3] text-gray-700 border border-gray-200 hover:border-[#0D3A27]/40 hover:bg-gray-100"
-                                  }`}
-                                >
-                                  {pack.name}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-
-                        <button
-                          onClick={() => handleAdd(product.id)}
-                          className="w-full h-[44px] bg-[#0D3A27] hover:bg-[#155338] active:scale-[0.98] rounded-full text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn"
-                        >
-                          <svg className="w-4 h-4 transition-transform group-hover/btn:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                          </svg>
-                          <span>Add to Cart</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+                    product={product}
+                    selectedPacks={selectedPacks}
+                    setSelectedPacks={setSelectedPacks}
+                    handleAdd={handleAdd}
+                  />
+                ))
               )}
             </div>
           </section>
@@ -300,56 +316,104 @@ function ProductsPageContent() {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-              {/* Card 1: White Background with Blue Border */}
-              <div className="w-full max-w-[776px] min-h-[450px] bg-white border-2 border-[#103F5E]/20 rounded-[30px] p-8 sm:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="w-[240px] h-[220px] sm:w-[260px] sm:h-[240px] rounded-[24px] bg-[#FAF8F3] flex items-center justify-center overflow-hidden flex-shrink-0 hover:scale-105 transition-transform duration-300 block p-4">
-                  <Image src={arrival1Img} alt={arrival1Name} width={220} height={200} className="max-w-[200px] max-h-[190px] object-contain drop-shadow-md" />
+              {/* Card 1: Modern Elegant Light Aura */}
+              <div className="relative overflow-hidden w-full max-w-[776px] min-h-[450px] bg-gradient-to-br from-white via-white/95 to-[#FAF8F3] border border-gray-200/80 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-8 sm:p-10 flex flex-col md:flex-row items-center gap-8 group hover:shadow-[0_25px_60px_rgba(16,63,94,0.14)] transition-all duration-500 hover:-translate-y-1">
+                {/* Subtle ambient light gradient */}
+                <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#E8F0D8]/40 blur-3xl pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-60"></div>
+                
+                {/* Image Showcase Podium */}
+                <Link
+                  href={arrival1 ? `/products/${arrival1.id}` : "#"}
+                  className="relative w-[260px] h-[260px] sm:w-[280px] sm:h-[280px] rounded-[26px] bg-gradient-to-b from-[#FAF8F3] to-[#F2EEDD] p-6 flex items-center justify-center flex-shrink-0 shadow-inner overflow-hidden border border-[#E6E0D0]/70 group/img block"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/50 to-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-500"></div>
+                  <Image
+                    src={arrival1Img}
+                    alt={arrival1Name}
+                    width={240}
+                    height={220}
+                    className="max-w-[210px] max-h-[200px] object-contain drop-shadow-xl transition-transform duration-500 group-hover/img:scale-110 relative z-10"
+                  />
                 </Link>
-                <div className="flex-1 space-y-4 text-left w-full flex flex-col justify-between" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+
+                {/* Typography & CTA */}
+                <div className="flex-1 flex flex-col justify-between h-full py-2 text-left relative z-10" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   <div>
-                    <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="hover:text-[#0D3A27] transition-colors block">
-                      <h3 className="text-[26px] sm:text-[30px] font-bold text-[#103F5E] leading-tight">{arrival1Name}</h3>
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#103F5E]/8 text-[#103F5E] font-bold text-xs tracking-wider uppercase border border-[#103F5E]/15 mb-4 shadow-2xs">
+                      <span>✨</span>
+                      <span>Featured Arrival</span>
+                    </span>
+                    <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="block">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#103F5E] tracking-tight group-hover:text-[#0D3A27] transition-colors leading-tight">
+                        {arrival1Name}
+                      </h3>
                     </Link>
-                    <p className="text-gray-600 text-[16px] sm:text-[17px] font-normal leading-relaxed mt-2 line-clamp-3">
-                      {arrival1?.description || "Heavy-duty organic leaf tableware crafted for weddings, catering, and large feasts without environmental footprint."}
+                    <p className="text-gray-600 text-base sm:text-lg font-normal leading-relaxed mt-3.5 line-clamp-3 opacity-90">
+                      {arrival1?.description || "If you want Healing OURTH to be perceived like Apple, Nike, or Tesla rather than a traditional eco brand."}
                     </p>
                   </div>
+
                   {arrival1 && (
-                    <div className="pt-3">
+                    <div className="pt-6">
                       <Link
                         href={`/products/${arrival1.id}`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm bg-[#103F5E] text-white hover:bg-[#0c2f47] transition-all shadow-md hover:shadow-lg"
+                        className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-sm sm:text-base bg-[#103F5E] text-white shadow-[0_10px_25px_rgba(16,63,94,0.25)] hover:bg-[#0c2f47] hover:shadow-[0_15px_30px_rgba(16,63,94,0.35)] active:scale-[0.98] transition-all duration-300 w-fit group/btn"
                       >
-                        <span>View Product</span>
-                        <span>→</span>
+                        <span>Explore Product</span>
+                        <span className="transition-transform duration-300 group-hover/btn:translate-x-1.5">→</span>
                       </Link>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Card 2: Dark Blue Background */}
-              <div className="w-full max-w-[776px] min-h-[450px] bg-[#103F5E] rounded-[30px] shadow-xl p-8 sm:p-10 flex flex-col md:flex-row-reverse items-center gap-6 md:gap-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="w-[240px] h-[220px] sm:w-[260px] sm:h-[240px] rounded-[24px] bg-white/10 backdrop-blur-md flex items-center justify-center overflow-hidden flex-shrink-0 hover:scale-105 transition-transform duration-300 block p-4">
-                  <Image src={arrival2Img} alt={arrival2Name} width={220} height={200} className="max-w-[200px] max-h-[190px] object-contain drop-shadow-md" />
+              {/* Card 2: Modern Elegant Deep Dark Edition */}
+              <div className="relative overflow-hidden w-full max-w-[776px] min-h-[450px] bg-gradient-to-br from-[#103F5E] via-[#0C314A] to-[#082234] border border-white/15 rounded-[32px] shadow-[0_20px_50px_rgba(16,63,94,0.3)] p-8 sm:p-10 flex flex-col md:flex-row-reverse items-center gap-8 group hover:shadow-[0_25px_60px_rgba(16,63,94,0.45)] transition-all duration-500 hover:-translate-y-1">
+                {/* Radial luxury ambient glow */}
+                <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-[#E8F0D8]/15 blur-3xl pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-60"></div>
+
+                {/* Image Showcase Podium */}
+                <Link
+                  href={arrival2 ? `/products/${arrival2.id}` : "#"}
+                  className="relative w-[260px] h-[260px] sm:w-[280px] sm:h-[280px] rounded-[26px] bg-gradient-to-b from-white/15 to-white/5 backdrop-blur-xl p-6 flex items-center justify-center flex-shrink-0 shadow-2xl border border-white/20 group/img overflow-hidden block"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/20 opacity-0 group-hover/img:opacity-100 transition-opacity duration-500"></div>
+                  <Image
+                    src={arrival2Img}
+                    alt={arrival2Name}
+                    width={240}
+                    height={220}
+                    className="max-w-[210px] max-h-[200px] object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover/img:scale-110 relative z-10"
+                  />
                 </Link>
-                <div className="flex-1 space-y-4 text-left w-full flex flex-col justify-between" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+
+                {/* Typography & CTA */}
+                <div className="flex-1 flex flex-col justify-between h-full py-2 text-left relative z-10" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                   <div>
-                    <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="hover:text-[#E8F0D8] transition-colors block">
-                      <h3 className="text-[26px] sm:text-[30px] font-bold text-[#EDE8DC] leading-tight">{arrival2Name}</h3>
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#E8F0D8]/15 text-[#E8F0D8] font-bold text-xs tracking-wider uppercase border border-[#E8F0D8]/30 mb-4 shadow-2xs">
+                      <span>👑</span>
+                      <span>Premium Trending</span>
+                    </span>
+                    <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="block">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#EDE8DC] tracking-tight group-hover:text-white transition-colors leading-tight">
+                        {arrival2Name}
+                      </h3>
                     </Link>
-                    <p className="text-blue-100/90 text-[16px] sm:text-[17px] font-normal leading-relaxed mt-2 line-clamp-3">
-                      {arrival2?.description || "Leak-resistant, natural insulation bowls perfect for hot gravies, curries, and street food delights."}
+                    <p className="text-blue-100/80 text-base sm:text-lg font-normal leading-relaxed mt-3.5 line-clamp-3">
+                      {arrival2?.description && arrival2.description !== arrival2.name && !arrival2.description.includes(arrival2.name)
+                        ? arrival2.description
+                        : "Leak-resistant, natural insulation bowls engineered for hot gravies, curries, and modern culinary presentations."}
                     </p>
                   </div>
+
                   {arrival2 && (
-                    <div className="pt-3">
+                    <div className="pt-6">
                       <Link
                         href={`/products/${arrival2.id}`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm bg-[#E8F0D8] text-[#2B4D0E] hover:bg-white transition-all shadow-md hover:shadow-lg"
+                        className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-sm sm:text-base bg-[#E8F0D8] text-[#103F5E] shadow-[0_10px_25px_rgba(232,240,216,0.2)] hover:bg-white hover:shadow-[0_15px_30px_rgba(255,255,255,0.3)] active:scale-[0.98] transition-all duration-300 w-fit group/btn"
                       >
-                        <span>View Product</span>
-                        <span>→</span>
+                        <span>Explore Product</span>
+                        <span className="transition-transform duration-300 group-hover/btn:translate-x-1.5">→</span>
                       </Link>
                     </div>
                   )}
@@ -383,87 +447,16 @@ function ProductsPageContent() {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 max-w-[1580px] mx-auto">
-                {filteredProducts.map((product) => {
-                  const image = getProductImageUrl(product.primary_image_url, product.name);
-                  const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
-                  const selPackId = product ? selectedPacks[product.id] : undefined;
-                  const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
-                  const price = selPack
-                    ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
-                    : Math.round(parseFloat(product.discounted_price ?? product.base_price));
-
-                  return (
-                    <div
-                      key={product.id}
-                      className="group bg-white rounded-[20px] border border-[#2B4D0E]/15 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between p-6 relative overflow-hidden"
-                    >
-                      {/* Product image box */}
-                      <Link
-                        href={`/products/${product.id}`}
-                        className="w-full h-[190px] bg-[#FAF8F3] rounded-[14px] flex items-center justify-center overflow-hidden mb-5 group-hover:bg-[#F5F2EA] transition-colors relative"
-                      >
-                        <Image
-                          src={image}
-                          alt={product.name}
-                          width={160}
-                          height={150}
-                          className="max-w-[160px] max-h-[150px] object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </Link>
-
-                      {/* Product details */}
-                      <div className="space-y-2 text-left w-full flex-1 flex flex-col justify-between" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                        <div>
-                          <Link href={`/products/${product.id}`} className="hover:text-[#0D3A27] transition-colors block">
-                            <h3 className="text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-[#0D3A27] transition-colors">{product.name}</h3>
-                          </Link>
-                          <p className="text-2xl font-black text-[#0D3A27] mt-1">₹{price}</p>
-                        </div>
-
-                        {/* Pack Selection & Add CTA */}
-                        <div className="pt-4 border-t border-gray-100 mt-3 space-y-3">
-                          {packs.length > 0 && (
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              {packs.slice(0, 3).map((pack: any) => {
-                                const isSelected = selPackId === pack.id || (!selPackId && pack === packs[0]);
-                                return (
-                                  <button
-                                    key={pack.id}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setSelectedPacks(prev => ({
-                                        ...prev,
-                                        [product.id]: pack.id
-                                      }));
-                                    }}
-                                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                                      isSelected
-                                        ? "bg-[#0D3A27] text-white shadow-sm ring-1 ring-[#0D3A27]"
-                                        : "bg-[#FAF8F3] text-gray-700 border border-gray-200 hover:border-[#0D3A27]/40 hover:bg-gray-100"
-                                    }`}
-                                  >
-                                    {pack.name}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          )}
-
-                          <button
-                            onClick={() => handleAdd(product.id)}
-                            className="w-full h-[44px] bg-[#0D3A27] hover:bg-[#155338] active:scale-[0.98] rounded-full text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn"
-                          >
-                            <svg className="w-4 h-4 transition-transform group-hover/btn:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span>Add to Cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] border-t border-l border-black max-w-[1580px] mx-auto overflow-hidden">
+                {filteredProducts.map((product) => (
+                  <ProductCardCell
+                    key={product.id}
+                    product={product}
+                    selectedPacks={selectedPacks}
+                    setSelectedPacks={setSelectedPacks}
+                    handleAdd={handleAdd}
+                  />
+                ))}
               </div>
             )}
           </section>

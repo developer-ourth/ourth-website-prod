@@ -98,7 +98,7 @@ export default function Journey() {
         {/* ========== DESKTOP/LAPTOP ORBITAL LAYOUT ========== */}
         <div className="hidden lg:block relative w-full h-[620px] lg:h-[660px] xl:h-[720px] 2xl:h-[800px]">
 
-          {/* Glowing SVG Orbit Lines Overlay */}
+          {/* Subtle Minimalist Orbit Rings Overlay (No Cluttered Connecting Lines) */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none z-0"
             viewBox="0 0 1000 700"
@@ -106,111 +106,64 @@ export default function Journey() {
           >
             <defs>
               <radialGradient id="globeGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#76A52E" stopOpacity="0.25" />
+                <stop offset="0%" stopColor="#76A52E" stopOpacity="0.2" />
                 <stop offset="100%" stopColor="#76A52E" stopOpacity="0" />
               </radialGradient>
               <filter id="neonPulse" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
 
-            {/* Central Globe Background Glow */}
-            <circle cx="500" cy="380" r="230" fill="url(#globeGlow)" />
+            {/* Central Globe Soft Glow */}
+            <circle cx="500" cy="380" r="220" fill="url(#globeGlow)" />
 
-            {/* Elliptical Orbit Track Base */}
-            <ellipse
+            {/* Clean Minimalist Outer Elliptical Orbit */}
+            <motion.ellipse
               cx="500"
               cy="380"
-              rx="420"
-              ry="240"
+              rx="400"
+              ry="230"
               fill="none"
               stroke="#2B4D0E"
               strokeWidth="1.5"
-              strokeDasharray="8 6"
+              strokeDasharray="8 8"
               strokeOpacity="0.25"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.8, ease: "easeInOut" }}
             />
-            <ellipse
+
+            {/* Clean Minimalist Inner Elliptical Orbit */}
+            <motion.ellipse
               cx="500"
               cy="380"
-              rx="280"
-              ry="160"
+              rx="270"
+              ry="155"
               fill="none"
               stroke="#103F5E"
               strokeWidth="1"
-              strokeDasharray="4 6"
+              strokeDasharray="6 6"
               strokeOpacity="0.2"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
             />
 
-            {/* Connection Lines from Center Earth (500, 380) to Each Step */}
-            {/* Step 3: Top Center (500, 50) */}
-            <path
-              d="M 500,380 Q 500,215 500,50"
-              fill="none"
-              stroke={hoveredStepId === 3 || selectedStep?.id === 3 ? "#76A52E" : "#2B4D0E"}
-              strokeWidth={hoveredStepId === 3 || selectedStep?.id === 3 ? "3.5" : "1.5"}
-              strokeDasharray={hoveredStepId === 3 || selectedStep?.id === 3 ? "none" : "6 6"}
-              strokeOpacity={hoveredStepId === 3 || selectedStep?.id === 3 ? "0.9" : "0.25"}
-              filter={hoveredStepId === 3 || selectedStep?.id === 3 ? "url(#neonPulse)" : undefined}
-              className="transition-all duration-300"
-            />
-            {/* Step 2: Upper Left (180, 200) */}
-            <path
-              d="M 500,380 Q 340,290 180,200"
-              fill="none"
-              stroke={hoveredStepId === 2 || selectedStep?.id === 2 ? "#103F5E" : "#103F5E"}
-              strokeWidth={hoveredStepId === 2 || selectedStep?.id === 2 ? "3.5" : "1.5"}
-              strokeDasharray={hoveredStepId === 2 || selectedStep?.id === 2 ? "none" : "6 6"}
-              strokeOpacity={hoveredStepId === 2 || selectedStep?.id === 2 ? "0.9" : "0.25"}
-              filter={hoveredStepId === 2 || selectedStep?.id === 2 ? "url(#neonPulse)" : undefined}
-              className="transition-all duration-300"
-            />
-            {/* Step 4: Upper Right (820, 200) */}
-            <path
-              d="M 500,380 Q 660,290 820,200"
-              fill="none"
-              stroke={hoveredStepId === 4 || selectedStep?.id === 4 ? "#5E3A16" : "#5E3A16"}
-              strokeWidth={hoveredStepId === 4 || selectedStep?.id === 4 ? "3.5" : "1.5"}
-              strokeDasharray={hoveredStepId === 4 || selectedStep?.id === 4 ? "none" : "6 6"}
-              strokeOpacity={hoveredStepId === 4 || selectedStep?.id === 4 ? "0.9" : "0.25"}
-              filter={hoveredStepId === 4 || selectedStep?.id === 4 ? "url(#neonPulse)" : undefined}
-              className="transition-all duration-300"
-            />
-            {/* Step 1: Lower Left (220, 530) */}
-            <path
-              d="M 500,380 Q 360,455 220,530"
-              fill="none"
-              stroke={hoveredStepId === 1 || selectedStep?.id === 1 ? "#76A52E" : "#2B4D0E"}
-              strokeWidth={hoveredStepId === 1 || selectedStep?.id === 1 ? "3.5" : "1.5"}
-              strokeDasharray={hoveredStepId === 1 || selectedStep?.id === 1 ? "none" : "6 6"}
-              strokeOpacity={hoveredStepId === 1 || selectedStep?.id === 1 ? "0.9" : "0.25"}
-              filter={hoveredStepId === 1 || selectedStep?.id === 1 ? "url(#neonPulse)" : undefined}
-              className="transition-all duration-300"
-            />
-            {/* Step 5: Lower Right (780, 530) */}
-            <path
-              d="M 500,380 Q 640,455 780,530"
-              fill="none"
-              stroke={hoveredStepId === 5 || selectedStep?.id === 5 ? "#103F5E" : "#103F5E"}
-              strokeWidth={hoveredStepId === 5 || selectedStep?.id === 5 ? "3.5" : "1.5"}
-              strokeDasharray={hoveredStepId === 5 || selectedStep?.id === 5 ? "none" : "6 6"}
-              strokeOpacity={hoveredStepId === 5 || selectedStep?.id === 5 ? "0.9" : "0.25"}
-              filter={hoveredStepId === 5 || selectedStep?.id === 5 ? "url(#neonPulse)" : undefined}
-              className="transition-all duration-300"
-            />
-
-            {/* Animated Energy Particles Travelling Along Orbits */}
-            <circle r="5" fill="#76A52E" filter="url(#neonPulse)">
+            {/* Animated Energy Particles Orbiting Cleanly Around Earth */}
+            <circle r="4.5" fill="#76A52E" filter="url(#neonPulse)">
               <animateMotion
-                path="M 500,140 A 280,160 0 1,1 499,140 Z"
-                dur="12s"
+                path="M 500,150 A 270,155 0 1,1 499,150 Z"
+                dur="16s"
                 repeatCount="indefinite"
               />
             </circle>
-            <circle r="6" fill="#103F5E" filter="url(#neonPulse)">
+            <circle r="5" fill="#103F5E" filter="url(#neonPulse)">
               <animateMotion
-                path="M 500,620 A 420,240 0 1,1 499,620 Z"
-                dur="18s"
+                path="M 500,610 A 400,230 0 1,1 499,610 Z"
+                dur="22s"
                 repeatCount="indefinite"
               />
             </circle>

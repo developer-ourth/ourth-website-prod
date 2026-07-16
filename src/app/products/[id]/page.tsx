@@ -9,6 +9,7 @@ import Link from "next/link";
 import { getProduct, getMarketplaceProducts, getProductImageUrl, type MarketProduct, getProductRatings, submitProductRating, type ProductReview, addToWishlistApi, removeFromWishlistApi, getConsumerWishlistApi } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
+import ReviewStar from "@/app/(website)/_components/ReviewStar";
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -239,29 +240,18 @@ export default function ProductDetailsPage() {
                 alt={product.name}
                 className="max-h-full max-w-full object-contain"
               />
-              <button 
-                onClick={toggleWishlist}
-                disabled={wishlistLoading}
-                className="absolute top-4 right-4 h-12 w-12 bg-white rounded-full flex items-center justify-center border border-black shadow-md hover:scale-110 active:scale-95 transition-all z-10"
-              >
-                {inWishlist ? (
-                  <span className="text-2xl text-red-500">❤️</span>
-                ) : (
-                  <span className="text-2xl text-gray-300">🤍</span>
-                )}
-              </button>
             </div>
 
-            {/* Thumbnails Row */}
-            <div className="grid grid-cols-3 gap-4 mt-6 w-full">
-              {[product.primary_image_url, ...(product.secondary_images ?? [])].slice(0, 3).map((imgUrl, idx) => {
+            {/* Thumbnails Row (All Photos) */}
+            <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 w-full">
+              {[product.primary_image_url, ...(product.secondary_images ?? [])].filter(Boolean).map((imgUrl, idx) => {
                 const isActive = selectedImage === imgUrl;
                 return (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl!)}
-                    className={`aspect-[1.1] relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all ${
-                      isActive ? "ring-2 ring-[#76A52E]" : "hover:opacity-90"
+                    className={`w-20 sm:w-24 md:w-28 aspect-square relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all cursor-pointer flex-shrink-0 ${
+                      isActive ? "ring-2 ring-[#76A52E] scale-105" : "hover:opacity-90 hover:scale-[1.02]"
                     }`}
                   >
                     <img
@@ -282,11 +272,9 @@ export default function ProductDetailsPage() {
             <div className="flex items-center gap-2 h-7">
               {!reviewsLoading && totalReviews > 0 ? (
                 <>
-                  <div className="flex text-xl gap-0.5">
+                  <div className="flex items-center gap-1.5">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star} className={star <= Math.round(Number(avgRating)) ? "text-[#76A52E]" : "text-gray-300"}>
-                        ★
-                      </span>
+                      <ReviewStar key={star} size={22} filled={star <= Math.round(Number(avgRating))} />
                     ))}
                   </div>
                   <span className="text-sm font-normal text-black font-['IBM_Plex_Sans']">{avgRating}/5</span>
@@ -491,11 +479,9 @@ export default function ProductDetailsPage() {
                         <span className="font-semibold text-black text-[24px] font-['IBM_Plex_Sans']">
                           {r.reviewer?.name || "Verified Customer"}
                         </span>
-                        <div className="flex text-[#76A52E] text-[20px] gap-0.5">
+                        <div className="flex items-center gap-1.5">
                           {[1, 2, 3, 4, 5].map((star) => (
-                            <span key={star} className={star <= r.rating ? "text-[#76A52E]" : "text-gray-300"}>
-                              ★
-                            </span>
+                            <ReviewStar key={star} size={22} filled={star <= r.rating} />
                           ))}
                         </div>
                         <span className="text-[20px] text-black font-normal font-['IBM_Plex_Sans']">{r.rating}/5</span>
@@ -515,16 +501,14 @@ export default function ProductDetailsPage() {
                   <form onSubmit={handleSubmitReview} className="space-y-4">
                     <div>
                       <label className="block text-lg font-bold text-gray-700 mb-1 font-['IBM_Plex_Sans']">Your Rating</label>
-                      <div className="flex gap-2">
+                      <div className="flex items-center gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
-                          <button
-                            type="button"
+                          <ReviewStar
                             key={star}
+                            size={34}
+                            filled={star <= newRating}
                             onClick={() => setNewRating(star)}
-                            className="text-4xl transition-transform hover:scale-105 active:scale-95"
-                          >
-                            <span className={star <= newRating ? "text-[#76A52E]" : "text-gray-300"}>★</span>
-                          </button>
+                          />
                         ))}
                       </div>
                     </div>
