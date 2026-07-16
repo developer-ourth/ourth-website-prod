@@ -64,8 +64,8 @@ export default function QuickCartDrawer() {
                 </button>
               </div>
 
-              {/* Free Shipping & Tree Planted Progress Bar */}
-              <div className="bg-[#FAF8F3] px-6 py-4 border-b border-black/10">
+              {/* Free Shipping & Tree Planted Progress Bar - Commented out for now */}
+              {/* <div className="bg-[#FAF8F3] px-6 py-4 border-b border-black/10">
                 <div className="p-3.5 rounded-xl bg-white border border-black/10 shadow-xs">
                   <div className="flex items-center gap-2 text-sm font-bold text-[#0D3A27] mb-2">
                     <span className="text-lg">🌱</span>
@@ -79,7 +79,6 @@ export default function QuickCartDrawer() {
                       </span>
                     )}
                   </div>
-                  {/* Progress Bar Track */}
                   <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
@@ -89,7 +88,7 @@ export default function QuickCartDrawer() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Cart Items List */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
