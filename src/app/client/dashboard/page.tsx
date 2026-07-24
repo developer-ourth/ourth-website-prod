@@ -186,35 +186,39 @@ export default function ClientDashboardPage() {
           </button>
         </div>
 
-        {/* Tab Row (Neo-brutalist custom tab buttons) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex gap-6 mb-12">
+        {/* Tab Row & Content Container */}
+        <div className="flex flex-col lg:flex-row lg:flex-wrap gap-4 lg:gap-6 mb-4 lg:mb-12">
           {[
             { id: "profile", label: "Profile" },
             { id: "orders", label: "Orders" },
             { id: "history", label: "History" },
             { id: "address", label: "Address Book" },
             { id: "support", label: "Support" }
-          ].map((tab) => {
+          ].map((tab, idx) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] flex items-center justify-center transition-all backdrop-blur-md ${
+                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] flex items-center justify-center transition-all backdrop-blur-md lg:!order-none ${
                   isActive 
                     ? "bg-white shadow-md text-[#2B4D0E] font-medium" 
                     : "bg-white/60 shadow-sm hover:bg-white/80"
                 }`}
-                style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif", order: idx * 2 }}
               >
                 {tab.label}
               </button>
             );
           })}
-        </div>
 
-        {/* Dashboard Content Container */}
-        <div className="space-y-6">
+          {/* Dashboard Content Container */}
+          <div 
+            className="w-full lg:!order-last space-y-6 mt-2 mb-6 lg:mt-6 lg:mb-0"
+            style={{ 
+              order: (["profile", "orders", "history", "address", "support"].indexOf(activeTab) * 2) + 1 
+            }}
+          >
           {/* PROFILE TAB */}
           {activeTab === "profile" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -617,6 +621,7 @@ export default function ClientDashboardPage() {
               </div>
             </div>
           )}
+          </div>
         </div>
 
       </div>
