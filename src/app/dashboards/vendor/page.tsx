@@ -14,6 +14,10 @@ export default function VendorDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    router.replace("/client/dashboard");
+  }, [router]);
+
+  useEffect(() => {
     if (!user) return;
     const vendorId = user.vendor_id ?? 0;
     getVendorDashboard(vendorId)

@@ -293,7 +293,7 @@ export default function CartPage() {
                     <div>
                       {/* Category Badge */}
                       <span 
-                        className="inline-flex px-4 py-1 bg-[#C7E08E] border border-black rounded-[30px] items-center justify-center text-[14px] font-medium text-black"
+                        className="inline-flex px-4 py-1 bg-[#C7E08E] rounded-[30px] items-center justify-center text-[14px] font-medium text-black"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                       >
                         {item.product?.category?.name || "Bowls"}
@@ -324,7 +324,7 @@ export default function CartPage() {
                       ₹{(parseFloat(item.unit_price) * item.quantity).toFixed(0)}
                     </span>
                     {/* Qty Selector */}
-                    <div className="flex items-center justify-between w-[110px] h-[36px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-3 ">
+                    <div className="flex items-center justify-between w-[110px] h-[36px] rounded-[30px] bg-[#FAF8F3] px-3 shadow-sm">
                       <button
                         onClick={() => updateQty(item.id, Math.max(1, item.quantity - 1))}
                         className="text-[24px] font-normal text-black pb-0.5 hover:scale-110 active:scale-95 transition flex items-center justify-center"
@@ -359,7 +359,7 @@ export default function CartPage() {
                       {!showAddressForm && (
                         <button
                           onClick={() => setShowAddressForm(true)}
-                          className="px-4 py-2 bg-[#C7E08E] border-[1.5px] border-black rounded-[30px] text-black font-semibold text-[18px] hover:scale-105 transition"
+                          className="px-4 py-2 bg-[#C7E08E] rounded-[30px] text-black font-semibold text-[18px] hover:scale-105 transition shadow-sm"
                         >
                           + Add Address
                         </button>
@@ -447,7 +447,7 @@ export default function CartPage() {
                         {addresses.map((addr) => (
                           <label
                             key={addr.id}
-                            className={`flex items-start gap-4 p-4 rounded-[5px] border-[1.5px] border-black transition duration-200 cursor-pointer ${
+                            className={`flex items-start gap-4 p-4 rounded-[5px] transition duration-200 cursor-pointer shadow-sm ${
                               selectedAddressId === addr.id
                                 ? "bg-[#C7E08E]"
                                 : "bg-[#FAF8F3]"

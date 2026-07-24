@@ -32,7 +32,7 @@ export default function ClientLoginPage() {
 
   useEffect(() => {
     if (!isLoading && user) {
-      if (user.role === "consumer") {
+      if (user.role === "consumer" || user.role === "vendor") {
         router.replace("/client/dashboard");
       } else {
         const config = getRoleConfig(user.role);

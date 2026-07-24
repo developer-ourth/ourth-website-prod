@@ -143,7 +143,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         toast.success("Removed from cart");
       } catch (err: any) {
         setCart(prevCart);
-        toast.error("Failed to remove item");
+        toast.error(err.message || "Failed to remove item");
       }
     },
     [cart, fetchCart]

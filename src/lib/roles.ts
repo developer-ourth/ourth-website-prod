@@ -31,7 +31,7 @@ export const ROLES: RoleConfig[] = [
     role: "vendor",
     label: "Vendor / Hawker",
     description: "Orders, earnings, catalog, inventory",
-    dashboardPath: "/dashboards/vendor",
+    dashboardPath: "/client/dashboard",
     color: "bg-orange-500",
     emoji: "🛒",
   },
