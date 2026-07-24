@@ -14,7 +14,7 @@ export default function Footer() {
         
         {/* Brand Logo & Name */}
         <div className="flex flex-col items-center gap-3 mb-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white p-2.5 border-2 border-[#2C1F13] shadow-[3px_3px_0px_0px_#2C1F13]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white p-2.5 shadow-md">
             <Image 
               src="/images/logo/HOIPL_3DIndia.webp" 
               alt="Healing OURTH Logo" 
@@ -59,7 +59,7 @@ export default function Footer() {
             href="https://instagram.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2C1F13] bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-[2px_2px_0px_0px_#2C1F13]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2C1F13]/20 bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-sm"
             aria-label="Instagram"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@ export default function Footer() {
             href="https://facebook.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2C1F13] bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-[2px_2px_0px_0px_#2C1F13]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2C1F13]/20 bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-sm"
             aria-label="Facebook"
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ export default function Footer() {
           </a>
           <a 
             href={`mailto:${config.contactEmail}`}
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2C1F13] bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-[2px_2px_0px_0px_#2C1F13]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#2C1F13]/20 bg-white text-[#2C1F13] hover:bg-[#EBF2E4] transition-all shadow-sm"
             aria-label="Email"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">

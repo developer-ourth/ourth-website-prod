@@ -122,7 +122,7 @@ export default function Navbar() {
                   setSearchQuery(e.target.value);
                   setShowDropdown(true);
                 }}
-                className="bg-[#FAF8F3]/80 border-[1.5px] border-black rounded-[30px] px-3 xl:px-4 py-[10px] min-h-[44px] text-[14px] xl:text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[140px] xl:w-[220px]"
+                className="bg-[#FAF8F3]/80 border border-black/20 rounded-[30px] px-3 xl:px-4 py-[10px] min-h-[44px] text-[14px] xl:text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E] transition-all w-[140px] xl:w-[220px]"
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
               />
               <button 
@@ -223,7 +223,7 @@ export default function Navbar() {
 
           {/* Sign In Solid Green Capsule Button */}
           <Link
-            href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
+            href={user ? ((user.role === "consumer" || user.role === "vendor") ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
             className="inline-flex w-[110px] xl:w-[146px] h-[36px] xl:h-[47px] items-center justify-center rounded-[30px] bg-[#25784C] text-[16px] xl:text-[24px] font-bold text-white hover:opacity-90 transition-all whitespace-nowrap"
             style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
           >
@@ -234,7 +234,7 @@ export default function Navbar() {
         {/* Mobile menu trigger */}
         <button
           onClick={() => setOpen(!open)}
-          className="rounded-lg border-2 border-black p-1.5 xl:hidden bg-white/80"
+          className="rounded-lg border border-black/20 p-1.5 xl:hidden bg-white/80 shadow-sm"
         >
           <svg
             className="h-6 w-6 text-black"
@@ -254,7 +254,7 @@ export default function Navbar() {
 
       {/* Mobile Menu dropdown */}
       {open && (
-        <div className="mt-4 flex flex-col gap-3 rounded-2xl border-2 border-black bg-white/95 p-4 shadow-[4px_4px_0px_0px_#000000] xl:hidden backdrop-blur-md">
+        <div className="mt-2 mx-3 flex flex-col gap-3 rounded-2xl border border-black/15 bg-white/95 p-4 shadow-lg xl:hidden backdrop-blur-md">
           <nav className="flex flex-col gap-2.5">
             <Link
               href="/know-us"
@@ -306,7 +306,7 @@ export default function Navbar() {
                     setSearchQuery(e.target.value);
                     setShowDropdown(true);
                   }}
-                  className="bg-[#FAF8F3] border-[1.5px] border-black rounded-[30px] px-4 py-[10px] min-h-[44px] w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
+                  className="bg-[#FAF8F3] border border-black/20 rounded-[30px] px-4 py-[10px] min-h-[44px] w-full text-[16px] outline-none focus:ring-1 focus:ring-[#76A52E]"
                   style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                 />
                 <button 
@@ -380,7 +380,7 @@ export default function Navbar() {
               Cart ({cartCount})
             </button>
             <Link
-              href={user ? (user.role === "consumer" ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
+              href={user ? ((user.role === "consumer" || user.role === "vendor") ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
               onClick={() => setOpen(false)}
               className="flex-1 flex items-center justify-center rounded-xl bg-[#1A5C2E] py-2 text-sm font-bold text-white border border-black"
             >

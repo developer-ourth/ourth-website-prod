@@ -117,7 +117,7 @@ export default function ProductsSection() {
                         alt="Card Background"
                         fill
                         sizes="280px"
-                        className="object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-300 pointer-events-none"
+                        className="object-contain drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300 pointer-events-none"
                       />
 
                   {/* Card Content overlay */}
@@ -188,7 +188,7 @@ export default function ProductsSection() {
                     <div className="w-full flex justify-center pb-6">
                       <button
                         onClick={() => handleAdd(product.id)}
-                        className="w-[115px] h-[34px] bg-white border-[1.5px] border-black rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                        className="w-[115px] h-[34px] bg-white border border-black/15 rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                       >
                         Add
                       </button>
@@ -257,7 +257,7 @@ export default function ProductsSection() {
                         alt="Card Background"
                         fill
                         sizes="(max-width: 1024px) 50vw, 280px"
-                        className="object-contain drop-shadow-[0px_4px_4px_rgba(0,0,0,0.15)] pointer-events-none"
+                        className="object-contain drop-shadow-sm pointer-events-none"
                       />
                       <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
                         <div
@@ -301,7 +301,7 @@ export default function ProductsSection() {
                         <div className="w-full flex justify-center pb-3 sm:pb-5">
                           <button
                             onClick={() => handleAdd(product.id)}
-                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white border-[1.5px] border-black rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-100 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white border border-black/15 rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                           >
                             Add
                           </button>

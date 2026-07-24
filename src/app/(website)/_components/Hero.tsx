@@ -7,7 +7,7 @@ const Bubble = ({ children, className, delay, tailClass }: { children: React.Rea
     initial={{ opacity: 0, scale: 0.8, y: 20 }}
     animate={{ opacity: 1, scale: 1, y: 0 }}
     transition={{ delay, duration: 0.5, type: "spring", bounce: 0.4 }}
-    className={`absolute bg-white border-[3px] md:border-[4px] border-black rounded-3xl p-3 md:p-6 text-center font-medium text-xs sm:text-sm md:text-lg text-black shadow-lg max-w-[200px] sm:max-w-[280px] md:max-w-[380px] z-10 ${className}`}
+    className={`absolute bg-white/90 border-[2px] md:border-[4px] border-black/70 rounded-2xl md:rounded-3xl p-2 md:p-6 text-center font-medium text-[10px] sm:text-sm md:text-lg text-black shadow-md max-w-[140px] sm:max-w-[240px] md:max-w-[380px] z-10 ${className}`}
   >
     {children}
     {/* Tail */}
@@ -20,7 +20,7 @@ export default function Hero() {
     <section className="relative w-full overflow-hidden border-b-[1.5px] border-black">
       {/* Background street scene */}
       <div
-        className="relative w-full h-[260px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end"
+        className="relative w-full h-[320px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end pt-[70px] sm:pt-0"
         style={{
           backgroundImage: "url('/images/hero/hero.gif')",
           backgroundColor: "#7c5835"
@@ -28,7 +28,7 @@ export default function Hero() {
       >
         {/* Dialogue 1: Top Right (Man) */}
         <Bubble
-          className="top-[10%] right-[5%] md:top-[15%] md:right-[15%]"
+          className="top-[18%] right-[2%] md:top-[15%] md:right-[15%]"
           delay={0.5}
           tailClass="border-t-[15px] border-t-black border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent bottom-[-15px] right-8 md:border-t-[20px] md:bottom-[-20px]"
         >
@@ -37,7 +37,7 @@ export default function Hero() {
 
         {/* Dialogue 2: Top Left (Vendor) */}
         <Bubble
-          className="top-[15%] left-[5%] md:top-[20%] md:left-[15%]"
+          className="top-[2%] left-[2%] md:top-[20%] md:left-[15%]"
           delay={2.5}
           tailClass="border-t-[15px] border-t-black border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent bottom-[-15px] right-12 md:border-t-[20px] md:bottom-[-20px]"
         >
@@ -46,7 +46,7 @@ export default function Hero() {
 
         {/* Dialogue 3: Bottom Right (Man) */}
         <Bubble
-          className="bottom-[30%] right-[10%] md:bottom-[35%] md:right-[20%]"
+          className="bottom-[38%] right-[2%] md:bottom-[35%] md:right-[20%]"
           delay={4.5}
           tailClass="border-l-[15px] border-l-black border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent right-[-15px] top-1/2 -translate-y-1/2 md:border-l-[20px] md:right-[-20px]"
         >
@@ -55,7 +55,7 @@ export default function Hero() {
 
         {/* Dialogue 4: Bottom Left (Vendor) */}
         <Bubble
-          className="bottom-[25%] left-[10%] md:bottom-[30%] md:left-[20%]"
+          className="bottom-[26%] left-[2%] md:bottom-[30%] md:left-[20%]"
           delay={6.5}
           tailClass="border-r-[15px] border-r-black border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent left-[-15px] top-1/2 -translate-y-1/2 md:border-r-[20px] md:left-[-20px]"
         >
