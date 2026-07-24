@@ -264,7 +264,7 @@ export default function ProductsSection() {
                           onClick={() => openQuickView(product)}
                           className="relative w-full h-[40%] mt-1 flex items-center justify-center cursor-pointer group/img block"
                         >
-                          <div className="relative z-10 w-[130px] sm:w-[170px] h-[100px] sm:h-[130px] flex items-center justify-center">
+                          <div className="relative z-10 w-[100px] sm:w-[170px] h-[80px] sm:h-[130px] flex items-center justify-center">
                             <Image src={image} alt={name} width={170} height={130} className="max-w-full max-h-full object-contain" />
                           </div>
                           <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl z-20">
@@ -275,11 +275,11 @@ export default function ProductsSection() {
                         </div>
                         <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
                           <NextLink href={`/products/${id}`} className="hover:underline block">
-                            <h3 className="text-[14px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
+                            <h3 className="text-[12px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
                           </NextLink>
-                          <p className="text-[14px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
+                          <p className="text-[12px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
                           {activePacks.length > 0 && (
-                            <div className="text-[11px] sm:text-[13px] font-semibold space-y-0.5 pt-0.5">
+                            <div className="text-[10px] sm:text-[13px] font-semibold space-y-0.5 pt-0.5">
                               {activePacks.map((pk) => {
                                 const isSelected = selPackId === pk.id;
                                 return (
