@@ -322,7 +322,7 @@ export default function Navbar() {
               
               {/* Mobile Dropdown */}
               {showDropdown && searchQuery.trim() !== "" && (
-                <div className="absolute top-full mt-2 w-full left-0 bg-white border-[1.5px] border-black rounded-xl shadow-lg overflow-hidden z-[10000]">
+                <div className="absolute top-full mt-2 w-full left-0 bg-white border border-black/10 rounded-xl shadow-lg overflow-hidden z-[10000]">
                   {filteredProducts.length > 0 ? (
                     <div className="flex flex-col">
                       {filteredProducts.map(p => (
@@ -375,14 +375,14 @@ export default function Navbar() {
                 setOpen(false);
                 openDrawer();
               }}
-              className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-black py-2 text-sm font-bold text-black hover:bg-[#E8F0D8] transition-all cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-black/20 py-2 text-sm font-bold text-black hover:bg-black/5 transition-all cursor-pointer"
             >
               Cart ({cartCount})
             </button>
             <Link
               href={user ? ((user.role === "consumer" || user.role === "vendor") ? "/client/dashboard" : (getRoleConfig(user.role)?.dashboardPath ?? "/dashboards/admin")) : "/client/login"}
               onClick={() => setOpen(false)}
-              className="flex-1 flex items-center justify-center rounded-xl bg-[#1A5C2E] py-2 text-sm font-bold text-white border border-black"
+              className="flex-1 flex items-center justify-center rounded-xl bg-[#1A5C2E] py-2 text-sm font-bold text-white border border-transparent shadow-sm hover:opacity-90 transition-all"
             >
               {user ? (user.role === "admin" ? "Admin Panel" : "Dashboard") : "Sign in"}
             </Link>
