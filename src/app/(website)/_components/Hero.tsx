@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 
-const Bubble = ({ children, className, delay, mobTail, deskTail }: { children: React.ReactNode, className: string, delay: number, mobTail: string, deskTail: string }) => (
+const Bubble = ({ children, className, delay, mobTail, deskTail, style }: { children: React.ReactNode, className: string, delay: number, mobTail: string, deskTail: string, style?: React.CSSProperties }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.8, y: 20 }}
     animate={{ opacity: 1, scale: 1, y: 0 }}
     transition={{ delay, duration: 0.5, type: "spring", bounce: 0.4 }}
     className={`absolute bg-white/90 border-[2px] md:border-[4px] border-black/70 rounded-2xl md:rounded-3xl p-2 md:p-6 text-center font-medium text-[10px] sm:text-sm md:text-lg text-black shadow-md max-w-[140px] sm:max-w-[240px] md:max-w-[380px] z-10 ${className}`}
+    style={style}
   >
     {children}
     {/* Mobile Tail */}
