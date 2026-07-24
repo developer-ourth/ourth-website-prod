@@ -17,10 +17,10 @@ const Bubble = ({ children, className, delay, tailClass }: { children: React.Rea
 
 export default function Hero() {
   return (
-    <section className="relative w-full overflow-hidden border-b-[1.5px] border-black">
+    <section className="relative w-full overflow-hidden border-b-[1.5px] border-black mt-[70px] lg:mt-[80px] xl:mt-[95px]">
       {/* Background street scene */}
       <div
-        className="relative w-full h-[320px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end pt-[70px] sm:pt-0"
+        className="relative w-full h-[320px] sm:h-[500px] md:h-[700px] lg:h-[980px] bg-cover bg-[28%_center] sm:bg-center flex flex-col justify-end"
         style={{
           backgroundImage: "url('/images/hero/hero.gif')",
           backgroundColor: "#7c5835"
