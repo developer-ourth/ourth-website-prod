@@ -7,7 +7,8 @@ import {
   getProfileApi, 
   updateProfileApi, 
   getConsumerOrdersApi,
-  getConsumerWishlistApi
+  getConsumerWishlistApi,
+  getAddresses
 } from "@/lib/api";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +23,7 @@ export default function ClientDashboardPage() {
   const [profileData, setProfileData] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
   const [wishlist, setWishlist] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<any[]>([]);
   const [loadingContent, setLoadingContent] = useState(false);
   
   // Profile update form state
@@ -106,6 +108,13 @@ export default function ClientDashboardPage() {
           setWishlist(res.data || []);
         })
         .catch(err => console.error("Error fetching wishlist:", err));
+
+      // Fetch addresses
+      getAddresses()
+        .then((res) => {
+          setAddresses(res.data || []);
+        })
+        .catch(err => console.error("Error fetching addresses:", err));
     }
   }, [user]);
 
@@ -561,16 +570,40 @@ export default function ClientDashboardPage() {
                 Address Book
               </h2>
               <p className="text-gray-600">Manage your shipping and billing addresses for quick ordering.</p>
-              <div className="p-6 border border-dashed border-black/30 rounded-lg flex flex-col items-center justify-center text-center py-10 bg-white">
-                <span className="text-3xl mb-2">📍</span>
-                <p className="font-bold text-black mb-4">No addresses saved yet</p>
-                <button 
-                  onClick={() => setIsAddressModalOpen(true)}
-                  className="px-6 py-2 bg-[#76A52E] text-white font-bold rounded-[30px] text-sm"
-                >
-                  Add New Address
-                </button>
-              </div>
+              
+              {addresses.length === 0 ? (
+                <div className="p-6 border border-dashed border-black/30 rounded-lg flex flex-col items-center justify-center text-center py-10 bg-white">
+                  <span className="text-3xl mb-2">📍</span>
+                  <p className="font-bold text-black mb-4">No addresses saved yet</p>
+                  <button 
+                    onClick={() => setIsAddressModalOpen(true)}
+                    className="px-6 py-2 bg-[#76A52E] text-white font-bold rounded-[30px] text-sm"
+                  >
+                    Add New Address
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {addresses.map((addr) => (
+                    <div key={addr.id} className="p-4 border border-black/10 rounded bg-white relative">
+                      {addr.is_default && (
+                        <span className="absolute top-4 right-4 text-xs font-bold bg-[#E8F0D8] text-[#4C7A1A] px-2 py-1 rounded">Default</span>
+                      )}
+                      <h4 className="font-bold text-black">{addr.name}</h4>
+                      <p className="text-sm text-gray-700 mt-1">{addr.address_line1}</p>
+                      {addr.address_line2 && <p className="text-sm text-gray-700">{addr.address_line2}</p>}
+                      <p className="text-sm text-gray-700">{addr.city}, {addr.state} - {addr.postal_code}</p>
+                      <p className="text-sm text-gray-700 mt-2 font-semibold">Phone: {addr.mobile}</p>
+                    </div>
+                  ))}
+                  <button 
+                    onClick={() => setIsAddressModalOpen(true)}
+                    className="mt-4 px-6 py-2 bg-[#76A52E] text-white font-bold rounded-[30px] text-sm"
+                  >
+                    Add New Address
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -788,7 +821,7 @@ export default function ClientDashboardPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Shipping</span>
-                      <span className="font-semibold">₹{selectedOrder.shipping_cost}</span>
+                      <span className="font-semibold">₹{selectedOrder.delivery_charge}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-black/10 text-base font-bold text-black">
                       <span>Total</span>
