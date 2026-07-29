@@ -133,8 +133,19 @@ function ProductsPageContent() {
       getCategories()
     ])
       .then(([prodRes, catRes]) => {
-        setProducts(prodRes.data || []);
+        const prods = prodRes.data || [];
+        setProducts(prods);
         setCategories(catRes.data || []);
+
+        const initialPacks: Record<number, number> = {};
+        prods.forEach(p => {
+          const activePacks = p.packs?.filter((pack: any) => pack.is_active) || [];
+          if (activePacks.length > 0) {
+            const pack50 = activePacks.find((pack: any) => pack.name?.includes('50'));
+            initialPacks[p.id] = pack50 ? pack50.id : activePacks[0].id;
+          }
+        });
+        setSelectedPacks(initialPacks);
       })
       .catch((err) => {
         console.error("Failed to load marketplace page data:", err);

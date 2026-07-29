@@ -38,7 +38,18 @@ export default function ProductsSection() {
   useEffect(() => {
     getMarketplaceProducts({ per_page: 4 })
       .then((res) => {
-        setProducts(res.data || []);
+        const prods = res.data || [];
+        setProducts(prods);
+        
+        const initialPacks: Record<number, number> = {};
+        prods.forEach(p => {
+          const activePacks = p.packs?.filter(pack => pack.is_active) || [];
+          if (activePacks.length > 0) {
+            const pack50 = activePacks.find(pack => pack.name?.includes('50'));
+            initialPacks[p.id] = pack50 ? pack50.id : activePacks[0].id;
+          }
+        });
+        setSelectedPacks(initialPacks);
       })
       .catch((err) => {
         console.error("Failed to load products for homepage section:", err);
