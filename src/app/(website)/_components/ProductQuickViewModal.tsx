@@ -195,7 +195,7 @@ export default function ProductQuickViewModal() {
                   ₹{finalPrice.toLocaleString()}
                 </span>
                 <span className="text-lg sm:text-xl font-normal text-black ml-2">
-                  Pack of {selectedPack?.stock_quantity || 50}
+                  Pack of {selectedPack ? selectedPack.name.replace(/\D/g, "") || "10" : "10"}
                 </span>
                 {basePrice > finalPrice && (
                   <span className="text-base font-normal text-gray-500 line-through ml-auto">
@@ -221,7 +221,7 @@ export default function ProductQuickViewModal() {
                               : "bg-white text-gray-700 hover:bg-gray-100 font-normal"
                           }`}
                         >
-                          {pack.name || `Pack of ${pack.stock_quantity || 50}`}
+                          {pack.name || `Pack of 10`}
                         </button>
                       );
                     })}
