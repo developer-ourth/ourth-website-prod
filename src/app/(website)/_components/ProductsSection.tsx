@@ -109,7 +109,7 @@ export default function ProductsSection() {
           <>
           {/* Desktop: 4-col grid */}
           <div className="hidden xl:grid grid-cols-4 gap-8 justify-items-center">
-            {products.slice(0, 4).map((product) => {
+            {products.slice(0, 4).map((product, index) => {
               const id = product.id;
               const name = product.name;
               const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
@@ -119,55 +119,48 @@ export default function ProductsSection() {
                 ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
                 : Math.round(parseFloat(product.discounted_price ?? product.base_price));
               const image = getProductImageUrl(product.primary_image_url, product.name);
+              
+              const isBlue = index % 2 === 0;
 
               return (
-                <div key={id} className="relative w-[280px] h-[480px] flex-shrink-0 select-none group">
-                  {/* Figma Card Image Backdrop */}
-                      <Image
-                        src="/images/home/productcard.webp"
-                        alt="Card Background"
-                        fill
-                        sizes="280px"
-                        className="object-contain drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300 pointer-events-none"
-                      />
+                <div key={id} className={`relative w-[280px] flex-shrink-0 select-none group rounded-[24px] ${isBlue ? 'bg-[#E2F0FE]' : 'bg-[#FEF2CE]'} p-6 flex flex-col items-center transition-all duration-300 hover:shadow-md`}>
+                  
+                  {/* Card Content */}
+                  <div className="w-full flex flex-col justify-start items-center flex-grow">
+                    <NextLink href={`/products/${id}`} className="hover:underline block text-center mb-5">
+                      <h3 className={`text-[22px] font-bold ${isBlue ? 'text-[#085A9B]' : 'text-[#684115]'} leading-tight line-clamp-2`}>
+                        {name}
+                      </h3>
+                    </NextLink>
 
-                  {/* Card Content overlay */}
-                  <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between items-start">
-                    {/* Top Leaf Image Container with Quick View Trigger */}
+                    {/* Image Container with Quick View Trigger */}
                     <div
                       onClick={() => openQuickView(product)}
-                      className="relative w-full h-[180px] mt-2 flex items-center justify-center cursor-pointer group/img block"
+                      className="relative w-[160px] h-[160px] bg-white flex items-center justify-center cursor-pointer group/img"
                     >
-                      <div className="relative z-10 w-[190px] h-[150px] flex items-center justify-center">
-                        <Image 
-                          src={image} 
-                          alt={name}
-                          width={190}
-                          height={150} 
-                          className="max-w-full max-h-full object-contain transform group-hover/img:scale-105 transition-all duration-300"
-                        />
-                      </div>
-                      <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl z-20">
+                      <Image 
+                        src={image} 
+                        alt={name}
+                        width={140}
+                        height={140} 
+                        className="max-w-full max-h-full object-contain transform group-hover/img:scale-105 transition-all duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
                         <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
                           ⚡ Quick View
                         </span>
                       </div>
                     </div>
  
-                    {/* Product Metadata (Clickable link to details page) */}
-                    <div className="w-full px-4 space-y-2 mt-4 flex-grow flex flex-col justify-start">
-                      <NextLink href={`/products/${id}`} className="hover:underline block">
-                        <h3 className="text-[20px] font-bold text-black leading-tight line-clamp-2">
-                          {name}
-                        </h3>
-                      </NextLink>
+                    {/* Product Metadata */}
+                    <div className="w-full space-y-2 mt-5 flex-grow flex flex-col items-center">
                       <p className="text-[18px] font-black text-black leading-none">
                         ₹{price}
                       </p>
                       
-                      {/* Selectable Packs list – linked from backend */}
+                      {/* Selectable Packs list */}
                       {activePacks.length > 0 && (
-                        <div className="text-[14px] font-semibold space-y-1 pt-1">
+                        <div className="text-[14px] font-semibold space-y-1 pt-1 w-full flex flex-col items-center">
                           {activePacks.map((pk) => {
                             const isSelected = selPackId === pk.id;
                             return (
@@ -180,10 +173,10 @@ export default function ProductsSection() {
                                     [product.id]: prev[product.id] === pk.id ? undefined! : pk.id
                                   }));
                                 }}
-                                className={`block w-full text-left px-2 py-0.5 rounded-md transition-all ${
+                                className={`block w-[140px] text-center px-2 py-0.5 rounded-md transition-all ${
                                   isSelected
                                     ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
-                                    : "text-gray-700 hover:bg-gray-100"
+                                    : "text-gray-700 hover:bg-white/50"
                                 }`}
                               >
                                 {pk.name}
@@ -193,19 +186,18 @@ export default function ProductsSection() {
                         </div>
                       )}
                     </div>
-
-
-                    {/* Action Button: White pill button with black border matching Figma */}
-                    <div className="w-full flex justify-center pb-6">
-                      <button
-                        onClick={() => handleAdd(product.id)}
-                        className="w-[115px] h-[34px] bg-white border border-black/15 rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
-                      >
-                        Add
-                      </button>
-                    </div>
-
                   </div>
+
+                  {/* Action Button */}
+                  <div className="w-full flex justify-center mt-5">
+                    <button
+                      onClick={() => handleAdd(product.id)}
+                      className="w-[115px] h-[34px] bg-white rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                    >
+                      Add
+                    </button>
+                  </div>
+
                 </div>
               );
             })}
@@ -245,7 +237,7 @@ export default function ProductsSection() {
               className="flex gap-4 overflow-x-hidden scroll-smooth px-2"
               style={{ scrollSnapType: "x mandatory" }}
             >
-              {products.slice(0, 4).map((product) => {
+              {products.slice(0, 4).map((product, index) => {
                 const id = product.id;
                 const name = product.name;
                 const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
@@ -255,6 +247,8 @@ export default function ProductsSection() {
                   ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
                   : Math.round(parseFloat(product.discounted_price ?? product.base_price));
                 const image = getProductImageUrl(product.primary_image_url, product.name);
+                
+                const isBlue = index % 2 === 0;
 
                 return (
                   <div
@@ -262,35 +256,28 @@ export default function ProductsSection() {
                     className="relative flex-shrink-0 select-none group"
                     style={{ width: "calc(50% - 8px)", scrollSnapAlign: "start" }}
                   >
-                    <div className="relative w-full aspect-[280/480]">
-                      <Image
-                        src="/images/home/productcard.webp"
-                        alt="Card Background"
-                        fill
-                        sizes="(max-width: 1024px) 50vw, 280px"
-                        className="object-contain drop-shadow-sm pointer-events-none"
-                      />
-                      <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
+                    <div className={`relative w-full rounded-[20px] ${isBlue ? 'bg-[#E2F0FE]' : 'bg-[#FEF2CE]'} p-4 flex flex-col items-center h-full transition-all duration-300`}>
+                      <div className="w-full flex flex-col justify-start items-center flex-grow">
+                        <NextLink href={`/products/${id}`} className="hover:underline block text-center mb-3">
+                          <h3 className={`text-[15px] sm:text-[18px] font-bold ${isBlue ? 'text-[#085A9B]' : 'text-[#684115]'} leading-tight line-clamp-2`}>{name}</h3>
+                        </NextLink>
+
                         <div
                           onClick={() => openQuickView(product)}
-                          className="relative w-full h-[40%] mt-1 flex items-center justify-center cursor-pointer group/img block"
+                          className="relative w-[100px] sm:w-[140px] h-[100px] sm:h-[140px] bg-white flex items-center justify-center cursor-pointer group/img"
                         >
-                          <div className="relative z-10 w-[100px] sm:w-[170px] h-[80px] sm:h-[130px] flex items-center justify-center">
-                            <Image src={image} alt={name} width={170} height={130} className="max-w-full max-h-full object-contain" />
-                          </div>
-                          <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl z-20">
-                            <span className="px-3 py-1 rounded-full bg-white text-[#0D3A27] font-extrabold text-[11px] shadow-md flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+                          <Image src={image} alt={name} width={120} height={120} className="max-w-full max-h-full object-contain" />
+                          <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                            <span className="px-2 py-1 rounded-full bg-white text-[#0D3A27] font-extrabold text-[10px] shadow-md flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
                               ⚡ Quick View
                             </span>
                           </div>
                         </div>
-                        <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
-                          <NextLink href={`/products/${id}`} className="hover:underline block">
-                            <h3 className="text-[12px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
-                          </NextLink>
-                          <p className="text-[12px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
+
+                        <div className="w-full space-y-1 mt-4 flex-grow flex flex-col items-center">
+                          <p className="text-[15px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
                           {activePacks.length > 0 && (
-                            <div className="text-[10px] sm:text-[13px] font-semibold space-y-0.5 pt-0.5">
+                            <div className="text-[11px] sm:text-[13px] font-semibold space-y-0.5 pt-1 w-full flex flex-col items-center">
                               {activePacks.map((pk) => {
                                 const isSelected = selPackId === pk.id;
                                 return (
@@ -300,7 +287,7 @@ export default function ProductsSection() {
                                       e.preventDefault();
                                       setSelectedPacks(prev => ({ ...prev, [product.id]: prev[product.id] === pk.id ? undefined! : pk.id }));
                                     }}
-                                    className={`block w-full text-left px-1.5 py-0.5 rounded-md transition-all ${isSelected ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40" : "text-gray-700 hover:bg-gray-100"}`}
+                                    className={`block w-[90px] sm:w-[120px] text-center px-1.5 py-0.5 rounded-md transition-all ${isSelected ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40" : "text-gray-700 hover:bg-white/50"}`}
                                   >
                                     {pk.name}
                                   </button>
@@ -309,14 +296,15 @@ export default function ProductsSection() {
                             </div>
                           )}
                         </div>
-                        <div className="w-full flex justify-center pb-3 sm:pb-5">
-                          <button
-                            onClick={() => handleAdd(product.id)}
-                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white border border-black/15 rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
-                          >
-                            Add
-                          </button>
-                        </div>
+                      </div>
+
+                      <div className="w-full flex justify-center mt-4">
+                        <button
+                          onClick={() => handleAdd(product.id)}
+                          className="w-[90px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                        >
+                          Add
+                        </button>
                       </div>
                     </div>
                   </div>
