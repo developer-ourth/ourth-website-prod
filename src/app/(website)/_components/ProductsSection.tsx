@@ -115,6 +115,7 @@ export default function ProductsSection() {
               const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
               const selPackId = selectedPacks[product.id];
               const selPack = selPackId ? activePacks.find(p => p.id === selPackId) : undefined;
+              const basePriceNum = Math.round(parseFloat(selPack ? selPack.base_price : product.base_price));
               const price = selPack
                 ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
                 : Math.round(parseFloat(product.discounted_price ?? product.base_price));
@@ -168,8 +169,11 @@ export default function ProductsSection() {
                           {name}
                         </h3>
                       </NextLink>
-                      <p className="text-[16px] font-black text-black leading-none">
+                      <p className="text-[16px] font-black text-black leading-none flex items-center gap-1.5">
                         ₹{price}
+                        {basePriceNum > price && (
+                          <span className="text-[12px] font-medium text-gray-500 line-through">₹{basePriceNum}</span>
+                        )}
                       </p>
                       
                       {/* Selectable Packs list */}
@@ -257,6 +261,7 @@ export default function ProductsSection() {
                 const activePacks = product?.packs?.filter(p => p.is_active) ?? [];
                 const selPackId = selectedPacks[product.id];
                 const selPack = selPackId ? activePacks.find(p => p.id === selPackId) : undefined;
+                const basePriceNum = Math.round(parseFloat(selPack ? selPack.base_price : product.base_price));
                 const price = selPack
                   ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
                   : Math.round(parseFloat(product.discounted_price ?? product.base_price));
@@ -302,7 +307,12 @@ export default function ProductsSection() {
                           <NextLink href={`/products/${id}`} className="hover:underline block">
                             <h3 className="text-[12px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
                           </NextLink>
-                          <p className="text-[12px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
+                          <p className="text-[12px] sm:text-[16px] font-black text-black leading-none flex items-center gap-1.5">
+                            ₹{price}
+                            {basePriceNum > price && (
+                              <span className="text-[10px] sm:text-[12px] font-medium text-gray-500 line-through">₹{basePriceNum}</span>
+                            )}
+                          </p>
                           {activePacks.length > 0 && (
                             <div className="text-[10px] sm:text-[13px] font-semibold space-y-0.5 pt-0.5">
                               {activePacks.map((pk) => {

@@ -146,7 +146,7 @@ export default function WishlistPage() {
                         <span className="font-bold text-xl text-black">
                           ₹{product.discounted_price ?? product.base_price}
                         </span>
-                        {product.discounted_price && (
+                        {product.discounted_price && Number(product.base_price) > Number(product.discounted_price) && (
                           <span className="text-sm text-gray-500 line-through mb-0.5">
                             ₹{product.base_price}
                           </span>

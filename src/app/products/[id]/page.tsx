@@ -327,8 +327,11 @@ export default function ProductDetailsPage() {
 
             {/* Price tag */}
             <div className="flex items-baseline gap-4">
-              <span className="text-3xl lg:text-[36px] font-semibold text-black font-['IBM_Plex_Sans']">
+              <span className="text-3xl lg:text-[36px] font-semibold text-black font-['IBM_Plex_Sans'] flex items-center gap-2">
                 ₹{Math.round(displayPrice)}
+                {activeBasePrice > displayPrice && (
+                  <span className="text-[20px] lg:text-[24px] font-medium text-gray-500 line-through">₹{Math.round(activeBasePrice)}</span>
+                )}
               </span>
               <span className="text-lg lg:text-[24px] font-normal text-black font-['IBM_Plex_Sans']">
                 Pack of {selectedPack ? selectedPack.name.replace(/\D/g, "") || "10" : "10"}
@@ -557,6 +560,7 @@ export default function ProductDetailsPage() {
               const isMock = typeof p === "number";
               const id = isMock ? p : p.id;
               const name = isMock ? "6N Panipuri Bowls" : p.name;
+              const basePriceNum = isMock ? 600 : Math.round(parseFloat(p.base_price ?? "0"));
               const price = isMock ? 500 : Math.round(parseFloat(p.discounted_price ?? p.base_price));
               const image = isMock ? "" : getProductImageUrl(p.primary_image_url, p.name);
 
@@ -580,7 +584,12 @@ export default function ProductDetailsPage() {
                       <Link href={isMock ? "#" : `/products/${p.id}`} className="block">
                         <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{name}</h3>
                       </Link>
-                      <p className="font-bold text-base sm:text-lg text-gray-900 mt-1">₹{price}</p>
+                      <p className="font-bold text-base sm:text-lg text-gray-900 mt-1 flex items-center gap-1.5">
+                        ₹{price}
+                        {basePriceNum > price && (
+                          <span className="text-xs sm:text-sm font-medium text-gray-500 line-through">₹{basePriceNum}</span>
+                        )}
+                      </p>
                     </div>
                   </div>
 

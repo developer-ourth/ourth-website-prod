@@ -62,6 +62,7 @@ export default function BestSellerSection() {
   const image = getProductImageUrl(bestSeller.primary_image_url, bestSeller.name);
   const activePacks = bestSeller.packs?.filter(pack => pack.is_active) || [];
   const selPack = activePacks.find(p => p.id === selectedPackId);
+  const basePriceNum = Math.round(parseFloat(selPack ? selPack.base_price : bestSeller.base_price));
   const price = selPack
     ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
     : Math.round(parseFloat(bestSeller.discounted_price ?? bestSeller.base_price));
@@ -108,8 +109,11 @@ export default function BestSellerSection() {
             </p>
           </div>
 
-          <div className="text-[28px] sm:text-[36px] font-black text-[#0D3A27]">
+          <div className="text-[28px] sm:text-[36px] font-black text-[#0D3A27] flex items-center gap-2">
             ₹{price}
+            {basePriceNum > price && (
+              <span className="text-[20px] sm:text-[24px] font-medium text-gray-500 line-through">₹{basePriceNum}</span>
+            )}
           </div>
 
           {/* Pack Selection */}

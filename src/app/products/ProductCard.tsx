@@ -35,6 +35,8 @@ export default function ProductCard({ product, index }: { product: any; index: n
         ? product.wholesale_price
         : (product.discounted_price ?? product.base_price ?? 0));
 
+  const basePriceNum = parseFloat(selectedPack ? selectedPack.base_price : (product.base_price ?? "0"));
+  const finalPriceNum = parseFloat(price);
   const minQty = isB2B ? (product.min_order_quantity ?? 1) : 1;
 
   const handleAdd = async () => {
@@ -106,7 +108,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
                           : "bg-white text-black hover:bg-gray-50"
                       }`}
                     >
-                      {pack.name} (₹{pack.discounted_price ?? pack.base_price})
+                      {pack.name} (₹{pack.discounted_price ?? pack.base_price} {pack.discounted_price && pack.discounted_price !== pack.base_price && <span className="line-through text-xs ml-1 opacity-70">₹{pack.base_price}</span>})
                     </button>
                   );
                 })}
@@ -120,10 +122,15 @@ export default function ProductCard({ product, index }: { product: any; index: n
               <span className="text-[14px] font-semibold text-gray-500 block">
                 {isB2B && !selectedPack ? "Wholesale Price" : "Price"}
               </span>
-              <span className="text-[32px] font-black text-black flex items-center gap-1.5 leading-none">
-                ₹{parseFloat(price).toFixed(0)}
+              <span className="text-[32px] font-black text-black flex items-center gap-2 leading-none mt-1">
+                ₹{finalPriceNum.toFixed(0)}
+                {basePriceNum > finalPriceNum && !isB2B && (
+                  <span className="text-[20px] font-medium text-gray-500 line-through">
+                    ₹{basePriceNum.toFixed(0)}
+                  </span>
+                )}
                 {isB2B && !selectedPack && (
-                  <span className="text-[12px] bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                  <span className="text-[12px] bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1">
                     B2B
                   </span>
                 )}
