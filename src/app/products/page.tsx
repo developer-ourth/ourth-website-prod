@@ -31,6 +31,7 @@ function ProductCardCell({
   const packs = product.packs?.filter((p: any) => p.is_active) ?? [];
   const selPackId = selectedPacks[product.id];
   const selPack = selPackId ? packs.find((p: any) => p.id === selPackId) : undefined;
+  const basePriceNum = Math.round(parseFloat(selPack ? selPack.base_price : product.base_price));
   const price = selPack
     ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
     : Math.round(parseFloat(product.discounted_price ?? product.base_price));
@@ -67,7 +68,12 @@ function ProductCardCell({
         <Link href={`/products/${product.id}`} className="block">
           <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{product.name}</h3>
         </Link>
-        <p className="font-bold text-base sm:text-lg text-gray-900 mt-1">₹{price}</p>
+        <p className="font-bold text-base sm:text-lg text-gray-900 mt-1 flex items-center gap-1.5">
+          ₹{price}
+          {basePriceNum > price && (
+            <span className="text-xs sm:text-sm font-medium text-gray-500 line-through">₹{basePriceNum}</span>
+          )}
+        </p>
       </div>
 
       {/* Bottom Pack Options & Add Button */}
