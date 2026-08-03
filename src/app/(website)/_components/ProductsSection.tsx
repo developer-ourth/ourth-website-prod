@@ -123,44 +123,58 @@ export default function ProductsSection() {
               const isBlue = index % 2 === 0;
 
               return (
-                <div key={id} className={`relative w-[280px] flex-shrink-0 select-none group rounded-[24px] ${isBlue ? 'bg-[#E2F0FE]' : 'bg-[#FEF2CE]'} p-6 flex flex-col items-center transition-all duration-300 hover:shadow-md`}>
-                  
-                  {/* Card Content */}
-                  <div className="w-full flex flex-col justify-start items-center flex-grow">
-                    <NextLink href={`/products/${id}`} className="hover:underline block text-center mb-5">
-                      <h3 className={`text-[22px] font-bold ${isBlue ? 'text-[#085A9B]' : 'text-[#684115]'} leading-tight line-clamp-2`}>
-                        {name}
-                      </h3>
-                    </NextLink>
+                <div key={id} className="relative w-[280px] h-[480px] flex-shrink-0 select-none group">
+                  {/* Figma Card Image Backdrop */}
+                      <Image
+                        src="/images/home/productcard.webp"
+                        alt="Card Background"
+                        fill
+                        sizes="280px"
+                        className="object-contain drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300 pointer-events-none"
+                      />
 
-                    {/* Image Container with Quick View Trigger */}
+                  {/* Card Content overlay */}
+                  <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between items-start">
+                    {/* Top Leaf Image Container with Quick View Trigger */}
                     <div
                       onClick={() => openQuickView(product)}
-                      className="relative w-[160px] h-[160px] bg-white flex items-center justify-center cursor-pointer group/img"
+                      className="relative w-full h-[180px] mt-2 flex items-center justify-center cursor-pointer group/img block"
                     >
-                      <Image 
-                        src={image} 
-                        alt={name}
-                        width={140}
-                        height={140} 
-                        className="max-w-full max-h-full object-contain transform group-hover/img:scale-105 transition-all duration-300"
-                      />
-                      <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
-                        <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
-                          ⚡ Quick View
-                        </span>
+                      <div className="relative z-10 w-[160px] h-[140px] flex items-center justify-center mt-2 mx-auto rounded-2xl overflow-hidden">
+                        <Image 
+                          src={image} 
+                          alt={name}
+                          width={160}
+                          height={140} 
+                          className="w-full h-full object-cover transform group-hover/img:scale-105 transition-all duration-300 shadow-sm"
+                        />
+                        <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                          <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+                            ⚡ Quick View
+                          </span>
+                        </div>
                       </div>
                     </div>
  
                     {/* Product Metadata */}
-                    <div className="w-full space-y-2 mt-5 flex-grow flex flex-col items-center">
-                      <p className="text-[18px] font-black text-black leading-none">
+                    <div className="w-full px-4 space-y-2 mt-4 flex-grow flex flex-col justify-start">
+                      {name.includes("Dinner Party") && (
+                        <div className="inline-flex w-fit items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FF9900] text-white text-[10px] font-black uppercase tracking-wider shadow-sm mb-0.5">
+                          🔥 Best Seller
+                        </div>
+                      )}
+                      <NextLink href={`/products/${id}`} className="hover:underline block">
+                        <h3 className="text-[16px] font-bold text-black leading-tight line-clamp-2">
+                          {name}
+                        </h3>
+                      </NextLink>
+                      <p className="text-[16px] font-black text-black leading-none">
                         ₹{price}
                       </p>
                       
                       {/* Selectable Packs list */}
                       {activePacks.length > 0 && (
-                        <div className="text-[14px] font-semibold space-y-1 pt-1 w-full flex flex-col items-center">
+                        <div className="text-[13px] font-semibold space-y-1 pt-1">
                           {activePacks.map((pk) => {
                             const isSelected = selPackId === pk.id;
                             return (
@@ -173,10 +187,10 @@ export default function ProductsSection() {
                                     [product.id]: prev[product.id] === pk.id ? undefined! : pk.id
                                   }));
                                 }}
-                                className={`block w-[140px] text-center px-2 py-0.5 rounded-md transition-all ${
+                                className={`block w-full text-left px-2 py-0.5 rounded-md transition-all ${
                                   isSelected
                                     ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
-                                    : "text-gray-700 hover:bg-white/50"
+                                    : "text-gray-700 hover:bg-black/5"
                                 }`}
                               >
                                 {pk.name}
@@ -186,18 +200,18 @@ export default function ProductsSection() {
                         </div>
                       )}
                     </div>
-                  </div>
 
-                  {/* Action Button */}
-                  <div className="w-full flex justify-center mt-5">
-                    <button
-                      onClick={() => handleAdd(product.id)}
-                      className="w-[115px] h-[34px] bg-white rounded-[30px] text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
-                    >
-                      Add
-                    </button>
-                  </div>
+                    {/* Action Button */}
+                    <div className="w-full flex justify-center pb-6">
+                      <button
+                        onClick={() => handleAdd(product.id)}
+                        className="w-[115px] h-[34px] bg-transparent border border-black/80 rounded-[30px] text-[15px] font-semibold text-black hover:bg-black/5 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                      >
+                        Add
+                      </button>
+                    </div>
 
+                  </div>
                 </div>
               );
             })}
@@ -256,28 +270,41 @@ export default function ProductsSection() {
                     className="relative flex-shrink-0 select-none group"
                     style={{ width: "calc(50% - 8px)", scrollSnapAlign: "start" }}
                   >
-                    <div className={`relative w-full rounded-[20px] ${isBlue ? 'bg-[#E2F0FE]' : 'bg-[#FEF2CE]'} p-4 flex flex-col items-center h-full transition-all duration-300`}>
-                      <div className="w-full flex flex-col justify-start items-center flex-grow">
-                        <NextLink href={`/products/${id}`} className="hover:underline block text-center mb-3">
-                          <h3 className={`text-[15px] sm:text-[18px] font-bold ${isBlue ? 'text-[#085A9B]' : 'text-[#684115]'} leading-tight line-clamp-2`}>{name}</h3>
-                        </NextLink>
-
+                    <div className="relative w-full aspect-[280/480]">
+                      <Image
+                        src="/images/home/productcard.webp"
+                        alt="Card Background"
+                        fill
+                        sizes="(max-width: 1024px) 50vw, 280px"
+                        className="object-contain drop-shadow-sm pointer-events-none"
+                      />
+                      <div className="relative z-10 w-full h-full p-3 sm:p-5 flex flex-col justify-between items-start">
                         <div
                           onClick={() => openQuickView(product)}
-                          className="relative w-[100px] sm:w-[140px] h-[100px] sm:h-[140px] bg-white flex items-center justify-center cursor-pointer group/img"
+                          className="relative w-full h-[40%] mt-1 flex items-center justify-center cursor-pointer group/img block"
                         >
-                          <Image src={image} alt={name} width={120} height={120} className="max-w-full max-h-full object-contain" />
-                          <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
-                            <span className="px-2 py-1 rounded-full bg-white text-[#0D3A27] font-extrabold text-[10px] shadow-md flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
-                              ⚡ Quick View
-                            </span>
+                          <div className="relative z-10 w-[95px] sm:w-[150px] h-[80px] sm:h-[125px] flex items-center justify-center mx-auto mt-1 sm:mt-2 rounded-xl sm:rounded-2xl overflow-hidden">
+                            <Image src={image} alt={name} width={150} height={125} className="w-full h-full object-cover shadow-sm" />
+                            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                              <span className="px-3 py-1 rounded-full bg-white text-[#0D3A27] font-extrabold text-[11px] shadow-md flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
+                                ⚡ Quick View
+                              </span>
+                            </div>
                           </div>
                         </div>
-
-                        <div className="w-full space-y-1 mt-4 flex-grow flex flex-col items-center">
-                          <p className="text-[15px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
+                        
+                        <div className="w-full px-2 sm:px-3 space-y-1 flex-grow flex flex-col justify-start">
+                          {name.includes("Dinner Party") && (
+                            <div className="inline-flex w-fit items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FF9900] text-white text-[8px] sm:text-[10px] font-black uppercase tracking-wider shadow-sm">
+                              🔥 Best Seller
+                            </div>
+                          )}
+                          <NextLink href={`/products/${id}`} className="hover:underline block">
+                            <h3 className="text-[12px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
+                          </NextLink>
+                          <p className="text-[12px] sm:text-[16px] font-black text-black leading-none">₹{price}</p>
                           {activePacks.length > 0 && (
-                            <div className="text-[11px] sm:text-[13px] font-semibold space-y-0.5 pt-1 w-full flex flex-col items-center">
+                            <div className="text-[10px] sm:text-[13px] font-semibold space-y-0.5 pt-0.5">
                               {activePacks.map((pk) => {
                                 const isSelected = selPackId === pk.id;
                                 return (
@@ -287,7 +314,7 @@ export default function ProductsSection() {
                                       e.preventDefault();
                                       setSelectedPacks(prev => ({ ...prev, [product.id]: prev[product.id] === pk.id ? undefined! : pk.id }));
                                     }}
-                                    className={`block w-[90px] sm:w-[120px] text-center px-1.5 py-0.5 rounded-md transition-all ${isSelected ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40" : "text-gray-700 hover:bg-white/50"}`}
+                                    className={`block w-full text-left px-1.5 py-0.5 rounded-md transition-all ${isSelected ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40" : "text-gray-700 hover:bg-black/5"}`}
                                   >
                                     {pk.name}
                                   </button>
@@ -296,15 +323,15 @@ export default function ProductsSection() {
                             </div>
                           )}
                         </div>
-                      </div>
-
-                      <div className="w-full flex justify-center mt-4">
-                        <button
-                          onClick={() => handleAdd(product.id)}
-                          className="w-[90px] sm:w-[115px] h-[30px] sm:h-[34px] bg-white rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-neutral-50 active:scale-95 transition-all flex items-center justify-center shadow-sm"
-                        >
-                          Add
-                        </button>
+                        
+                        <div className="w-full flex justify-center pb-3 sm:pb-5">
+                          <button
+                            onClick={() => handleAdd(product.id)}
+                            className="w-[100px] sm:w-[115px] h-[30px] sm:h-[34px] bg-transparent border border-black/80 rounded-[30px] text-[13px] sm:text-[15px] font-semibold text-black hover:bg-black/5 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                          >
+                            Add
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -456,6 +456,53 @@ export function deleteCategory(id: number) {
   });
 }
 
+// ── Admin Coupons ────────────────────────────────────────────────────────────
+
+export interface Coupon {
+  id: number;
+  code: string;
+  discount_percentage: string;
+  product_id: number | null;
+  expires_at: string | null;
+  usage_limit: number | null;
+  usage_count: number;
+  is_active: boolean;
+  product?: Pick<MarketProduct, "id" | "name"> | null;
+}
+
+export interface CouponPayload {
+  code: string;
+  discount_percentage: number;
+  product_id?: number | null;
+  expires_at?: string | null;
+  usage_limit?: number | null;
+  is_active?: boolean;
+}
+
+export function getAdminCoupons() {
+  return request<Coupon[]>("/admin/coupons");
+}
+
+export function createCoupon(payload: CouponPayload) {
+  return request<Coupon>("/admin/coupons", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateCoupon(id: number, payload: Partial<CouponPayload>) {
+  return request<Coupon>(`/admin/coupons/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteCoupon(id: number) {
+  return request<{ success: boolean; message: string }>(`/admin/coupons/${id}`, {
+    method: "DELETE",
+  });
+}
+
 // ── Marketplace — Products ───────────────────────────────────────────────────
 
 export interface ProductPack {
@@ -628,6 +675,9 @@ export interface Cart {
   status: string;
   total_amount: string;
   total_items: number;
+  discount_amount?: string;
+  coupon_id?: number | null;
+  coupon?: Coupon | null;
   items: CartItem[];
 }
 
@@ -657,6 +707,19 @@ export function removeCartItem(itemId: number) {
 
 export function clearCart() {
   return request<{ success: boolean; message: string }>("/me/cart", {
+    method: "DELETE",
+  });
+}
+
+export function applyCoupon(code: string) {
+  return request<{ success: boolean; message: string; data: Cart }>("/me/cart/coupon", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+}
+
+export function removeCoupon() {
+  return request<{ success: boolean; message: string; data: Cart }>("/me/cart/coupon", {
     method: "DELETE",
   });
 }

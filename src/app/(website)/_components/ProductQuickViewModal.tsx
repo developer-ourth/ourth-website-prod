@@ -122,7 +122,7 @@ export default function ProductQuickViewModal() {
               </div>
 
               {/* Main Image Frame - With Clean Architectural Border & Shadow matching product box */}
-              <div className="relative w-full h-[280px] sm:h-[360px] rounded-xl overflow-hidden bg-white border-[1.5px] border-black shadow-md flex items-center justify-center p-6">
+              <div className="relative w-full h-[280px] sm:h-[360px] rounded-xl overflow-hidden bg-white flex items-center justify-center p-6">
                 <Image
                   src={currentImgUrl}
                   alt={quickViewProduct.name}

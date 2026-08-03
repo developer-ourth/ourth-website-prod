@@ -232,7 +232,7 @@ export default function ProductDetailsPage() {
           <div className="lg:col-span-6 flex flex-col items-center w-full">
             {/* Big Main Image Container */}
             <div 
-              className="w-full relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-6"
+              className="w-full relative bg-white rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-6"
               style={{ height: "min(709px, 50vw)", minHeight: "350px" }}
             >
               <img
@@ -250,7 +250,7 @@ export default function ProductDetailsPage() {
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl!)}
-                    className={`w-20 sm:w-24 md:w-28 aspect-square relative bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all cursor-pointer flex-shrink-0 ${
+                    className={`w-20 sm:w-24 md:w-28 aspect-square relative bg-white rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] overflow-hidden flex items-center justify-center p-2 transition-all cursor-pointer flex-shrink-0 ${
                       isActive ? "ring-2 ring-[#76A52E] scale-105" : "hover:opacity-90 hover:scale-[1.02]"
                     }`}
                   >
@@ -304,7 +304,7 @@ export default function ProductDetailsPage() {
             </div>
 
             {/* Eco Badge */}
-            <div className="inline-flex h-[47px] items-center justify-center rounded-[30px] border-[1.5px] border-black bg-[#FAF8F3] px-6">
+            <div className="inline-flex h-[47px] items-center justify-center rounded-[30px] bg-[#FAF8F3] px-6 shadow-sm">
               <span className="text-sm font-normal text-black font-['IBM_Plex_Sans'] uppercase tracking-wider">
                 Decomposeable and Eco-friendly
               </span>
@@ -359,7 +359,7 @@ export default function ProductDetailsPage() {
             {/* Add to Cart Actions row */}
             <div className="flex flex-wrap items-center gap-4 pt-4">
               {/* Quantity selector */}
-              <div className="flex items-center justify-between w-[172px] h-[47px] border-[1.5px] border-black rounded-[30px] bg-[#FAF8F3] px-4">
+              <div className="flex items-center justify-between w-[172px] h-[47px] rounded-[30px] bg-[#FAF8F3] shadow-sm px-4">
                 <button
                   onClick={() => setQuantity((q) => Math.max(minQty, q - 1))}
                   className="text-[40px] font-normal text-black pb-1 active:scale-90 transition-transform"
@@ -464,7 +464,7 @@ export default function ProductDetailsPage() {
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#76A52E] border-t-transparent" />
                   </div>
                 ) : reviews.length === 0 ? (
-                  <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col items-center justify-center gap-4 text-center">
+                  <div className="rounded-[5px] p-8 bg-[#FAF8F3] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex flex-col items-center justify-center gap-4 text-center">
                     <p className="text-black text-[20px] font-medium font-['IBM_Plex_Sans']">
                       No reviews yet. Be the first to review!
                     </p>
@@ -473,7 +473,7 @@ export default function ProductDetailsPage() {
                   reviews.map((r) => (
                     <div
                       key={r.id}
-                      className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm flex flex-col justify-start gap-4"
+                      className="rounded-[5px] p-8 bg-[#FAF8F3] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex flex-col justify-start gap-4"
                     >
                       <div className="flex items-center gap-4">
                         <span className="font-semibold text-black text-[24px] font-['IBM_Plex_Sans']">
@@ -495,7 +495,7 @@ export default function ProductDetailsPage() {
               </div>
 
               {/* Review Submission Form */}
-              <div className="border-[1.5px] border-black rounded-[5px] p-8 bg-[#FAF8F3] shadow-sm w-full">
+              <div className="rounded-[5px] p-8 bg-[#FAF8F3] shadow-[0_2px_8px_rgba(0,0,0,0.08)] w-full">
                 <h3 className="text-[24px] font-bold text-black mb-4 font-['IBM_Plex_Sans']">Write a Review</h3>
                 {user ? (
                   <form onSubmit={handleSubmitReview} className="space-y-4">
@@ -552,7 +552,7 @@ export default function ProductDetailsPage() {
           >
             Trending Products
           </h2>
-          <div className="border border-black flex flex-col lg:flex-row bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1580px] mx-auto">
             {(trending.length > 0 ? trending : [1, 2, 3, 4]).map((p: any, idx) => {
               const isMock = typeof p === "number";
               const id = isMock ? p : p.id;
@@ -563,29 +563,31 @@ export default function ProductDetailsPage() {
               return (
                 <div 
                   key={id} 
-                  className={`flex-1 p-8 h-[395px] bg-[#FAF8F3] flex flex-col justify-between ${
-                    idx !== 3 ? "border-b lg:border-b-0 lg:border-r border-black" : ""
+                  className={`flex flex-col justify-between p-6 sm:p-8 transition-colors hover:opacity-90 rounded-2xl ${
+                    idx % 2 === 0 ? "bg-[#DCEEFB]" : "bg-[#FBEFC9]"
                   }`}
                 >
-                  <div>
+                  <div className="text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                     {/* Thumbnail Image Container */}
-                    <Link href={isMock ? "#" : `/products/${p.id}`} className="w-[171px] h-[154px] bg-white border-[1.5px] border-black rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex items-center justify-center overflow-hidden mx-auto flex-shrink-0 hover:opacity-90 block">
+                    <Link href={isMock ? "#" : `/products/${p.id}`} className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden shadow-sm block">
                       <img
                         src={isMock ? "/images/home/productcard.webp" : image}
                         alt={name}
-                        className="max-h-[130px] max-w-[140px] object-contain p-2"
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </Link>
-                    <Link href={isMock ? "#" : `/products/${p.id}`} className="hover:underline block mt-4">
-                      <h3 className="font-medium text-black text-[24px] truncate font-['IBM_Plex_Sans']">{name}</h3>
-                    </Link>
-                    <p className="text-[24px] font-semibold text-black font-['IBM_Plex_Sans'] mt-1">₹{price}</p>
+                    <div className="mt-6">
+                      <Link href={isMock ? "#" : `/products/${p.id}`} className="block">
+                        <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{name}</h3>
+                      </Link>
+                      <p className="font-bold text-base sm:text-lg text-gray-900 mt-1">₹{price}</p>
+                    </div>
                   </div>
 
-                  <div className="flex items-end justify-between pt-2">
-                    <div className="text-[14px] text-black font-semibold space-y-1">
+                  <div className="mt-6 flex items-end justify-between gap-4 pt-2" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                    <div className="flex flex-col gap-1 text-left text-sm sm:text-base text-gray-800">
                       {!isMock && p.packs && p.packs.filter((pack: any) => pack.is_active).slice(0, 2).map((pack: any) => {
-                        const isSelected = trendingSelectedPacks[p.id] === pack.id;
+                        const isSelected = trendingSelectedPacks[p.id] === pack.id || (!trendingSelectedPacks[p.id] && pack === p.packs.filter((pk: any) => pk.is_active)[0]);
                         return (
                           <button
                             key={pack.id}
@@ -593,13 +595,13 @@ export default function ProductDetailsPage() {
                               e.preventDefault();
                               setTrendingSelectedPacks(prev => ({
                                 ...prev,
-                                [p.id]: prev[p.id] === pack.id ? undefined! : pack.id
+                                [p.id]: pack.id
                               }));
                             }}
-                            className={`block text-left px-2 py-0.5 rounded-md transition-all ${
+                            className={`text-left transition-all ${
                               isSelected
-                                ? "bg-[#76A52E]/15 text-[#2B4D0E] ring-1 ring-[#76A52E]/40"
-                                : "text-gray-700 hover:bg-gray-100/50"
+                                ? "font-bold text-black underline underline-offset-4 decoration-2 decoration-[#0D3A27]"
+                                : "text-gray-600 hover:text-black"
                             }`}
                           >
                             {pack.name}
@@ -608,8 +610,8 @@ export default function ProductDetailsPage() {
                       })}
                       {isMock && (
                         <>
-                          <button className="block text-left px-2 py-0.5 rounded-md text-gray-700">Pack of 100</button>
-                          <button className="block text-left px-2 py-0.5 rounded-md text-gray-700 mt-1">Pack of 50</button>
+                          <button className="text-left font-bold text-black underline underline-offset-4 decoration-2 decoration-[#0D3A27]">Pack of 100</button>
+                          <button className="text-left text-gray-600 hover:text-black mt-1">Pack of 50</button>
                         </>
                       )}
                     </div>
@@ -621,15 +623,14 @@ export default function ProductDetailsPage() {
                           return;
                         }
                         try {
-                          const packId = trendingSelectedPacks[p.id] ?? null;
+                          const packId = trendingSelectedPacks[p.id] ?? (p.packs?.filter((pk: any) => pk.is_active)[0]?.id) ?? null;
                           await addToCart(p.id, 1, packId);
                           toast.success("Added to cart");
                         } catch (e: any) {
                           // Context handles error
                         }
                       }}
-                      className="w-[155px] h-[58px] rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] text-[24px] text-black font-normal flex items-center justify-center shadow-sm hover:bg-neutral-100 active:scale-95 transition-all"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      className="px-6 py-2 rounded-lg text-sm sm:text-base font-medium text-black bg-white hover:bg-gray-50 shadow-sm hover:shadow active:scale-95 transition-all flex-shrink-0"
                     >
                       Add
                     </button>

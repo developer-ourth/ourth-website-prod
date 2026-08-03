@@ -15,11 +15,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function ProductCardCell({
   product,
+  index,
   selectedPacks,
   setSelectedPacks,
   handleAdd,
 }: {
   product: MarketProduct;
+  index: number;
   selectedPacks: Record<number, number>;
   setSelectedPacks: React.Dispatch<React.SetStateAction<Record<number, number>>>;
   handleAdd: (productId: number) => Promise<void>;
@@ -33,19 +35,25 @@ function ProductCardCell({
     ? Math.round(parseFloat(selPack.discounted_price ?? selPack.base_price))
     : Math.round(parseFloat(product.discounted_price ?? product.base_price));
 
+  const categoryColors = [
+    "bg-[#DCEEFB]",
+    "bg-[#FBEFC9]",
+  ];
+  const bgColor = categoryColors[index % categoryColors.length];
+
   return (
-    <div className="border-b border-r border-black flex flex-col justify-between p-6 sm:p-8 bg-[#FAF8F3] transition-colors hover:bg-[#FAF5EC]">
+    <div className={`flex flex-col justify-between p-6 sm:p-8 transition-colors hover:opacity-90 rounded-2xl ${bgColor}`}>
       {/* Top Image box with Quick View Overlay */}
       <div
         onClick={() => openQuickView(product)}
-        className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] bg-white rounded-xl overflow-hidden mx-auto shadow-md border-[1.5px] border-black flex items-center justify-center p-2 group/img transition-all cursor-pointer"
+        className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden"
       >
         <Image
           src={image}
           alt={product.name}
-          width={150}
-          height={150}
-          className="max-w-[140px] max-h-[140px] object-contain transition-transform duration-300 group-hover/img:scale-105"
+          width={160}
+          height={160}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-105"
         />
         <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <span className="px-3.5 py-1.5 rounded-full bg-white text-[#0D3A27] font-extrabold text-xs shadow-lg flex items-center gap-1 scale-90 group-hover/img:scale-100 transition-transform">
@@ -97,7 +105,7 @@ function ProductCardCell({
         {/* Right: Add Button exactly like image */}
         <button
           onClick={() => handleAdd(product.id)}
-          className="px-6 py-2 border border-black rounded-lg text-sm sm:text-base font-medium text-black bg-[#FAF8F3] hover:bg-white shadow-sm hover:shadow active:scale-95 transition-all flex-shrink-0"
+          className="px-6 py-2 rounded-lg text-sm sm:text-base font-medium text-black bg-white hover:bg-gray-50 shadow-sm hover:shadow active:scale-95 transition-all flex-shrink-0"
         >
           Add
         </button>
@@ -221,9 +229,9 @@ function ProductsPageContent() {
       {/* Loading state indicator */}
       {loading ? (
         <div className="py-20 max-w-[1400px] mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px] border-t border-l border-black">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden rounded-[5px]">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="border-b border-r border-black flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3]">
+              <div key={i} className="flex flex-col justify-between p-8 h-[430px] bg-[#FAF8F3] rounded-2xl">
                 <Skeleton className="w-[171px] h-[154px] bg-gray-200 mx-auto" />
                 <div className="mt-4 space-y-2">
                   <Skeleton className="h-6 w-3/4 bg-gray-200" />
@@ -249,17 +257,18 @@ function ProductsPageContent() {
                 Customer favorites across India — 100% natural, leak-proof, and compostable right after your meal.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] border-t border-l border-black max-w-[1580px] mx-auto overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden gap-4">
               {bestSellers.length === 0 ? (
                 <div className="col-span-full text-center py-12 bg-white/70 rounded-2xl border border-[#2B4D0E]/20 p-8 max-w-xl mx-auto shadow-sm">
                   <p className="text-gray-700 text-lg font-bold mb-2">No products loaded right now</p>
                   <p className="text-gray-500 text-sm">Please ensure the local API server (<code className="bg-gray-100 px-1.5 py-0.5 rounded">php artisan serve</code>) is active on port 8000.</p>
                 </div>
               ) : (
-                bestSellers.map((product) => (
+                bestSellers.map((product, index) => (
                   <ProductCardCell
                     key={product.id}
                     product={product}
+                    index={index}
                     selectedPacks={selectedPacks}
                     setSelectedPacks={setSelectedPacks}
                     handleAdd={handleAdd}
@@ -458,11 +467,12 @@ function ProductsPageContent() {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] border-t border-l border-black max-w-[1580px] mx-auto overflow-hidden">
-                {filteredProducts.map((product) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[#FAF8F3] max-w-[1580px] mx-auto overflow-hidden gap-4">
+                {filteredProducts.map((product, index) => (
                   <ProductCardCell
                     key={product.id}
                     product={product}
+                    index={index}
                     selectedPacks={selectedPacks}
                     setSelectedPacks={setSelectedPacks}
                     handleAdd={handleAdd}

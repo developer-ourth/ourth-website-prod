@@ -24,7 +24,7 @@ import {
 export default function CartPage() {
   const router = useRouter();
   const { user, login } = useAuth();
-  const { cart, loading, fetchCart, updateQty, removeFromCart, clearCart } = useCart();
+  const { cart, loading, fetchCart, updateQty, removeFromCart, clearCart, applyCouponToCart, removeCouponFromCart } = useCart();
 
   // Auth Form states
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
@@ -56,6 +56,10 @@ export default function CartPage() {
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
   const [checkoutSubmitting, setCheckoutSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  
+  // Coupon states
+  const [promoCode, setPromoCode] = useState("");
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
 
   // Load addresses when user logs in
   const loadAddresses = useCallback(async () => {
@@ -231,8 +235,34 @@ export default function CartPage() {
     }
   };
 
+  const handleApplyCoupon = async () => {
+    if (!promoCode.trim()) return;
+    setApplyingCoupon(true);
+    try {
+      await applyCouponToCart(promoCode.trim());
+      setPromoCode("");
+    } catch (e) {
+      // toast already handled in context
+    } finally {
+      setApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = async () => {
+    setApplyingCoupon(true);
+    try {
+      await removeCouponFromCart();
+    } catch (e) {
+      // toast already handled in context
+    } finally {
+      setApplyingCoupon(false);
+    }
+  };
+
   const items = cart?.items ?? [];
-  const total = cart?.total_amount ?? "0.00";
+  const total = parseFloat(cart?.total_amount ?? "0.00");
+  const subtotal = items.reduce((sum, item) => sum + parseFloat(item.total_price), 0);
+  const discountAmount = parseFloat(cart?.discount_amount ?? "0.00");
 
   return (
     <>
@@ -708,7 +738,7 @@ export default function CartPage() {
                   {/* Sub Total pill */}
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Sub Total</span>
-                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{parseFloat(total).toFixed(0)}</span>
+                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{subtotal.toFixed(0)}</span>
                   </div>
 
                   {/* Est Delivery pill */}
@@ -724,9 +754,11 @@ export default function CartPage() {
                   </div>
 
                   {/* Discount pill */}
-                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
-                    <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Discount</span>
-                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>-0.00</span>
+                  <div className="w-full min-h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 py-2 flex flex-col justify-center ">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Discount</span>
+                      <span className="text-[24px] font-semibold text-green-600" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>-₹{discountAmount.toFixed(0)}</span>
+                    </div>
                   </div>
 
                   {/* Dashed Line */}
@@ -736,26 +768,48 @@ export default function CartPage() {
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      ₹{(parseFloat(total) + 30 + 15).toFixed(0)}
+                      ₹{(total + 30 + 15).toFixed(0)}
                     </span>
                   </div>
 
                   {/* Promo Code Input */}
-                  <div className="w-full h-[64px] rounded-[30px] bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between ">
-                    <input
-                      type="text"
-                      placeholder="Enter Promo Code"
-                      className="bg-transparent border-none outline-none text-[24px] text-black placeholder-gray-400 w-[60%]"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    />
-                    <button 
-                      type="button"
-                      className="w-[111px] h-[48px] rounded-[30px] bg-[#C7E08E] text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    >
-                      Apply
-                    </button>
-                  </div>
+                  {!cart?.coupon ? (
+                    <div className="w-full h-[64px] rounded-[30px] bg-[#FAF8F3] pl-6 pr-2 flex items-center justify-between ">
+                      <input
+                        type="text"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                        placeholder="Enter Promo Code"
+                        className="bg-transparent border-none outline-none text-[24px] text-black placeholder-gray-400 w-[60%]"
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                        disabled={applyingCoupon}
+                      />
+                      <button 
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={applyingCoupon || !promoCode.trim()}
+                        className="w-[111px] h-[48px] rounded-[30px] bg-[#C7E08E] text-black font-semibold text-[24px] flex items-center justify-center hover:scale-105 active:scale-95 transition disabled:opacity-50"
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-full h-[64px] rounded-[30px] bg-[#E7F3D0] border-2 border-[#25784C] pl-6 pr-4 flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[18px] font-bold text-[#25784C] leading-none mb-1">Coupon Applied</span>
+                        <span className="text-[16px] font-mono font-medium text-black">{cart.coupon.code}</span>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={handleRemoveCoupon}
+                        disabled={applyingCoupon}
+                        className="text-[16px] font-semibold text-red-600 hover:text-red-800 underline disabled:opacity-50"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
 
                   {/* Dashed Line */}
                   <div className="border-t-[1.5px] border-dashed border-black my-4" />

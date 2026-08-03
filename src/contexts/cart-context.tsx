@@ -15,6 +15,8 @@ import {
   updateCartItem,
   removeCartItem,
   clearCart as clearCartApi,
+  applyCoupon as applyCouponApi,
+  removeCoupon as removeCouponApi,
   type Cart,
   type MarketProduct,
 } from "@/lib/api";
@@ -33,6 +35,8 @@ interface CartContextValue {
   updateQty: (itemId: number, quantity: number) => Promise<void>;
   removeFromCart: (itemId: number) => Promise<void>;
   clearCart: () => Promise<void>;
+  applyCouponToCart: (code: string) => Promise<void>;
+  removeCouponFromCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -159,6 +163,34 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const applyCouponToCart = useCallback(async (code: string) => {
+    setLoading(true);
+    try {
+      const res = await applyCouponApi(code);
+      setCart(res.data);
+      toast.success(res.message || "Coupon applied!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to apply coupon");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const removeCouponFromCart = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await removeCouponApi();
+      setCart(res.data);
+      toast.success(res.message || "Coupon removed!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to remove coupon");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <CartContext.Provider
       value={{
@@ -175,6 +207,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQty,
         removeFromCart,
         clearCart,
+        applyCouponToCart,
+        removeCouponFromCart,
       }}
     >
       {children}
