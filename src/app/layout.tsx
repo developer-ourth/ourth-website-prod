@@ -12,6 +12,7 @@ import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
         {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
+        <Analytics />
       </body>
     </html>
   );
