@@ -68,7 +68,7 @@ export default function BestSellerSection() {
     : Math.round(parseFloat(bestSeller.discounted_price ?? bestSeller.base_price));
 
   return (
-    <section className="relative w-full py-16 sm:py-24 bg-gradient-to-br from-[#EBF2E4] to-[#FAF8F3] overflow-hidden">
+    <section className="relative w-full py-16 sm:py-24 bg-[#FAF8F3] overflow-hidden">
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
         <Image src="/images/home/texture.webp" alt="texture" fill className="object-cover mix-blend-multiply" />
       </div>
