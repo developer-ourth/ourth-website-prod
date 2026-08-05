@@ -11,7 +11,7 @@ import { IBM_Plex_Sans, Poppins } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -79,6 +79,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <AppShell>{children}</AppShell>
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
       </body>
     </html>
   );
