@@ -769,6 +769,27 @@ export default function ClientDashboardPage() {
                     })}
                   </div>
                 )}
+                
+                {/* Tracking Information */}
+                {selectedOrder.tracking_url && (
+                  <div className="mt-6 p-4 bg-[#FAF8F3] border border-[#76A52E]/30 rounded-[5px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Delivery Partner</p>
+                      <p className="font-bold text-black flex items-center gap-2">
+                        Shadowfax 
+                        <span className="text-xs font-normal text-gray-600 bg-gray-200 px-2 py-0.5 rounded">AWB: {selectedOrder.awb_number}</span>
+                      </p>
+                    </div>
+                    <a 
+                      href={selectedOrder.tracking_url} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="px-6 py-2 bg-[#76A52E] hover:bg-[#689327] text-white text-sm font-bold rounded-[30px] transition-colors whitespace-nowrap text-center w-full sm:w-auto"
+                    >
+                      Track Package
+                    </a>
+                  </div>
+                )}
               </div>
 
               {/* Items */}
