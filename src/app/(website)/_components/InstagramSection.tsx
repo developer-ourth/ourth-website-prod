@@ -3,14 +3,14 @@
 const INSTAGRAM_URL = "https://www.instagram.com/healingourth/";
 const INSTAGRAM_HANDLE = "@healingourth";
 
-// Recent post IDs from the Healing Ourth Instagram — these render via IG's oEmbed
-const POST_IDS = [
-  "DFVMQWByMSi",
-  "DEy87_eSGns",
-  "DEwgaYDy1q1",
-  "DEuGPMSyQzf",
-  "DEnq7dKywzD",
-  "DEiJ4rXS0xV",
+// Local high-quality lifestyle images representing Instagram posts
+const POST_IMAGES = [
+  "/images/home/image1.webp",
+  "/images/home/image2.webp",
+  "/images/home/image3.webp",
+  "/images/home/image4.webp",
+  "/images/home/image5.webp",
+  "/images/home/image6.webp",
 ];
 
 export default function InstagramSection() {
@@ -45,18 +45,17 @@ export default function InstagramSection() {
 
         {/* ── Post grid — each thumbnail links to the real IG post ─── */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-          {POST_IDS.map((id) => (
+          {POST_IMAGES.map((src, index) => (
             <a
-              key={id}
-              href={`https://www.instagram.com/p/${id}/`}
+              key={index}
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative aspect-square overflow-hidden rounded-xl bg-[#e8e3da] shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
             >
-              {/* Instagram CDN thumbnail — public, no API key needed */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://www.instagram.com/p/${id}/media/?size=m`}
+                src={src}
                 alt="Healing Ourth Instagram post"
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
