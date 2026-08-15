@@ -3,6 +3,7 @@ import Journey from "@/app/(website)/_components/Journey";
 import ProductsSection from "@/app/(website)/_components/ProductsSection";
 import TornBanner from "@/app/(website)/_components/TornBanner";
 import BestSellerSection from "@/app/(website)/_components/BestSellerSection";
+import InstagramSection from "@/app/(website)/_components/InstagramSection";
 // import EcoImpactCalculator from "@/app/(website)/_components/EcoImpactCalculator";
 
 export default function LandingPage() {
@@ -15,6 +16,7 @@ export default function LandingPage() {
       {/* <EcoImpactCalculator /> */}
       <BestSellerSection />
       <ProductsSection />
+      <InstagramSection />
     </main>
   );
 }

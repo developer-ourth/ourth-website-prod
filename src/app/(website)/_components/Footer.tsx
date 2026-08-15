@@ -42,7 +42,7 @@ export default function Footer() {
           {/* Right side: Social Icons */}
           <div className="flex items-center gap-3">
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/healingourth/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#0D3A27] hover:bg-[#0D3A27] hover:text-white transition-all shadow-sm border border-black/5"
