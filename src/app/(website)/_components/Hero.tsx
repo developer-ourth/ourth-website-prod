@@ -12,6 +12,7 @@ export default function Hero() {
           backgroundImage: "url('/images/hero/HOME.png')",
           backgroundColor: "#7c5835"
         }}
+      >
       </div>
     </section>
   );
