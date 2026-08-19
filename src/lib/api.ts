@@ -365,6 +365,7 @@ export interface AdminOrder {
   order_type?: "b2c" | "b2b";
   buyer_gstin?: string | null;
   source?: "app" | "website";
+  payment_method?: string;
 }
 
 export interface AdminOrderListResponse {

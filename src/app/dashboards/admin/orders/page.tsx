@@ -303,9 +303,16 @@ export default function AdminOrdersPage() {
                             </span>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <span className={`rounded px-2 py-0.5 text-xs font-semibold capitalize ${PAYMENT_BADGE[order.payment_status] ?? "bg-gray-100 text-gray-600"}`}>
-                              {order.payment_status}
-                            </span>
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`rounded px-2 py-0.5 text-xs font-semibold capitalize ${PAYMENT_BADGE[order.payment_status] ?? "bg-gray-100 text-gray-600"}`}>
+                                {order.payment_status}
+                              </span>
+                              {order.payment_method && (
+                                <span className="text-[10px] font-bold text-dark-4 dark:text-dark-6 uppercase tracking-wider">
+                                  {order.payment_method}
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 text-right text-sm text-dark-4">{order.items_count}</td>
                           <td className="px-6 py-4 text-right text-sm font-semibold text-dark dark:text-white">
