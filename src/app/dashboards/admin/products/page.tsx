@@ -512,8 +512,8 @@ function ProductsContent() {
                 </div>
               </div>
 
-              <Field label="SKU">
-                <input value={form.sku} onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))} className={inputCls} placeholder="Auto-generated if empty" />
+              <Field label="Product URL Slug (SKU)">
+                <input value={form.sku} onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))} className={inputCls} placeholder="e.g. 7n-kachori-sabzi-dona (Auto-generated if empty)" />
               </Field>
               <div className="flex gap-6">
                 <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
