@@ -89,6 +89,11 @@ export default function ProductDetailsPage() {
         setProductId(prod.id);
         setSelectedImage(prod.primary_image_url || "");
 
+        // Redirect to SKU URL if accessed via numeric ID
+        if (prod.sku && productIdOrSku === String(prod.id)) {
+          router.replace(`/products/${prod.sku}`);
+        }
+
         // Default to first active pack if available
         if (prod.packs && prod.packs.length > 0) {
           const firstPack = prod.packs.find((p) => p.is_active) || prod.packs[0];
