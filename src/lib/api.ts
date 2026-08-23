@@ -868,8 +868,8 @@ export interface ProductReview {
   };
 }
 
-export function getProductRatings(productId: number) {
-  return request<{ success: boolean; data: ProductReview[] }>(`/products/${productId}/ratings`);
+export function getProductRatings(productIdOrSku: number | string) {
+  return request<{ success: boolean; data: ProductReview[] }>(`/products/${productIdOrSku}/ratings`);
 }
 
 export function submitProductRating(productId: number, rating: number, review?: string) {
