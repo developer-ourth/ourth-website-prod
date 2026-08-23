@@ -334,7 +334,9 @@ export default function ProductDetailsPage() {
                 )}
               </span>
               <span className="text-lg lg:text-[24px] font-normal text-black font-['IBM_Plex_Sans']">
-                Pack of {selectedPack ? selectedPack.name.replace(/\D/g, "") || "10" : "10"}
+                {selectedPack 
+                  ? `Pack of ${selectedPack.name.replace(/\D/g, "") || "10"}` 
+                  : (product.unit ? (product.unit.charAt(0).toUpperCase() + product.unit.slice(1)) : "")}
               </span>
             </div>
 
