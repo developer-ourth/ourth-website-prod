@@ -279,7 +279,7 @@ export default function ProductQuickViewModal() {
 
               {/* View Full Details & Bulk Pricing link */}
               <Link
-                href={`/products/${quickViewProduct.id}`}
+                href={`/products/${quickViewProduct.sku || quickViewProduct.id}`}
                 onClick={closeQuickView}
                 className="w-full h-[48px] rounded-full bg-[#9FD4F2]/30 hover:bg-[#9FD4F2]/50 text-[#103F5E] font-bold text-lg text-center flex items-center justify-center transition-all"
               >

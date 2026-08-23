@@ -77,7 +77,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
               {product.category?.name || "Bowls"}
             </h2>
             {/* Product Name Link */}
-            <Link href={`/products/${product.id}`} className="hover:underline">
+            <Link href={`/products/${product.sku || product.id}`} className="hover:underline">
               <h3 className="text-[32px] font-medium text-[#2C1F13] leading-tight" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 {product.name}
               </h3>
@@ -157,7 +157,7 @@ export default function ProductCard({ product, index }: { product: any; index: n
 
         {/* Right Column Image */}
         <div className="w-full lg:w-[718px] h-[574px] flex justify-center items-center relative z-10">
-          <Link href={`/products/${product.id}`} className="relative w-full h-full max-w-[620px]">
+          <Link href={`/products/${product.sku || product.id}`} className="relative w-full h-full max-w-[620px]">
             <img
               src={getProductImageUrl(product.primary_image_url, product.name)}
               alt={product.name}

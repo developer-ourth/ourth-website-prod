@@ -164,7 +164,7 @@ export default function ProductsSection() {
                           🔥 Best Seller
                         </div>
                       )}
-                      <NextLink href={`/products/${id}`} className="hover:underline block">
+                      <NextLink href={`/products/${product.sku || id}`} className="hover:underline block">
                         <h3 className="text-[16px] font-bold text-black leading-tight line-clamp-2">
                           {name}
                         </h3>
@@ -304,7 +304,7 @@ export default function ProductsSection() {
                               🔥 Best Seller
                             </div>
                           )}
-                          <NextLink href={`/products/${id}`} className="hover:underline block">
+                          <NextLink href={`/products/${product.sku || id}`} className="hover:underline block">
                             <h3 className="text-[12px] sm:text-[17px] font-bold text-black leading-tight line-clamp-2">{name}</h3>
                           </NextLink>
                           <p className="text-[12px] sm:text-[16px] font-black text-black leading-none flex items-center gap-1.5">

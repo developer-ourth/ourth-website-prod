@@ -143,7 +143,7 @@ export default function Navbar() {
                   <div className="flex flex-col">
                     {filteredProducts.map(p => (
                       <Link 
-                        href={`/products/${p.id}`} 
+                        href={`/products/${p.sku || p.id}`} 
                         key={p.id}
                         onClick={() => {
                           setShowDropdown(false);
@@ -327,7 +327,7 @@ export default function Navbar() {
                     <div className="flex flex-col">
                       {filteredProducts.map(p => (
                         <Link 
-                          href={`/products/${p.id}`} 
+                          href={`/products/${p.sku || p.id}`} 
                           key={p.id}
                           onClick={() => {
                             setShowDropdown(false);

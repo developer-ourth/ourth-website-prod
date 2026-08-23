@@ -65,7 +65,7 @@ function ProductCardCell({
 
       {/* Product Title & Price */}
       <div className="mt-6 text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-        <Link href={`/products/${product.id}`} className="block">
+        <Link href={`/products/${product.sku || product.id}`} className="block">
           <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{product.name}</h3>
         </Link>
         <p className="font-bold text-base sm:text-lg text-gray-900 mt-1 flex items-center gap-1.5">
@@ -349,7 +349,7 @@ function ProductsPageContent() {
                 
                 {/* Image Showcase Podium */}
                 <Link
-                  href={arrival1 ? `/products/${arrival1.id}` : "#"}
+                  href={arrival1 ? `/products/${arrival1.sku || arrival1.id}` : "#"}
                   className="relative w-[260px] h-[260px] sm:w-[280px] sm:h-[280px] rounded-[26px] bg-gradient-to-b from-[#FAF8F3] to-[#F2EEDD] p-6 flex items-center justify-center flex-shrink-0 shadow-inner overflow-hidden border border-[#E6E0D0]/70 group/img block"
                 >
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/50 to-white opacity-0 group-hover/img:opacity-100 transition-opacity duration-500"></div>
@@ -369,7 +369,7 @@ function ProductsPageContent() {
                       <span>✨</span>
                       <span>Featured Arrival</span>
                     </span>
-                    <Link href={arrival1 ? `/products/${arrival1.id}` : "#"} className="block">
+                    <Link href={arrival1 ? `/products/${arrival1.sku || arrival1.id}` : "#"} className="block">
                       <h3 className="text-2xl sm:text-3xl font-extrabold text-[#103F5E] tracking-tight group-hover:text-[#0D3A27] transition-colors leading-tight">
                         {arrival1Name}
                       </h3>
@@ -382,7 +382,7 @@ function ProductsPageContent() {
                   {arrival1 && (
                     <div className="pt-6">
                       <Link
-                        href={`/products/${arrival1.id}`}
+                        href={`/products/${arrival1.sku || arrival1.id}`}
                         className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-sm sm:text-base bg-[#103F5E] text-white shadow-[0_10px_25px_rgba(16,63,94,0.25)] hover:bg-[#0c2f47] hover:shadow-[0_15px_30px_rgba(16,63,94,0.35)] active:scale-[0.98] transition-all duration-300 w-fit group/btn"
                       >
                         <span>Explore Product</span>
@@ -400,7 +400,7 @@ function ProductsPageContent() {
 
                 {/* Image Showcase Podium */}
                 <Link
-                  href={arrival2 ? `/products/${arrival2.id}` : "#"}
+                  href={arrival2 ? `/products/${arrival2.sku || arrival2.id}` : "#"}
                   className="relative w-[260px] h-[260px] sm:w-[280px] sm:h-[280px] rounded-[26px] bg-gradient-to-b from-white/15 to-white/5 backdrop-blur-xl p-6 flex items-center justify-center flex-shrink-0 shadow-2xl border border-white/20 group/img overflow-hidden block"
                 >
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/20 opacity-0 group-hover/img:opacity-100 transition-opacity duration-500"></div>
@@ -420,7 +420,7 @@ function ProductsPageContent() {
                       <span>👑</span>
                       <span>Premium Trending</span>
                     </span>
-                    <Link href={arrival2 ? `/products/${arrival2.id}` : "#"} className="block">
+                    <Link href={arrival2 ? `/products/${arrival2.sku || arrival2.id}` : "#"} className="block">
                       <h3 className="text-2xl sm:text-3xl font-extrabold text-[#EDE8DC] tracking-tight group-hover:text-white transition-colors leading-tight">
                         {arrival2Name}
                       </h3>
@@ -435,7 +435,7 @@ function ProductsPageContent() {
                   {arrival2 && (
                     <div className="pt-6">
                       <Link
-                        href={`/products/${arrival2.id}`}
+                        href={`/products/${arrival2.sku || arrival2.id}`}
                         className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-sm sm:text-base bg-[#E8F0D8] text-[#103F5E] shadow-[0_10px_25px_rgba(232,240,216,0.2)] hover:bg-white hover:shadow-[0_15px_30px_rgba(255,255,255,0.3)] active:scale-[0.98] transition-all duration-300 w-fit group/btn"
                       >
                         <span>Explore Product</span>

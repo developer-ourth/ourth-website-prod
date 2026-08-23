@@ -149,7 +149,7 @@ export default function BestSellerSection() {
             >
               Add To Cart
             </button>
-            <NextLink href={`/products/${bestSeller.id}`} className="w-full sm:w-auto text-center px-10 py-4 bg-white text-[#0D3A27] border-2 border-[#0D3A27] rounded-full font-bold text-[15px] sm:text-[17px] hover:bg-[#EBF2E4] transition-colors shadow-md hover:shadow-lg active:scale-95">
+            <NextLink href={`/products/${bestSeller.sku || bestSeller.id}`} className="w-full sm:w-auto text-center px-10 py-4 bg-white text-[#0D3A27] border-2 border-[#0D3A27] rounded-full font-bold text-[15px] sm:text-[17px] hover:bg-[#EBF2E4] transition-colors shadow-md hover:shadow-lg active:scale-95">
               View Details
             </NextLink>
           </div>

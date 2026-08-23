@@ -606,8 +606,8 @@ export function getMarketplaceProducts(params?: { category_id?: number; search?:
   return request<ProductListResponse>(`/products?${qs}`);
 }
 
-export function getProduct(id: number) {
-  return request<{ success: boolean; data: MarketProduct }>(`/products/${id}`);
+export function getProduct(idOrSku: string | number) {
+  return request<{ success: boolean; data: MarketProduct }>(`/products/${idOrSku}`);
 }
 
 export function createProduct(payload: ProductPayload) {

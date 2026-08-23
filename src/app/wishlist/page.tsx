@@ -136,7 +136,7 @@ export default function WishlistPage() {
                     </div>
                     
                     <div className="flex-1 flex flex-col">
-                      <Link href={`/products/${product.id}`} className="block">
+                      <Link href={`/products/${product.sku || product.id}`} className="block">
                         <h3 className="font-bold text-black text-lg line-clamp-1 hover:text-[#76A52E] transition">
                           {product.name}
                         </h3>

@@ -14,13 +14,14 @@ import ReviewStar from "@/app/(website)/_components/ReviewStar";
 export default function ProductDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const productId = parseInt(params.id as string);
+  const productIdOrSku = params.id as string;
 
   const { addToCart } = useCart();
   const { user } = useAuth();
   const isB2B = user?.role === "vendor";
 
   const [product, setProduct] = useState<MarketProduct | null>(null);
+  const [productId, setProductId] = useState<number | null>(null);
   const [trending, setTrending] = useState<MarketProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string>("");
@@ -42,15 +43,15 @@ export default function ProductDetailsPage() {
   const [submittingReview, setSubmittingReview] = useState(false);
 
   const loadReviews = useCallback(() => {
-    if (!productId) return;
+    if (!productIdOrSku) return;
     setReviewsLoading(true);
-    getProductRatings(productId)
+    getProductRatings(productIdOrSku)
       .then((res) => {
         setReviews(res.data ?? []);
       })
       .catch((err) => console.error("Failed to load reviews:", err))
       .finally(() => setReviewsLoading(false));
-  }, [productId]);
+  }, [productIdOrSku]);
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +59,7 @@ export default function ProductDetailsPage() {
       router.push("/client/login");
       return;
     }
+    if (!productId) return;
     if (newRating < 1 || newRating > 5) {
       toast.error("Please select a rating between 1 and 5 stars.");
       return;
@@ -78,12 +80,13 @@ export default function ProductDetailsPage() {
 
   // Load product and trending products
   useEffect(() => {
-    if (!productId) return;
+    if (!productIdOrSku) return;
     setLoading(true);
-    getProduct(productId)
+    getProduct(productIdOrSku)
       .then((res) => {
         const prod = res.data;
         setProduct(prod);
+        setProductId(prod.id);
         setSelectedImage(prod.primary_image_url || "");
 
         // Default to first active pack if available
@@ -97,12 +100,14 @@ export default function ProductDetailsPage() {
 
     getMarketplaceProducts({ per_page: 4 })
       .then((res) => {
-        setTrending((res.data ?? []).filter((p) => p.id !== productId).slice(0, 4));
+        setTrending((res.data ?? []).filter((p) => String(p.id) !== productIdOrSku && p.sku !== productIdOrSku).slice(0, 4));
       })
       .catch((err) => console.error("Failed to load trending products:", err));
 
     loadReviews();
+  }, [productIdOrSku, loadReviews]);
 
+  useEffect(() => {
     if (user && productId) {
       getConsumerWishlistApi()
         .then(wRes => {
@@ -111,7 +116,7 @@ export default function ProductDetailsPage() {
         })
         .catch(() => {});
     }
-  }, [productId, loadReviews, user]);
+  }, [productId, user]);
 
   // Adjust quantity based on B2B min order quantity
   const selectedPack = product?.packs?.find((p) => p.id === selectedPackId);
@@ -575,7 +580,7 @@ export default function ProductDetailsPage() {
                 >
                   <div className="text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                     {/* Thumbnail Image Container */}
-                    <Link href={isMock ? "#" : `/products/${p.id}`} className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden shadow-sm block">
+                    <Link href={isMock ? "#" : `/products/${p.sku || p.id}`} className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden shadow-sm block">
                       <img
                         src={isMock ? "/images/home/productcard.webp" : image}
                         alt={name}
@@ -583,7 +588,7 @@ export default function ProductDetailsPage() {
                       />
                     </Link>
                     <div className="mt-6">
-                      <Link href={isMock ? "#" : `/products/${p.id}`} className="block">
+                      <Link href={isMock ? "#" : `/products/${p.sku || p.id}`} className="block">
                         <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{name}</h3>
                       </Link>
                       <p className="font-bold text-base sm:text-lg text-gray-900 mt-1 flex items-center gap-1.5">
