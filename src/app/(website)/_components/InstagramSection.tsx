@@ -55,7 +55,7 @@ export default function InstagramSection() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`/api/instagram-image?id=${id}`}
+                src={`/images/instagram/${id}.jpg`}
                 alt="Healing Ourth Instagram post"
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
