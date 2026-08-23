@@ -55,18 +55,18 @@ export default function ProductDetailsPage() {
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      router.push("/client/login");
+    if (!user || !productId) {
+      if (!user) router.push("/client/login");
       return;
     }
-    if (!productId) return;
+    const currentId = productId;
     if (newRating < 1 || newRating > 5) {
       toast.error("Please select a rating between 1 and 5 stars.");
       return;
     }
     setSubmittingReview(true);
     try {
-      await submitProductRating(productId, newRating, newReviewText);
+      await submitProductRating(currentId, newRating, newReviewText);
       setNewReviewText("");
       setNewRating(5);
       loadReviews();
@@ -163,18 +163,19 @@ export default function ProductDetailsPage() {
   };
 
   const toggleWishlist = async () => {
-    if (!user) {
-      router.push("/client/login");
+    if (!user || !productId) {
+      if (!user) router.push("/client/login");
       return;
     }
+    const currentId = productId;
     setWishlistLoading(true);
     try {
       if (inWishlist) {
-        await removeFromWishlistApi(productId);
+        await removeFromWishlistApi(currentId);
         setInWishlist(false);
         toast.success("Removed from wishlist");
       } else {
-        await addToWishlistApi(productId);
+        await addToWishlistApi(currentId);
         setInWishlist(true);
         toast.success("Added to wishlist");
       }
