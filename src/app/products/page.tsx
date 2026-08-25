@@ -211,7 +211,7 @@ function ProductsPageContent() {
 
   // Background style matching homepage hero
   const heroBgStyle = {
-    backgroundImage: "url('/images/hero/MARKETPLACE_BANNER.png')",
+    backgroundImage: "url('/images/hero/best-value-banner.png')",
     backgroundColor: "#7c5835",
   };
 
