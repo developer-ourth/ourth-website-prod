@@ -337,12 +337,14 @@ export default function CartPage() {
                       </h3>
                     </div>
                     {/* Pack Info */}
-                    <p 
-                      className="text-[16px] text-[#444444] font-normal"
-                      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-                    >
-                      {item.productPack?.name || "Pack of 10"}
-                    </p>
+                    {item.productPack?.name && (
+                      <p 
+                        className="text-[16px] text-[#444444] font-normal"
+                        style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                      >
+                        {item.productPack.name}
+                      </p>
+                    )}
                   </div>
 
                   {/* Quantity & Price */}

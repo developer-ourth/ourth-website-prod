@@ -89,6 +89,11 @@ export default function ProductDetailsPage() {
         setProductId(prod.id);
         setSelectedImage(prod.primary_image_url || "");
 
+        // If accessed by ID or SKU, silently update URL bar to use slug
+        if (prod.slug && productIdOrSku !== prod.slug && typeof window !== "undefined") {
+          window.history.replaceState(null, "", `/products/${prod.slug}`);
+        }
+
         // Default to first active pack if available
         if (prod.packs && prod.packs.length > 0) {
           const firstPack = prod.packs.find((p) => p.is_active) || prod.packs[0];
@@ -341,7 +346,7 @@ export default function ProductDetailsPage() {
               </span>
               <span className="text-lg lg:text-[24px] font-normal text-black font-['IBM_Plex_Sans']">
                 {selectedPack 
-                  ? `Pack of ${selectedPack.name.replace(/\D/g, "") || "10"}` 
+                  ? selectedPack.name 
                   : (product.unit ? (product.unit.charAt(0).toUpperCase() + product.unit.slice(1)) : "")}
               </span>
             </div>
@@ -581,7 +586,7 @@ export default function ProductDetailsPage() {
                 >
                   <div className="text-left" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                     {/* Thumbnail Image Container */}
-                    <Link href={isMock ? "#" : `/products/${p.sku || p.id}`} className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden shadow-sm block">
+                    <Link href={isMock ? "#" : `/products/${p.slug || p.sku || p.id}`} className="relative w-[150px] h-[150px] sm:w-[160px] sm:h-[160px] mx-auto flex items-center justify-center group/img transition-all cursor-pointer rounded-2xl overflow-hidden shadow-sm block">
                       <img
                         src={isMock ? "/images/home/productcard.webp" : image}
                         alt={name}
@@ -589,7 +594,7 @@ export default function ProductDetailsPage() {
                       />
                     </Link>
                     <div className="mt-6">
-                      <Link href={isMock ? "#" : `/products/${p.sku || p.id}`} className="block">
+                      <Link href={isMock ? "#" : `/products/${p.slug || p.sku || p.id}`} className="block">
                         <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug hover:text-[#0D3A27] transition-colors">{name}</h3>
                       </Link>
                       <p className="font-bold text-base sm:text-lg text-gray-900 mt-1 flex items-center gap-1.5">

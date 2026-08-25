@@ -194,9 +194,15 @@ export default function ProductQuickViewModal() {
                 <span className="text-3xl sm:text-4xl font-bold text-black font-['IBM_Plex_Sans']">
                   ₹{finalPrice.toLocaleString()}
                 </span>
-                <span className="text-lg sm:text-xl font-normal text-black ml-2">
-                  Pack of {selectedPack ? selectedPack.name.replace(/\D/g, "") || "10" : "10"}
-                </span>
+                {selectedPack ? (
+                  <span className="text-lg sm:text-xl font-normal text-black ml-2 font-['IBM_Plex_Sans']">
+                    {selectedPack.name}
+                  </span>
+                ) : quickViewProduct.unit ? (
+                  <span className="text-lg sm:text-xl font-normal text-black ml-2 font-['IBM_Plex_Sans']">
+                    {quickViewProduct.unit}
+                  </span>
+                ) : null}
                 {basePrice > finalPrice && (
                   <span className="text-base font-normal text-gray-500 line-through ml-auto">
                     ₹{basePrice.toLocaleString()}
@@ -221,7 +227,7 @@ export default function ProductQuickViewModal() {
                               : "bg-white text-gray-700 hover:bg-gray-100 font-normal"
                           }`}
                         >
-                          {pack.name || `Pack of 10`}
+                          {pack.name || `Standard Pack`}
                         </button>
                       );
                     })}
@@ -279,7 +285,7 @@ export default function ProductQuickViewModal() {
 
               {/* View Full Details & Bulk Pricing link */}
               <Link
-                href={`/products/${quickViewProduct.sku || quickViewProduct.id}`}
+                href={`/products/${quickViewProduct.slug || quickViewProduct.sku || quickViewProduct.id}`}
                 onClick={closeQuickView}
                 className="w-full h-[48px] rounded-full bg-[#9FD4F2]/30 hover:bg-[#9FD4F2]/50 text-[#103F5E] font-bold text-lg text-center flex items-center justify-center transition-all"
               >

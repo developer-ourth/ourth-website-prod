@@ -536,6 +536,7 @@ export interface ProductPackPayload {
 export interface MarketProduct {
   id: number;
   name: string;
+  slug?: string | null;
   description: string | null;
   sku: string | null;
   category_id: number | null;
