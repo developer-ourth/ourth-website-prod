@@ -10,8 +10,7 @@ import Footer from "@/app/(website)/_components/Footer";
 import { GoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { auth } from "@/lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { sendEmailOtp, sendPhoneOtp } from "@/lib/api";
 
 export default function ClientLoginPage() {
   const { user, isLoading, login, loginWithGoogleToken, loginWithOtp } = useAuth();
@@ -22,10 +21,10 @@ export default function ClientLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [phone, setPhone] = useState("");
+  const [otpType, setOtpType] = useState<"phone" | "email">("phone");
+  const [identifier, setIdentifier] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<any>(null);
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -64,29 +63,9 @@ export default function ClientLoginPage() {
     }
   };
 
-  const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'invisible',
-      });
-    }
-  };
-
   const handleSendOtp = async () => {
-    let finalPhone = phone.trim();
-    if (!finalPhone) {
-      setError("Please enter a valid phone number.");
-      return;
-    }
-    
-    // Auto-prepend +91 if they just typed a 10 digit number
-    if (/^\d{10}$/.test(finalPhone)) {
-      finalPhone = "+91" + finalPhone;
-      setPhone(finalPhone);
-    }
-
-    if (!/^\+[1-9]\d{1,14}$/.test(finalPhone)) {
-      setError("Please enter a valid 10-digit phone number.");
+    if (!identifier.trim()) {
+      setError(`Please enter a valid ${otpType === 'email' ? 'email address' : 'phone number'}.`);
       return;
     }
 
@@ -94,12 +73,15 @@ export default function ClientLoginPage() {
     setSubmitting(true);
     
     try {
-      setupRecaptcha();
-      const appVerifier = window.recaptchaVerifier;
-      const confirmation = await signInWithPhoneNumber(auth, finalPhone, appVerifier);
-      setConfirmationResult(confirmation);
-      setOtpSent(true);
-      toast.success("OTP sent to your phone!");
+      if (otpType === 'phone') {
+        const res = await sendPhoneOtp(identifier.trim());
+        setOtpSent(true);
+        toast.success(res.message || "OTP sent to your mobile number!");
+      } else {
+        const res = await sendEmailOtp(identifier.trim());
+        setOtpSent(true);
+        toast.success(res.message || "OTP sent to your email!");
+      }
     } catch (err: any) {
       console.error(err);
       setError(err?.message ?? "Failed to send OTP.");
@@ -115,16 +97,12 @@ export default function ClientLoginPage() {
     setError("");
     setSubmitting(true);
     try {
-      if (!confirmationResult) throw new Error("Please resend the OTP.");
-      const result = await confirmationResult.confirm(otp.trim());
-      const idToken = await result.user.getIdToken();
-      
-      const res = await loginWithOtp(phone.trim(), idToken, "phone");
+      const res = await loginWithOtp(identifier.trim(), otp.trim(), otpType);
       
       if (res?.requires_profile_completion) {
         toast.success("OTP verified! Let's complete your profile.");
-        sessionStorage.setItem("complete_profile_identifier", phone.trim());
-        sessionStorage.setItem("complete_profile_type", "phone");
+        sessionStorage.setItem("complete_profile_identifier", identifier.trim());
+        sessionStorage.setItem("complete_profile_type", otpType);
         router.push("/complete-profile");
       }
     } catch (err: any) {
@@ -194,7 +172,7 @@ export default function ClientLoginPage() {
               className={`flex-1 py-2.5 text-sm font-bold border-b-2 transition text-center ${tab === "otp" ? "border-[#2B4D0E] text-[#2B4D0E]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
               onClick={() => { setTab("otp"); setError(""); }}
             >
-              Phone OTP
+              Login via OTP
             </button>
           </div>
 
@@ -243,15 +221,44 @@ export default function ClientLoginPage() {
             </form>
           ) : (
             <form onSubmit={handleOtpSubmit} className="space-y-5">
+              {!otpSent && (
+                <div className="flex space-x-4 mb-4">
+                  <label className="flex items-center space-x-2 text-sm font-bold cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="clientOtpType" 
+                      value="phone" 
+                      checked={otpType === 'phone'} 
+                      onChange={() => { setOtpType('phone'); setIdentifier(''); setError(''); }}
+                      className="accent-[#25784C]"
+                    />
+                    <span>Phone Number</span>
+                  </label>
+                  <label className="flex items-center space-x-2 text-sm font-bold cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="clientOtpType" 
+                      value="email" 
+                      checked={otpType === 'email'} 
+                      onChange={() => { setOtpType('email'); setIdentifier(''); setError(''); }}
+                      className="accent-[#25784C]"
+                    />
+                    <span>Email Address</span>
+                  </label>
+                </div>
+              )}
+
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-black font-['IBM_Plex_Sans']">Phone Number</label>
+                <label className="mb-1.5 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
+                  {otpType === 'phone' ? 'Phone Number' : 'Email Address'}
+                </label>
                 <input
-                  type="text"
+                  type={otpType === 'email' ? 'email' : 'text'}
                   required
                   disabled={otpSent}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+919876543210"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder={otpType === 'phone' ? "+919876543210" : "you@example.com"}
                   className="w-full rounded-lg border border-black bg-[#FAF8F3] px-4 py-3 text-black placeholder-gray-400 outline-none transition focus:ring-2 focus:ring-[#25784C] font-['IBM_Plex_Sans'] disabled:opacity-70 disabled:bg-gray-100"
                 />
               </div>

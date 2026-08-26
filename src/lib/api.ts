@@ -86,6 +86,13 @@ export function sendEmailOtp(email: string) {
   });
 }
 
+export function sendPhoneOtp(phone: string) {
+  return request<{ success: boolean; message: string }>("/auth/otp/send-phone", {
+    method: "POST",
+    body: JSON.stringify({ phone }),
+  });
+}
+
 export function apiVerifyOtp(identifier: string, otp: string, type: "email" | "phone") {
   return request<any>("/auth/otp/verify", {
     method: "POST",

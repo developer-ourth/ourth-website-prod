@@ -6,10 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
-import { sendEmailOtp } from "@/lib/api";
+import { sendEmailOtp, sendPhoneOtp } from "@/lib/api";
 import toast from "react-hot-toast";
-import { auth } from "@/lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 
 export default function LoginPage() {
   const { user, isLoading, login, loginWithGoogleToken, loginWithOtp } = useAuth();
@@ -26,7 +24,6 @@ export default function LoginPage() {
   const [identifier, setIdentifier] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -61,14 +58,6 @@ export default function LoginPage() {
     }
   };
 
-  const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'invisible',
-      });
-    }
-  };
-
   const handleSendOtp = async () => {
     if (!identifier.trim()) {
       setError(`Please enter a valid ${otpType === 'email' ? 'email address' : 'phone number'}.`);
@@ -80,23 +69,9 @@ export default function LoginPage() {
     
     try {
       if (otpType === 'phone') {
-        let finalPhone = identifier.trim();
-        // Auto-prepend +91 if they just typed a 10 digit number
-        if (/^\d{10}$/.test(finalPhone)) {
-          finalPhone = "+91" + finalPhone;
-          setIdentifier(finalPhone);
-        }
-
-        // Simple regex check for E.164 format (+91...)
-        if (!/^\+[1-9]\d{1,14}$/.test(finalPhone)) {
-          throw new Error("Please enter a valid 10-digit phone number.");
-        }
-        setupRecaptcha();
-        const appVerifier = window.recaptchaVerifier;
-        const confirmation = await signInWithPhoneNumber(auth, finalPhone, appVerifier);
-        setConfirmationResult(confirmation);
+        const res = await sendPhoneOtp(identifier.trim());
         setOtpSent(true);
-        toast.success("OTP sent to your phone!");
+        toast.success(res.message || "OTP sent to your mobile number!");
       } else {
         const res = await sendEmailOtp(identifier.trim());
         setOtpSent(true);
@@ -117,15 +92,7 @@ export default function LoginPage() {
     setError("");
     setSubmitting(true);
     try {
-      let finalOtp = otp.trim();
-      
-      if (otpType === 'phone') {
-        if (!confirmationResult) throw new Error("Please resend the OTP.");
-        const result = await confirmationResult.confirm(finalOtp);
-        finalOtp = await result.user.getIdToken();
-      }
-      
-      const res = await loginWithOtp(identifier.trim(), finalOtp, otpType);
+      const res = await loginWithOtp(identifier.trim(), otp.trim(), otpType);
       
       if (res?.requires_profile_completion) {
         toast.success("OTP verified! Let's complete your profile.");
