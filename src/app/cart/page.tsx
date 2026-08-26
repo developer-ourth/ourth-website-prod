@@ -746,13 +746,19 @@ export default function CartPage() {
                   {/* Est Delivery pill */}
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Est. Delivery</span>
-                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹30</span>
-                  </div>
-
-                  {/* Taxes pill */}
-                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
-                    <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Taxes</span>
-                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹15</span>
+                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      ₹{(() => {
+                        const activeAddress = addresses.find((a) => a.id === selectedAddressId);
+                        const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
+                        if (!pin || pin.length < 3) return 40;
+                        const prefix3 = pin.substring(0, 3);
+                        const prefix2 = pin.substring(0, 2);
+                        if (prefix3 >= "400" && prefix3 <= "404") return 35;
+                        const metros = ["110", "111", "112", "700", "600", "560", "500", "411", "412"];
+                        if (metros.includes(prefix3) || (prefix2 >= "40" && prefix2 <= "44")) return 50;
+                        return 70;
+                      })()}
+                    </span>
                   </div>
 
                   {/* Discount pill */}
@@ -770,7 +776,19 @@ export default function CartPage() {
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      ₹{(total + 30 + 15).toFixed(0)}
+                      ₹{(() => {
+                        const activeAddress = addresses.find((a) => a.id === selectedAddressId);
+                        const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
+                        let fee = 40;
+                        if (pin && pin.length >= 3) {
+                          const prefix3 = pin.substring(0, 3);
+                          const prefix2 = pin.substring(0, 2);
+                          if (prefix3 >= "400" && prefix3 <= "404") fee = 35;
+                          else if (["110", "111", "112", "700", "600", "560", "500", "411", "412"].includes(prefix3) || (prefix2 >= "40" && prefix2 <= "44")) fee = 50;
+                          else fee = 70;
+                        }
+                        return Math.max(0, subtotal - discountAmount + fee).toFixed(0);
+                      })()}
                     </span>
                   </div>
 
