@@ -97,6 +97,13 @@ export default function Navbar() {
           >
             Campaigns
           </Link>
+          <Link
+            href="/contact"
+            className="text-[16px] lg:text-[17px] xl:text-[20px] 2xl:text-[24px] font-bold text-[#0D3A27] hover:text-[#76A52E] transition-all whitespace-nowrap"
+            style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+          >
+            Contact Us
+          </Link>
         </nav>
 
         {/* Right: Cart & Sign In CTAs */}
@@ -276,6 +283,13 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             >
               ✦ Campaigns
+            </Link>
+            <Link
+              href="/contact"
+              className="text-base font-bold text-[#0D3A27] hover:underline"
+              onClick={() => setOpen(false)}
+            >
+              ✦ Contact Us
             </Link>
             <Link
               href="/wishlist"
