@@ -18,7 +18,9 @@ import {
   getProductImageUrl,
   initiateRazorpayPayment,
   verifyRazorpayPayment,
+  getActiveCoupons,
   type UserAddress,
+  type Coupon,
 } from "@/lib/api";
 
 export default function CartPage() {
@@ -60,6 +62,15 @@ export default function CartPage() {
   // Coupon states
   const [promoCode, setPromoCode] = useState("");
   const [applyingCoupon, setApplyingCoupon] = useState(false);
+  const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
+
+  useEffect(() => {
+    getActiveCoupons()
+      .then((res) => {
+        if (res.data) setAvailableCoupons(res.data);
+      })
+      .catch(() => setAvailableCoupons([]));
+  }, []);
 
   // Load addresses when user logs in
   const loadAddresses = useCallback(async () => {
@@ -828,6 +839,42 @@ export default function CartPage() {
                       >
                         Remove
                       </button>
+                    </div>
+                  )}
+
+                  {/* Available Coupons Selection */}
+                  {availableCoupons.length > 0 && !cart?.coupon && (
+                    <div className="w-full mt-3 bg-[#FAF8F3] rounded-[20px] p-4 border border-black/10">
+                      <span className="text-[16px] font-bold text-[#2B4D0E] mb-2 block" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                        Available Offers & Coupons
+                      </span>
+                      <div className="flex flex-col gap-2 max-h-[160px] overflow-y-auto pr-1">
+                        {availableCoupons.map((c) => (
+                          <div 
+                            key={c.id} 
+                            className="w-full bg-white border border-[#25784C]/30 rounded-[15px] p-3 flex items-center justify-between hover:border-[#25784C] transition"
+                          >
+                            <div className="flex flex-col">
+                              <span className="text-[15px] font-bold text-[#25784C] font-mono">{c.code}</span>
+                              <span className="text-[13px] text-gray-600" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                                Get {parseFloat(c.discount_percentage)}% OFF {c.product ? `on ${c.product.name}` : "on order"}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setPromoCode(c.code);
+                                applyCouponToCart(c.code);
+                              }}
+                              disabled={applyingCoupon}
+                              className="px-3 py-1 bg-[#25784C] text-white text-[13px] font-bold rounded-[15px] hover:bg-[#1f633e] transition disabled:opacity-50"
+                              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                            >
+                              Apply
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
 

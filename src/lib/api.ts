@@ -487,6 +487,10 @@ export interface CouponPayload {
   is_active?: boolean;
 }
 
+export function getActiveCoupons() {
+  return request<{ success: boolean; data: Coupon[] }>("/coupons/active");
+}
+
 export function getAdminCoupons() {
   return request<Coupon[]>("/admin/coupons");
 }
