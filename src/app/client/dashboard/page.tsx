@@ -731,19 +731,54 @@ export default function ClientDashboardPage() {
                   <span className="text-xs font-bold text-gray-500 uppercase">Placed On: {new Date(selectedOrder.created_at).toLocaleDateString()}</span>
                 </div>
                 
-                {selectedOrder.status === 'cancelled' ? (
+                {selectedOrder.status === 'cancelled' || selectedOrder.order_status === 'cancelled' ? (
                    <div className="text-red-600 font-bold text-center py-4 bg-red-50 rounded">This order was cancelled.</div>
                 ) : (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between relative gap-6 sm:gap-0 px-2 sm:px-8">
                     {/* Horizontal Line for Desktop */}
-                    <div className="hidden sm:block absolute left-8 right-8 top-1/2 -translate-y-1/2 h-[3px] bg-gray-200 z-0"></div>
+                    <div className="hidden sm:block absolute left-8 right-8 top-1/2 -translate-y-1/2 h-[4px] bg-gray-200 z-0"></div>
+                    
+                    {/* Horizontal Active Green Line */}
+                    {(() => {
+                      const rawStatus = (selectedOrder.order_status || selectedOrder.status || 'pending').toLowerCase();
+                      const statusMap: Record<string, number> = {
+                        'pending': 0,
+                        'placed': 0,
+                        'confirmed': 1,
+                        'processing': 2,
+                        'packed': 2,
+                        'dispatched': 3,
+                        'out_for_delivery': 3,
+                        'shipped': 3,
+                        'delivered': 4
+                      };
+                      const currentIdx = statusMap[rawStatus] ?? 0;
+                      const fillWidth = (currentIdx / 4) * 85;
+                      return (
+                        <div 
+                          className="hidden sm:block absolute left-8 top-1/2 -translate-y-1/2 h-[4px] bg-[#76A52E] z-0 transition-all duration-500 rounded-full"
+                          style={{ width: `${fillWidth}%` }}
+                        />
+                      );
+                    })()}
                     
                     {/* Vertical Line for Mobile */}
                     <div className="sm:hidden absolute left-[15px] top-2 bottom-2 w-[3px] bg-gray-200 z-0"></div>
                     
                     {['pending', 'confirmed', 'processing', 'out_for_delivery', 'delivered'].map((step, idx) => {
-                      const statuses = ['pending', 'confirmed', 'processing', 'out_for_delivery', 'delivered'];
-                      const currentIdx = statuses.indexOf(selectedOrder.status);
+                      const rawStatus = (selectedOrder.order_status || selectedOrder.status || 'pending').toLowerCase();
+                      const statusMap: Record<string, number> = {
+                        'pending': 0,
+                        'placed': 0,
+                        'confirmed': 1,
+                        'processing': 2,
+                        'packed': 2,
+                        'dispatched': 3,
+                        'out_for_delivery': 3,
+                        'shipped': 3,
+                        'delivered': 4
+                      };
+                      const currentIdx = statusMap[rawStatus] ?? 0;
                       const isCompleted = idx <= currentIdx;
                       const isActive = idx === currentIdx;
                       
@@ -758,8 +793,8 @@ export default function ClientDashboardPage() {
                         <div key={step} className="relative z-10 flex flex-row sm:flex-col items-center gap-4 sm:gap-2 w-full sm:w-auto bg-white sm:bg-transparent">
                           <div className={`w-8 h-8 rounded-full flex flex-shrink-0 items-center justify-center border-2 transition-colors ${
                             isCompleted ? 'bg-[#76A52E] border-[#76A52E] text-white' : 'bg-white border-gray-300'
-                          } ${isActive ? 'ring-4 ring-[#76A52E]/20' : ''}`}>
-                            {isCompleted && <span className="text-sm">✓</span>}
+                          } ${isActive ? 'ring-4 ring-[#76A52E]/30 font-bold scale-110' : ''}`}>
+                            {isCompleted ? <span className="text-sm font-bold">✓</span> : <span className="text-xs text-gray-400">{idx + 1}</span>}
                           </div>
                           <span className={`text-sm font-bold ${isCompleted ? 'text-black' : 'text-gray-400'}`}>
                             {labels[step]}
@@ -806,11 +841,15 @@ export default function ClientDashboardPage() {
                         )}
                       </div>
                       <div className="flex-grow">
-                        <p className="font-bold text-black">{item.product?.name}</p>
+                        <p className="font-bold text-black">{item.product?.name || item.product_name}</p>
                         <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                       </div>
                       <div className="font-bold text-black">
-                        ₹{parseFloat(item.price) * item.quantity}
+                        ₹{(() => {
+                          const p = parseFloat(item.unit_price || item.price || item.total_price || item.product?.discounted_price || item.product?.base_price || "0");
+                          const valid = isNaN(p) ? 0 : p;
+                          return (valid * (item.quantity || 1)).toFixed(0);
+                        })()}
                       </div>
                     </div>
                   ))}

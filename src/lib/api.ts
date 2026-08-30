@@ -785,6 +785,11 @@ export interface OrderPayload {
   order_type?: "b2c" | "b2b";
   buyer_gstin?: string;
   source?: "app" | "website";
+  use_green_points?: boolean;
+}
+
+export function getGreenPoints() {
+  return request<{ success: boolean; data: { green_points: number; rupee_value: number; cashback_rate: string } }>("/me/green-points");
 }
 
 export function placeOrder(payload: OrderPayload) {

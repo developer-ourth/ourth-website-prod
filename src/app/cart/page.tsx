@@ -19,6 +19,7 @@ import {
   initiateRazorpayPayment,
   verifyRazorpayPayment,
   getActiveCoupons,
+  getGreenPoints,
   type UserAddress,
   type Coupon,
 } from "@/lib/api";
@@ -64,6 +65,10 @@ export default function CartPage() {
   const [applyingCoupon, setApplyingCoupon] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
 
+  // Green Points states
+  const [greenPointsBalance, setGreenPointsBalance] = useState(0);
+  const [useGreenPoints, setUseGreenPoints] = useState(false);
+
   useEffect(() => {
     getActiveCoupons()
       .then((res) => {
@@ -71,6 +76,16 @@ export default function CartPage() {
       })
       .catch(() => setAvailableCoupons([]));
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      getGreenPoints()
+        .then((res) => {
+          if (res.data) setGreenPointsBalance(res.data.green_points);
+        })
+        .catch(() => setGreenPointsBalance(0));
+    }
+  }, [user]);
 
   // Load addresses when user logs in
   const loadAddresses = useCallback(async () => {
@@ -184,6 +199,7 @@ export default function CartPage() {
         payment_method: paymentMethod === "cod" ? "cod" : "upi",
         order_type: user?.role === "vendor" ? "b2b" : "b2c",
         source: "website",
+        use_green_points: useGreenPoints,
       });
 
       const orderId = res.data.id;
@@ -787,6 +803,31 @@ export default function CartPage() {
                   {/* Dashed Line */}
                   <div className="border-t-[1.5px] border-dashed border-black my-4" />
 
+                  {/* Green Points Wallet Balance & Redemption Toggle */}
+                  {greenPointsBalance > 0 && (
+                    <div className="w-full bg-[#E7F3D0]/60 border border-[#25784C]/40 rounded-[20px] p-4 flex items-center justify-between shadow-xs">
+                      <div className="flex flex-col">
+                        <span className="text-[16px] font-bold text-[#25784C] flex items-center gap-1.5" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                          🌱 Green Points Wallet
+                        </span>
+                        <span className="text-[13px] text-gray-700" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                          Balance: <strong>{greenPointsBalance} Points</strong> (₹{greenPointsBalance})
+                        </span>
+                      </div>
+                      <label className="flex items-center cursor-pointer select-none gap-2 bg-white px-3 py-1.5 rounded-[15px] border border-[#25784C]">
+                        <input
+                          type="checkbox"
+                          checked={useGreenPoints}
+                          onChange={(e) => setUseGreenPoints(e.target.checked)}
+                          className="w-4 h-4 accent-[#25784C] cursor-pointer"
+                        />
+                        <span className="text-[14px] font-bold text-[#25784C]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                          {useGreenPoints ? "Applied" : "Use Points"}
+                        </span>
+                      </label>
+                    </div>
+                  )}
+
                   {/* Final Payment pill */}
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
@@ -802,8 +843,17 @@ export default function CartPage() {
                           else if (["110", "111", "112", "700", "600", "560", "500", "411", "412"].includes(prefix3) || (prefix2 >= "40" && prefix2 <= "44")) fee = 50;
                           else fee = 70;
                         }
-                        return Math.max(0, subtotal - discountAmount + fee).toFixed(0);
+                        const netBeforePoints = Math.max(0, subtotal - discountAmount + fee);
+                        const pointsDiscount = useGreenPoints ? Math.min(greenPointsBalance, netBeforePoints) : 0;
+                        return Math.max(0, netBeforePoints - pointsDiscount).toFixed(0);
                       })()}
+                    </span>
+                  </div>
+
+                  {/* Cashback Earning Info Banner */}
+                  <div className="w-full bg-[#FAF8F3] rounded-[15px] p-3 text-center border border-black/10">
+                    <span className="text-[14px] font-medium text-[#2B4D0E]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                      🎁 You earn <strong className="text-[#25784C] font-bold">₹{Math.floor((subtotal - discountAmount) / 100) * 5} Cashback ({Math.floor((subtotal - discountAmount) / 100) * 5} Green Points)</strong> on this order!
                     </span>
                   </div>
 
