@@ -147,7 +147,11 @@ export default function QuickCartDrawer() {
                           </span>
                           <div className="mt-2 flex items-center justify-between">
                             <span className="text-sm font-bold text-[#25784C]">
-                              ₹{parseFloat(item.unit_price).toFixed(0)}
+                              ₹{(() => {
+                                const p = parseFloat(item.unit_price || item.total_price || item.product?.discounted_price || item.product?.base_price || "0");
+                                const valid = isNaN(p) ? 0 : p;
+                                return valid.toFixed(0);
+                              })()}
                             </span>
 
                             {/* Quantity Stepper */}

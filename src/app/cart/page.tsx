@@ -364,7 +364,11 @@ export default function CartPage() {
                       className="text-black font-semibold text-[24px] leading-[28px]"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
-                      ₹{(parseFloat(item.unit_price) * item.quantity).toFixed(0)}
+                      ₹{(() => {
+                        const p = parseFloat(item.unit_price || item.total_price || item.product?.discounted_price || item.product?.base_price || "0");
+                        const valid = isNaN(p) ? 0 : p;
+                        return (valid * (item.quantity || 1)).toFixed(0);
+                      })()}
                     </span>
                     {/* Qty Selector */}
                     <div className="flex items-center justify-between w-[110px] h-[36px] rounded-[30px] bg-[#FAF8F3] px-3 shadow-sm">
@@ -416,20 +420,20 @@ export default function CartPage() {
                           value={addrName}
                           onChange={(e) => setAddrName(e.target.value)}
                           placeholder="Recipient Name (e.g. Sahil)"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <input
                           required
                           value={addrLine1}
                           onChange={(e) => setAddrLine1(e.target.value)}
                           placeholder="Address Line 1"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <input
                           value={addrLine2}
                           onChange={(e) => setAddrLine2(e.target.value)}
                           placeholder="Address Line 2 (Optional)"
-                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                          className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                         />
                         <div className="grid grid-cols-2 gap-4">
                           <input
@@ -437,14 +441,14 @@ export default function CartPage() {
                             value={addrCity}
                             onChange={(e) => setAddrCity(e.target.value)}
                             placeholder="City"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                           <input
                             required
                             value={addrState}
                             onChange={(e) => setAddrState(e.target.value)}
                             placeholder="State"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -453,14 +457,14 @@ export default function CartPage() {
                             value={addrPostalCode}
                             onChange={(e) => setAddrPostalCode(e.target.value)}
                             placeholder="Pincode"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                           <input
                             required
                             value={addrMobile}
                             onChange={(e) => setAddrMobile(e.target.value)}
                             placeholder="Mobile (10 digits)"
-                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
+                            className="rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] font-bold text-black placeholder-gray-500 bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C]"
                           />
                         </div>
 
@@ -621,7 +625,7 @@ export default function CartPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                       />
                     </div>
 
@@ -635,7 +639,7 @@ export default function CartPage() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+91 9876543210"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
                     )}
@@ -667,7 +671,7 @@ export default function CartPage() {
                             value={businessName}
                             onChange={(e) => setBusinessName(e.target.value)}
                             placeholder="Acme Corp"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                           />
                         </div>
 
@@ -680,7 +684,7 @@ export default function CartPage() {
                             value={gstin}
                             onChange={(e) => setGstin(e.target.value)}
                             placeholder="22AAAAA0000A1Z5"
-                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                           />
                         </div>
                       </>
@@ -696,7 +700,7 @@ export default function CartPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Min. 8 characters"
-                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                       />
                     </div>
 
@@ -711,7 +715,7 @@ export default function CartPage() {
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           placeholder="Repeat password"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
                     )}
@@ -811,7 +815,7 @@ export default function CartPage() {
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
                         placeholder="Enter Promo Code"
-                        className="bg-transparent border-none outline-none text-[24px] text-black placeholder-gray-400 w-[60%]"
+                        className="bg-transparent border-none outline-none text-[24px] font-bold text-black placeholder-gray-400 w-[60%]"
                         style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                         disabled={applyingCoupon}
                       />
