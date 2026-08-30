@@ -8,12 +8,13 @@ import {
   updateProfileApi, 
   getConsumerOrdersApi,
   getConsumerWishlistApi,
-  getAddresses
+  getAddresses,
+  getRewardHistory
 } from "@/lib/api";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type Tab = "profile" | "orders" | "history" | "address" | "support";
+type Tab = "profile" | "orders" | "wallet" | "history" | "address" | "support";
 
 export default function ClientDashboardPage() {
   const { user, isLoading, logout } = useAuth();
@@ -24,6 +25,8 @@ export default function ClientDashboardPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [wishlist, setWishlist] = useState<any[]>([]);
   const [addresses, setAddresses] = useState<any[]>([]);
+  const [rewardBalance, setRewardBalance] = useState(0);
+  const [rewardHistory, setRewardHistory] = useState<any[]>([]);
   const [loadingContent, setLoadingContent] = useState(false);
   
   // Profile update form state
@@ -115,6 +118,16 @@ export default function ClientDashboardPage() {
           setAddresses(res.data || []);
         })
         .catch(err => console.error("Error fetching addresses:", err));
+
+      // Fetch Green Points Reward History
+      getRewardHistory()
+        .then((res) => {
+          if (res.data) {
+            setRewardBalance(res.data.points_balance || 0);
+            setRewardHistory(res.data.history || []);
+          }
+        })
+        .catch(err => console.error("Error fetching reward history:", err));
     }
   }, [user]);
 
@@ -200,6 +213,7 @@ export default function ClientDashboardPage() {
           {[
             { id: "profile", label: "Profile" },
             { id: "orders", label: "Orders" },
+            { id: "wallet", label: "Green Points Wallet" },
             { id: "history", label: "History" },
             { id: "address", label: "Address Book" },
             { id: "support", label: "Support" }
@@ -209,7 +223,7 @@ export default function ClientDashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`w-full lg:w-[252px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] flex items-center justify-center transition-all backdrop-blur-md lg:!order-none ${
+                className={`w-full lg:w-[240px] h-[84px] text-xl lg:text-2xl font-normal text-black rounded-[5px] flex items-center justify-center transition-all backdrop-blur-md lg:!order-none ${
                   isActive 
                     ? "bg-white shadow-md text-[#2B4D0E] font-medium" 
                     : "bg-white/60 shadow-sm hover:bg-white/80"
@@ -225,7 +239,7 @@ export default function ClientDashboardPage() {
           <div 
             className="w-full lg:!order-last space-y-6 mt-2 mb-6 lg:mt-6 lg:mb-0"
             style={{ 
-              order: (["profile", "orders", "history", "address", "support"].indexOf(activeTab) * 2) + 1 
+              order: (["profile", "orders", "wallet", "history", "address", "support"].indexOf(activeTab) * 2) + 1 
             }}
           >
           {/* PROFILE TAB */}
@@ -477,6 +491,93 @@ export default function ClientDashboardPage() {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* GREEN POINTS WALLET TAB */}
+          {activeTab === "wallet" && (
+            <div className="rounded-[5px] bg-white/85 backdrop-blur-xl p-8 shadow-lg space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 pb-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-black flex items-center gap-2" style={{ fontFamily: "var(--font-poppins)" }}>
+                    🌱 Green Points Wallet
+                  </h2>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Earn 5 Green Points (₹5 cashback) for every ₹100 spent across website & app!
+                  </p>
+                </div>
+                <button
+                  onClick={() => router.push("/products")}
+                  className="px-6 py-3 bg-[#76A52E] hover:bg-[#638d24] text-white font-bold rounded-[30px] shadow-sm transition-all whitespace-nowrap"
+                >
+                  Shop & Earn Cashback
+                </button>
+              </div>
+
+              {/* Wallet Summary Card */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-6 rounded-[15px] bg-gradient-to-br from-[#E7F3D0] to-[#D2E8AC] border border-[#25784C]/30 shadow-xs flex flex-col justify-between">
+                  <span className="text-xs font-bold text-[#25784C] uppercase tracking-wider">Available Balance</span>
+                  <div className="my-2">
+                    <span className="text-4xl font-extrabold text-[#1B4B2F]">{rewardBalance}</span>
+                    <span className="text-lg font-bold text-[#25784C] ml-2">Green Points</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-700">1 Green Point = ₹1 Rupee</span>
+                </div>
+
+                <div className="p-6 rounded-[15px] bg-white border border-black/10 shadow-xs flex flex-col justify-between">
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Wallet Rupee Value</span>
+                  <div className="my-2">
+                    <span className="text-4xl font-extrabold text-black">₹{rewardBalance}.00</span>
+                  </div>
+                  <span className="text-sm font-semibold text-[#25784C]">Ready to use on checkout</span>
+                </div>
+
+                <div className="p-6 rounded-[15px] bg-[#FAF8F3] border border-black/10 shadow-xs flex flex-col justify-between">
+                  <span className="text-xs font-bold text-[#2B4D0E] uppercase tracking-wider">Cashback Rate</span>
+                  <div className="my-2">
+                    <span className="text-2xl font-bold text-[#2B4D0E]">₹5 Cashback / ₹100</span>
+                  </div>
+                  <span className="text-xs text-gray-600">Auto-credited on order placement</span>
+                </div>
+              </div>
+
+              {/* Transaction History Ledger */}
+              <div className="pt-4">
+                <h3 className="text-xl font-bold text-black mb-4">Transaction History</h3>
+                {rewardHistory.length === 0 ? (
+                  <div className="text-center py-10 border border-dashed border-black/20 rounded-[10px] bg-white">
+                    <p className="text-gray-500 font-medium">No transactions yet. Place an order to earn Green Points!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {rewardHistory.map((tx: any) => {
+                      const isEarn = tx.transaction_type === "earn" || tx.transaction_type === "credit";
+                      return (
+                        <div key={tx.id} className="p-4 rounded-[10px] bg-white border border-black/10 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                              isEarn ? "bg-[#E7F3D0] text-[#25784C]" : "bg-orange-100 text-orange-700"
+                            }`}>
+                              {isEarn ? "+" : "-"}
+                            </div>
+                            <div>
+                              <p className="font-bold text-black text-sm">{tx.description || (isEarn ? "Points Earned" : "Points Redeemed")}</p>
+                              <p className="text-xs text-gray-500">{new Date(tx.created_at).toLocaleString()}</p>
+                            </div>
+                          </div>
+                          <div className="text-left sm:text-right">
+                            <span className={`text-base font-extrabold ${isEarn ? "text-[#25784C]" : "text-orange-600"}`}>
+                              {isEarn ? `+${tx.points}` : `-${tx.points}`} Green Points
+                            </span>
+                            <p className="text-xs text-gray-500">Balance: {tx.points_balance_after} Pts</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

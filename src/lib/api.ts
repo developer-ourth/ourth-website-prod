@@ -792,6 +792,25 @@ export function getGreenPoints() {
   return request<{ success: boolean; data: { green_points: number; rupee_value: number; cashback_rate: string } }>("/me/green-points");
 }
 
+export function getRewardHistory() {
+  return request<{
+    success: boolean;
+    data: {
+      points_balance: number;
+      history: Array<{
+        id: number;
+        transaction_type: string;
+        points: number;
+        points_balance_after: number;
+        source: string;
+        source_reference?: string;
+        description?: string;
+        created_at: string;
+      }>;
+    };
+  }>("/me/rewards");
+}
+
 export function placeOrder(payload: OrderPayload) {
   return request<{ success: boolean; data: any }>("/me/orders", {
     method: "POST",
