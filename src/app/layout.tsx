@@ -36,10 +36,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: {
     template: "%s | Healing OURTH",
-    default: "Healing OURTH — Sustainable Leaf Tableware for a Plastic-Free Future",
+    default: "Healing OURTH — Sustainable Tableware for a Plastic-Free Future",
   },
   description:
-    "OURTH crafts bowls, plates and takeaway tableware entirely from natural leaves — giving vendors a beautiful, compostable alternative to plastic.",
+    "OURTH crafts bowls, plates and takeaway tableware — giving vendors a beautiful, compostable alternative to plastic.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
