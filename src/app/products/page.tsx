@@ -223,12 +223,13 @@ function ProductsPageContent() {
       {/* 1. Header Hero Banner */}
       <section className="relative w-full mt-[70px] lg:mt-[95px] overflow-hidden bg-[#7c5835]">
         <Image
-          src="/images/hero/best-value-banner.png"
-          alt="Best Value Banner"
+          src="/images/hero/MARKETPLACE_BANNER.gif"
+          alt="Marketplace Banner"
           width={1920}
           height={650}
           className="w-full h-auto block object-contain"
           priority
+          unoptimized
         />
       </section>
 
