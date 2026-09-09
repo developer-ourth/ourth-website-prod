@@ -19,6 +19,15 @@ export default function AdminWebsiteSettings() {
     website_primary_color: "#2B4D0E",
     website_accent_color: "#E8A33A",
     website_announcement_bg: "#25784C",
+
+    // Shadowfax Pickup & Return Store Settings
+    pickup_name: "Healing Ourth (Ashish Kumar)",
+    pickup_phone: "8700209752",
+    pickup_address_1: "WZ-24 1011, Dash Gara - Todapur",
+    pickup_address_2: "Near Holi Chowk, Nr. Pusa Institute",
+    pickup_city: "New Delhi",
+    pickup_state: "Delhi",
+    pickup_pincode: "110012",
   });
 
   const [loading, setLoading] = useState(true);
@@ -51,6 +60,14 @@ export default function AdminWebsiteSettings() {
           website_primary_color: data.website_primary_color ?? "#2B4D0E",
           website_accent_color: data.website_accent_color ?? "#E8A33A",
           website_announcement_bg: data.website_announcement_bg ?? "#25784C",
+
+          pickup_name: data.pickup_name ?? "Healing Ourth (Ashish Kumar)",
+          pickup_phone: data.pickup_phone ?? "8700209752",
+          pickup_address_1: data.pickup_address_1 ?? "WZ-24 1011, Dash Gara - Todapur",
+          pickup_address_2: data.pickup_address_2 ?? "Near Holi Chowk, Nr. Pusa Institute",
+          pickup_city: data.pickup_city ?? "New Delhi",
+          pickup_state: data.pickup_state ?? "Delhi",
+          pickup_pincode: data.pickup_pincode ?? "110012",
         });
       }
     } catch (e) {
@@ -310,6 +327,97 @@ export default function AdminWebsiteSettings() {
                   />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Default: #25784C (Leaf Green)</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 5: Shadowfax Logistics Pickup & Return Store Address */}
+          <div className="bg-white p-6 rounded-[12px] shadow-sm border border-gray-200 space-y-5">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 border-b pb-2">5. Shadowfax Pickup & Return Store Address</h2>
+              <p className="text-xs text-gray-500 mt-1">This address and contact details will be automatically sent to Shadowfax when rider pickup is dispatched.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Pickup Store / Contact Name</label>
+                <input
+                  type="text"
+                  value={settings.pickup_name}
+                  onChange={(e) => setSettings({ ...settings, pickup_name: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="Healing Ourth (Ashish Kumar)"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Pickup Contact Phone</label>
+                <input
+                  type="text"
+                  value={settings.pickup_phone}
+                  onChange={(e) => setSettings({ ...settings, pickup_phone: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="8700209752"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Address Line 1</label>
+                <input
+                  type="text"
+                  value={settings.pickup_address_1}
+                  onChange={(e) => setSettings({ ...settings, pickup_address_1: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="WZ-24 1011, Dash Gara - Todapur"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Address Line 2 / Landmark</label>
+                <input
+                  type="text"
+                  value={settings.pickup_address_2}
+                  onChange={(e) => setSettings({ ...settings, pickup_address_2: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="Near Holi Chowk, Nr. Pusa Institute"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">City</label>
+                <input
+                  type="text"
+                  value={settings.pickup_city}
+                  onChange={(e) => setSettings({ ...settings, pickup_city: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="New Delhi"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">State</label>
+                <input
+                  type="text"
+                  value={settings.pickup_state}
+                  onChange={(e) => setSettings({ ...settings, pickup_state: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm"
+                  placeholder="Delhi"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Pincode</label>
+                <input
+                  type="text"
+                  value={settings.pickup_pincode}
+                  onChange={(e) => setSettings({ ...settings, pickup_pincode: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm font-mono"
+                  placeholder="110012"
+                />
               </div>
             </div>
           </div>
