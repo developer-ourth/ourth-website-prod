@@ -8,6 +8,8 @@ import {
   deliverOrder,
   dispatchOrder,
   getAdminOrders,
+  getAdminOrderDetail,
+  FullOrderDetail,
   processOrder,
 } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
@@ -30,13 +32,13 @@ const PAYMENT_BADGE: Record<string, string> = {
 const TABS = ["all", "pending", "confirmed", "processing", "out_for_delivery", "delivered", "cancelled"] as const;
 type Tab = (typeof TABS)[number];
 
-function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+function Modal({ title, onClose, children, maxWidth = "max-w-sm" }: { title: string; onClose: () => void; children: React.ReactNode; maxWidth?: string }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-dark">
-        <div className="mb-4 flex items-center justify-between">
+      <div className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-dark`}>
+        <div className="mb-4 flex items-center justify-between border-b border-stroke pb-3 dark:border-dark-3">
           <h3 className="text-base font-bold text-dark dark:text-white">{title}</h3>
-          <button onClick={onClose} className="text-dark-4 hover:text-dark dark:hover:text-white">✕</button>
+          <button onClick={onClose} className="rounded-lg p-1 text-dark-4 hover:bg-gray-100 hover:text-dark dark:hover:bg-dark-2 dark:hover:text-white">✕</button>
         </div>
         {children}
       </div>
@@ -57,6 +59,10 @@ export default function AdminOrdersPage() {
   const [actionLoading, setActionLoading] = useState<number | null>(null);
   const [cancelModal, setCancelModal] = useState<AdminOrder | null>(null);
   const [cancelReason, setCancelReason] = useState("");
+  
+  const [viewDetailModal, setViewDetailModal] = useState<FullOrderDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   async function load(p = page) {
@@ -85,6 +91,18 @@ export default function AdminOrdersPage() {
     if (!loading) load(page);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+
+  async function handleOpenDetail(orderId: number) {
+    setDetailLoading(true);
+    try {
+      const res = await getAdminOrderDetail(orderId);
+      setViewDetailModal(res.data);
+    } catch (e: unknown) {
+      setError((e as { message?: string })?.message ?? "Failed to load order details");
+    } finally {
+      setDetailLoading(false);
+    }
+  }
 
   async function handleConfirm(order: AdminOrder) {
     setActionLoading(order.id);
@@ -225,7 +243,8 @@ export default function AdminOrdersPage() {
                   ? "border-b-2 border-primary text-primary"
                   : "text-dark-4 hover:text-dark dark:hover:text-white"
               }`}
-            >              {t === "out_for_delivery" ? "Out for Delivery" : t.charAt(0).toUpperCase() + t.slice(1)}
+            >
+              {t === "out_for_delivery" ? "Out for Delivery" : t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
         </div>
@@ -256,7 +275,7 @@ export default function AdminOrdersPage() {
                 <tbody className="divide-y divide-stroke dark:divide-dark-3">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="px-6 py-12 text-center text-sm text-dark-4">
+                      <td colSpan={10} className="px-6 py-12 text-center text-sm text-dark-4">
                         No orders found
                       </td>
                     </tr>
@@ -267,7 +286,12 @@ export default function AdminOrdersPage() {
                       return (
                         <tr key={order.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-white/5">
                           <td className="px-6 py-4">
-                            <span className="font-mono text-sm font-bold text-primary">{order.order_number}</span>
+                            <button
+                              onClick={() => handleOpenDetail(order.id)}
+                              className="font-mono text-sm font-bold text-primary hover:underline"
+                            >
+                              {order.order_number}
+                            </button>
                           </td>
                           <td className="px-6 py-4 text-sm text-dark dark:text-white">
                             <div>
@@ -323,6 +347,12 @@ export default function AdminOrdersPage() {
                           </td>
                           <td className="px-6 py-4 text-right">
                             <div className="inline-flex gap-2">
+                              <button
+                                onClick={() => handleOpenDetail(order.id)}
+                                className="rounded bg-gray-100 px-2.5 py-1 text-xs font-semibold text-dark hover:bg-gray-200 dark:bg-dark-2 dark:text-white dark:hover:bg-dark-3"
+                              >
+                                Details
+                              </button>
                               {order.order_status === "pending" && (
                                 <button
                                   onClick={() => handleConfirm(order)}
@@ -403,6 +433,128 @@ export default function AdminOrdersPage() {
           </div>
         )}
       </div>
+
+      {/* Details modal */}
+      {viewDetailModal && (
+        <Modal
+          title={`Order Details: ${viewDetailModal.order_number}`}
+          onClose={() => setViewDetailModal(null)}
+          maxWidth="max-w-2xl"
+        >
+          <div className="space-y-6 text-sm text-dark dark:text-white">
+            {/* Overview Row */}
+            <div className="grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4 dark:bg-dark-2 sm:grid-cols-4">
+              <div>
+                <span className="text-xs text-dark-4 block uppercase font-medium">Status</span>
+                <span className={`inline-block mt-1 rounded px-2 py-0.5 text-xs font-semibold capitalize ${STATUS_BADGE[viewDetailModal.order_status]}`}>
+                  {viewDetailModal.order_status.replace(/_/g, " ")}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-dark-4 block uppercase font-medium">Payment</span>
+                <span className={`inline-block mt-1 rounded px-2 py-0.5 text-xs font-semibold capitalize ${PAYMENT_BADGE[viewDetailModal.payment_status]}`}>
+                  {viewDetailModal.payment_status}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-dark-4 block uppercase font-medium">Platform / Type</span>
+                <span className="font-semibold uppercase text-xs">
+                  {viewDetailModal.source ?? "website"} ({viewDetailModal.order_type ?? "b2c"})
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-dark-4 block uppercase font-medium">Total Amount</span>
+                <span className="text-base font-bold text-primary">
+                  ₹{Number(viewDetailModal.total_amount).toLocaleString("en-IN")}
+                </span>
+              </div>
+            </div>
+
+            {/* Delivery & Address */}
+            <div>
+              <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
+                Shipping & Delivery Address
+              </h4>
+              {viewDetailModal.delivery ? (
+                <div className="space-y-1 text-sm bg-gray-50 p-3 rounded-lg dark:bg-dark-2">
+                  <p className="font-semibold">{viewDetailModal.delivery.address_line1}</p>
+                  {viewDetailModal.delivery.address_line2 && <p>{viewDetailModal.delivery.address_line2}</p>}
+                  <p>{viewDetailModal.delivery.city}, {viewDetailModal.delivery.state} - {viewDetailModal.delivery.postal_code}</p>
+                  <p className="text-xs text-dark-4 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery.phone}</span></p>
+                  {viewDetailModal.delivery.awb_number && (
+                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-mono">
+                      AWB: {viewDetailModal.delivery.awb_number} ({viewDetailModal.delivery.courier_partner ?? "Shadowfax"})
+                    </p>
+                  )}
+                </div>
+              ) : viewDetailModal.delivery_address_line1 ? (
+                <div className="space-y-1 text-sm bg-gray-50 p-3 rounded-lg dark:bg-dark-2">
+                  <p className="font-semibold">{viewDetailModal.delivery_address_line1}</p>
+                  {viewDetailModal.delivery_address_line2 && <p>{viewDetailModal.delivery_address_line2}</p>}
+                  <p>{viewDetailModal.delivery_city}, {viewDetailModal.delivery_state} - {viewDetailModal.delivery_postal_code}</p>
+                  <p className="text-xs text-dark-4 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery_phone}</span></p>
+                </div>
+              ) : (
+                <p className="text-dark-4 italic">No shipping details provided</p>
+              )}
+            </div>
+
+            {/* Order Items */}
+            <div>
+              <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
+                Order Items ({viewDetailModal.items?.length ?? viewDetailModal.items_count})
+              </h4>
+              {viewDetailModal.items && viewDetailModal.items.length > 0 ? (
+                <div className="divide-y divide-stroke border rounded-lg overflow-hidden dark:divide-dark-3 dark:border-dark-3">
+                  {viewDetailModal.items.map((item) => (
+                    <div key={item.id} className="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-white/5">
+                      <div>
+                        <p className="font-semibold text-sm">{item.product_name}</p>
+                        <p className="text-xs text-dark-4">
+                          Qty: {item.quantity} × ₹{Number(item.unit_price).toLocaleString("en-IN")}
+                        </p>
+                      </div>
+                      <span className="font-mono font-bold text-sm">
+                        ₹{Number(item.total_price).toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-dark-4 italic">No item list available</p>
+              )}
+            </div>
+
+            {/* Vendor & Additional Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
+                  Vendor Information
+                </h4>
+                <p className="font-medium">{viewDetailModal.vendor?.business_name ?? viewDetailModal.vendor_name ?? "Direct / Healing Ourth"}</p>
+                {viewDetailModal.buyer_gstin && (
+                  <p className="text-xs font-mono text-dark-4 mt-1">GSTIN: {viewDetailModal.buyer_gstin}</p>
+                )}
+              </div>
+              <div>
+                <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
+                  Payment Method
+                </h4>
+                <p className="font-medium uppercase">{viewDetailModal.payment_method ?? viewDetailModal.payment?.payment_method ?? "—"}</p>
+                {viewDetailModal.payment?.transaction_id && (
+                  <p className="text-xs font-mono text-dark-4 mt-1">Txn ID: {viewDetailModal.payment.transaction_id}</p>
+                )}
+              </div>
+            </div>
+
+            {viewDetailModal.cancel_reason && (
+              <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700">
+                <strong>Cancellation Reason:</strong> {viewDetailModal.cancel_reason}
+              </div>
+            )}
+          </div>
+        </Modal>
+      )}
 
       {/* Cancel modal */}
       {cancelModal && (

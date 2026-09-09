@@ -411,6 +411,59 @@ export function cancelAdminOrder(orderId: number, reason: string) {
   });
 }
 
+export interface FullOrderItem {
+  id: number;
+  product_id: number;
+  product_name: string;
+  quantity: number;
+  unit_price: string;
+  total_price: string;
+}
+
+export interface FullOrderDelivery {
+  id: number;
+  address_line1: string;
+  address_line2?: string | null;
+  city: string;
+  state: string;
+  postal_code: string;
+  phone: string;
+  status: string;
+  tracking_number?: string | null;
+  courier_partner?: string | null;
+  awb_number?: string | null;
+}
+
+export interface FullOrderDetail extends AdminOrder {
+  delivery_address_line1?: string;
+  delivery_address_line2?: string | null;
+  delivery_city?: string;
+  delivery_state?: string;
+  delivery_postal_code?: string;
+  delivery_phone?: string;
+  notes?: string | null;
+  cancel_reason?: string | null;
+  items?: FullOrderItem[];
+  delivery?: FullOrderDelivery | null;
+  payment?: {
+    id: number;
+    payment_gateway: string;
+    payment_method: string;
+    transaction_id?: string | null;
+    status: string;
+  } | null;
+  vendor?: {
+    id: number;
+    business_name: string;
+    vendor_code?: string;
+    user?: { name: string; email: string; phone?: string };
+  } | null;
+}
+
+export function getAdminOrderDetail(orderId: number) {
+  return request<{ success: boolean; data: FullOrderDetail }>(`/orders/${orderId}`);
+}
+
 // ── Marketplace — Categories ─────────────────────────────────────────────────
 
 export interface MarketCategory {
