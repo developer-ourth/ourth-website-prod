@@ -363,6 +363,8 @@ export function rejectKyc(vendorId: number, reason: string) {
 export interface AdminOrder {
   id: number;
   order_number: string;
+  customer_name?: string | null;
+  customer_email?: string | null;
   vendor_name: string | null;
   order_status: "pending" | "confirmed" | "processing" | "out_for_delivery" | "delivered" | "cancelled";
   payment_status: "pending" | "paid" | "failed";
@@ -443,6 +445,12 @@ export interface FullOrderDetail extends AdminOrder {
   delivery_phone?: string;
   notes?: string | null;
   cancel_reason?: string | null;
+  user?: {
+    id: number;
+    name: string;
+    email: string;
+    phone?: string | null;
+  } | null;
   items?: FullOrderItem[];
   delivery?: FullOrderDelivery | null;
   payment?: {

@@ -261,6 +261,7 @@ export default function AdminOrdersPage() {
                 <thead>
                   <tr className="border-b border-stroke bg-gray-50 dark:border-dark-3 dark:bg-gray-dark">
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Order #</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Customer</th>
                     <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-dark-4">Vendor</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Platform</th>
                     <th className="px-6 py-3 text-center text-xs font-semibold uppercase text-dark-4">Type</th>
@@ -275,7 +276,7 @@ export default function AdminOrdersPage() {
                 <tbody className="divide-y divide-stroke dark:divide-dark-3">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={10} className="px-6 py-12 text-center text-sm text-dark-4">
+                      <td colSpan={11} className="px-6 py-12 text-center text-sm text-dark-4">
                         No orders found
                       </td>
                     </tr>
@@ -292,6 +293,16 @@ export default function AdminOrdersPage() {
                             >
                               {order.order_number}
                             </button>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-dark dark:text-white">
+                            <div>
+                              <span className="font-medium">{order.customer_name ?? "Guest / Consumer"}</span>
+                              {order.customer_email && (
+                                <div className="mt-0.5 text-xs text-dark-4">
+                                  {order.customer_email}
+                                </div>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 text-sm text-dark dark:text-white">
                             <div>
@@ -525,11 +536,23 @@ export default function AdminOrdersPage() {
               )}
             </div>
 
-            {/* Vendor & Additional Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Customer & Vendor Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
-                  Vendor Information
+                  Customer
+                </h4>
+                <p className="font-semibold">{viewDetailModal.user?.name ?? viewDetailModal.customer_name ?? "Guest / Consumer"}</p>
+                {(viewDetailModal.user?.email ?? viewDetailModal.customer_email) && (
+                  <p className="text-xs text-dark-4 mt-0.5">{viewDetailModal.user?.email ?? viewDetailModal.customer_email}</p>
+                )}
+                {viewDetailModal.user?.phone && (
+                  <p className="text-xs font-mono text-dark-4 mt-0.5">Ph: {viewDetailModal.user.phone}</p>
+                )}
+              </div>
+              <div>
+                <h4 className="font-bold text-dark dark:text-white border-b border-stroke pb-1 mb-2 dark:border-dark-3">
+                  Vendor
                 </h4>
                 <p className="font-medium">{viewDetailModal.vendor?.business_name ?? viewDetailModal.vendor_name ?? "Direct / Healing Ourth"}</p>
                 {viewDetailModal.buyer_gstin && (
