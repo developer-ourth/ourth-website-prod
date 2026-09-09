@@ -48,7 +48,9 @@ export default function ContactPage() {
                     Phone number
                   </label>
                   <div className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] text-black">
-                    1234567890
+                    <a href="tel:+918700209752" className="hover:underline">
+                      +91 8700209752
+                    </a>
                   </div>
                 </div>
 
@@ -57,8 +59,8 @@ export default function ContactPage() {
                     Email
                   </label>
                   <div className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] text-black">
-                    <a href="mailto:ourth@ourth.com" className="underline decoration-black underline-offset-2 hover:opacity-80">
-                      ourth@ourth.com
+                    <a href="mailto:hello@healingourth.com" className="underline decoration-black underline-offset-2 hover:opacity-80">
+                      hello@healingourth.com
                     </a>
                   </div>
                 </div>
@@ -80,7 +82,7 @@ export default function ContactPage() {
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Sage Sharma"
+                      placeholder="e.g. Rahul Sharma"
                       className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
@@ -95,7 +97,7 @@ export default function ContactPage() {
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder="0987654321"
+                      placeholder="e.g. 9876543210"
                       className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
@@ -110,7 +112,7 @@ export default function ContactPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="sagesharma@gmail.com"
+                      placeholder="e.g. rahul@example.com"
                       className="w-full rounded-[5px] border-[1.5px] border-black px-4 py-3 text-[18px] bg-[#FAF8F3] outline-none focus:ring-2 focus:ring-[#25784C] text-black placeholder-gray-400"
                     />
                   </div>
