@@ -800,7 +800,7 @@ export function removeCoupon() {
   });
 }
 
-export function setAgentCode(agent_code: string) {
+export function setAgentCode(agent_code?: string) {
   return request<{ success: boolean; message: string; data: Cart }>("/me/cart/agent-code", {
     method: "POST",
     body: JSON.stringify({ agent_code }),

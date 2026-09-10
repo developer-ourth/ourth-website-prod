@@ -37,7 +37,7 @@ interface CartContextValue {
   clearCart: () => Promise<void>;
   applyCouponToCart: (code: string) => Promise<void>;
   removeCouponFromCart: () => Promise<void>;
-  setAgentCodeToCart: (code: string) => Promise<void>;
+  setAgentCodeToCart: (code?: string) => Promise<void>;
   removeAgentCodeFromCart: () => Promise<void>;
 }
 
@@ -193,7 +193,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const setAgentCodeToCart = useCallback(async (code: string) => {
+  const setAgentCodeToCart = useCallback(async (code?: string) => {
     const { setAgentCode: setAgentApi } = await import("@/lib/api");
     setLoading(true);
     try {
@@ -201,7 +201,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCart(res.data);
       toast.success(res.message || "Agent code linked!");
     } catch (err: any) {
-      toast.error(err.message || "Invalid Agent Code (Format: SA001, SA002...)");
+      toast.error(err.message || "Invalid Agent Code");
       throw err;
     } finally {
       setLoading(false);

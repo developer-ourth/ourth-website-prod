@@ -291,11 +291,11 @@ export default function CartPage() {
     }
   };
 
-  const handleApplyAgentCode = async () => {
-    if (!agentCodeInput.trim()) return;
+  const handleApplyAgentCode = async (customCode?: string) => {
+    const codeToApply = customCode !== undefined ? customCode : agentCodeInput.trim().toUpperCase();
     setApplyingAgentCode(true);
     try {
-      await setAgentCodeToCart(agentCodeInput.trim().toUpperCase());
+      await setAgentCodeToCart(codeToApply || undefined);
       setAgentCodeInput("");
     } catch (e) {
       // toast already handled in context
@@ -901,7 +901,9 @@ export default function CartPage() {
                           checked={showAgentCodeInput || Boolean(cart?.agent_code)}
                           onChange={(e) => {
                             setShowAgentCodeInput(e.target.checked);
-                            if (!e.target.checked && cart?.agent_code) {
+                            if (e.target.checked && !cart?.agent_code) {
+                              handleApplyAgentCode("");
+                            } else if (!e.target.checked && cart?.agent_code) {
                               handleRemoveAgentCode();
                             }
                           }}
@@ -943,8 +945,8 @@ export default function CartPage() {
                             />
                             <button
                               type="button"
-                              onClick={handleApplyAgentCode}
-                              disabled={applyingAgentCode || !agentCodeInput.trim()}
+                              onClick={() => handleApplyAgentCode()}
+                              disabled={applyingAgentCode}
                               className="px-5 py-2 rounded-[15px] bg-[#25784C] text-white font-semibold text-[15px] flex items-center justify-center hover:bg-[#1E603C] transition disabled:opacity-50 whitespace-nowrap"
                             >
                               Apply
