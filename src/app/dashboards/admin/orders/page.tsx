@@ -255,28 +255,28 @@ export default function AdminOrdersPage() {
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           </div>
         ) : (
-          <div className="overflow-hidden rounded-[10px] bg-white shadow-1 dark:bg-gray-dark">
+          <div className="overflow-hidden rounded-[10px] bg-white shadow-1 dark:bg-gray-dark border border-stroke/40 dark:border-dark-3">
             <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b border-stroke bg-gray-50 dark:border-dark-3 dark:bg-gray-dark">
-                    <th className="px-2.5 py-2.5 text-left text-[11px] font-semibold uppercase text-dark-4">Order #</th>
-                    <th className="px-2.5 py-2.5 text-left text-[11px] font-semibold uppercase text-dark-4">Customer</th>
-                    <th className="px-2.5 py-2.5 text-left text-[11px] font-semibold uppercase text-dark-4">Vendor</th>
-                    <th className="px-2 py-2.5 text-center text-[11px] font-semibold uppercase text-dark-4">Platform</th>
-                    <th className="px-2 py-2.5 text-center text-[11px] font-semibold uppercase text-dark-4">Type</th>
-                    <th className="px-2 py-2.5 text-center text-[11px] font-semibold uppercase text-dark-4">Status</th>
-                    <th className="px-2 py-2.5 text-center text-[11px] font-semibold uppercase text-dark-4">Payment</th>
-                    <th className="px-2 py-2.5 text-center text-[11px] font-semibold uppercase text-dark-4">Items</th>
-                    <th className="px-2.5 py-2.5 text-right text-[11px] font-semibold uppercase text-dark-4">Total</th>
-                    <th className="px-2.5 py-2.5 text-right text-[11px] font-semibold uppercase text-dark-4">Date</th>
-                    <th className="px-2.5 py-2.5 text-right text-[11px] font-semibold uppercase text-dark-4">Actions</th>
+                  <tr className="border-b border-stroke bg-gray-50/80 dark:border-dark-3 dark:bg-gray-dark/80">
+                    <th className="pl-5 pr-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Order #</th>
+                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Customer</th>
+                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Vendor</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Platform</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Type</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Status</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Payment</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Items</th>
+                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Total</th>
+                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Date</th>
+                    <th className="pl-4 pr-5 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stroke dark:divide-dark-3">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={11} className="px-4 py-12 text-center text-sm text-dark-4">
+                      <td colSpan={11} className="px-6 py-12 text-center text-sm text-dark-4">
                         No orders found
                       </td>
                     </tr>
@@ -285,8 +285,8 @@ export default function AdminOrdersPage() {
                       const busy = actionLoading === order.id;
                       const orderType = order.order_type ?? "b2c";
                       return (
-                        <tr key={order.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-white/5">
-                          <td className="px-2.5 py-2.5 whitespace-nowrap">
+                        <tr key={order.id} className="transition-colors hover:bg-gray-50/80 dark:hover:bg-white/5">
+                          <td className="pl-5 pr-4 py-3.5 whitespace-nowrap">
                             <button
                               onClick={() => handleOpenDetail(order.id)}
                               className="font-mono text-xs font-bold text-primary hover:underline"
@@ -294,28 +294,28 @@ export default function AdminOrdersPage() {
                               {order.order_number}
                             </button>
                           </td>
-                          <td className="px-2.5 py-2.5 text-xs text-dark dark:text-white max-w-[140px]">
+                          <td className="px-4 py-3.5 text-xs text-dark dark:text-white max-w-[160px]">
                             <div className="truncate">
-                              <span className="font-medium">{order.customer_name ?? "Guest / Consumer"}</span>
+                              <span className="font-semibold text-sm">{order.customer_name ?? "Guest / Consumer"}</span>
                               {order.customer_email && (
-                                <div className="text-[10px] text-dark-4 truncate">
+                                <div className="text-[11px] text-dark-4 truncate">
                                   {order.customer_email}
                                 </div>
                               )}
                             </div>
                           </td>
-                          <td className="px-2.5 py-2.5 text-xs text-dark dark:text-white max-w-[120px]">
+                          <td className="px-4 py-3.5 text-xs text-dark dark:text-white max-w-[140px]">
                             <div className="truncate">
-                              <span>{order.vendor_name ?? "—"}</span>
+                              <span className="font-medium">{order.vendor_name ?? "—"}</span>
                               {orderType === "b2b" && order.buyer_gstin && (
-                                <div className="text-[10px] text-dark-4 font-mono truncate">
+                                <div className="text-[11px] text-dark-4 font-mono truncate">
                                   GST: {order.buyer_gstin}
                                 </div>
                               )}
                             </div>
                           </td>
-                          <td className="px-2 py-2.5 text-center">
-                            <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide uppercase ${
+                          <td className="px-3 py-3.5 text-center">
+                            <span className={`rounded-md px-2 py-1 text-[11px] font-bold tracking-wide uppercase ${
                               order.source === "app" 
                                 ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400" 
                                 : "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400"
@@ -323,8 +323,8 @@ export default function AdminOrdersPage() {
                               {order.source ?? "website"}
                             </span>
                           </td>
-                          <td className="px-2 py-2.5 text-center">
-                            <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide uppercase ${
+                          <td className="px-3 py-3.5 text-center">
+                            <span className={`rounded-md px-2 py-1 text-[11px] font-bold tracking-wide uppercase ${
                               orderType === "b2b" 
                                 ? "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400" 
                                 : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
@@ -332,35 +332,35 @@ export default function AdminOrdersPage() {
                               {orderType}
                             </span>
                           </td>
-                          <td className="px-2 py-2.5 text-center">
-                            <span className={`rounded px-1.5 py-0.5 text-[10px] font-semibold capitalize whitespace-nowrap ${STATUS_BADGE[order.order_status] ?? "bg-gray-100 text-gray-600"}`}>
+                          <td className="px-3 py-3.5 text-center">
+                            <span className={`rounded px-2 py-1 text-[11px] font-semibold capitalize whitespace-nowrap ${STATUS_BADGE[order.order_status] ?? "bg-gray-100 text-gray-600"}`}>
                               {order.order_status === "out_for_delivery" ? "Out for Delivery" : order.order_status.replace(/_/g, " ")}
                             </span>
                           </td>
-                          <td className="px-2 py-2.5 text-center">
+                          <td className="px-3 py-3.5 text-center">
                             <div className="flex flex-col items-center gap-0.5">
-                              <span className={`rounded px-1.5 py-0.5 text-[10px] font-semibold capitalize ${PAYMENT_BADGE[order.payment_status] ?? "bg-gray-100 text-gray-600"}`}>
+                              <span className={`rounded px-2 py-1 text-[11px] font-semibold capitalize ${PAYMENT_BADGE[order.payment_status] ?? "bg-gray-100 text-gray-600"}`}>
                                 {order.payment_status}
                               </span>
                               {order.payment_method && (
-                                <span className="text-[9px] font-bold text-dark-4 dark:text-dark-6 uppercase tracking-wider">
+                                <span className="text-[10px] font-bold text-dark-4 dark:text-dark-6 uppercase tracking-wider">
                                   {order.payment_method}
                                 </span>
                               )}
                             </div>
                           </td>
-                          <td className="px-2 py-2.5 text-center text-xs text-dark-4">{order.items_count}</td>
-                          <td className="px-2.5 py-2.5 text-right text-xs font-semibold text-dark dark:text-white whitespace-nowrap">
+                          <td className="px-3 py-3.5 text-center text-xs font-medium text-dark-4">{order.items_count}</td>
+                          <td className="px-4 py-3.5 text-right text-sm font-bold text-dark dark:text-white whitespace-nowrap">
                             ₹{Number(order.total_amount).toLocaleString("en-IN")}
                           </td>
-                          <td className="px-2.5 py-2.5 text-right text-xs text-dark-4 whitespace-nowrap">
+                          <td className="px-4 py-3.5 text-right text-xs text-dark-4 whitespace-nowrap">
                             {new Date(order.created_at).toLocaleDateString("en-IN")}
                           </td>
-                          <td className="px-2.5 py-2.5 text-right whitespace-nowrap">
-                            <div className="inline-flex gap-1">
+                          <td className="pl-4 pr-5 py-3.5 text-right whitespace-nowrap">
+                            <div className="inline-flex gap-1.5">
                               <button
                                 onClick={() => handleOpenDetail(order.id)}
-                                className="rounded bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-dark hover:bg-gray-200 dark:bg-dark-2 dark:text-white dark:hover:bg-dark-3"
+                                className="rounded bg-gray-100 px-2.5 py-1 text-xs font-semibold text-dark hover:bg-gray-200 dark:bg-dark-2 dark:text-white dark:hover:bg-dark-3"
                               >
                                 Details
                               </button>
@@ -368,7 +368,7 @@ export default function AdminOrdersPage() {
                                 <button
                                   onClick={() => handleConfirm(order)}
                                   disabled={busy}
-                                  className="rounded bg-blue-600 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                                  className="rounded bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                                 >
                                   {busy ? "…" : "Confirm"}
                                 </button>
@@ -377,7 +377,7 @@ export default function AdminOrdersPage() {
                                 <button
                                   onClick={() => handleProcess(order)}
                                   disabled={busy}
-                                  className="rounded bg-orange-500 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+                                  className="rounded bg-orange-500 px-2.5 py-1 text-xs font-semibold text-white hover:bg-orange-600 disabled:opacity-50"
                                 >
                                   {busy ? "…" : "Ready Box"}
                                 </button>
@@ -386,7 +386,7 @@ export default function AdminOrdersPage() {
                                 <button
                                   onClick={() => handleDispatch(order)}
                                   disabled={busy}
-                                  className="rounded bg-purple-600 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+                                  className="rounded bg-purple-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-purple-700 disabled:opacity-50"
                                 >
                                   {busy ? "…" : "Dispatch"}
                                 </button>
@@ -395,7 +395,7 @@ export default function AdminOrdersPage() {
                                 <button
                                   onClick={() => handleDeliver(order)}
                                   disabled={busy}
-                                  className="rounded bg-green-600 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                                  className="rounded bg-green-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-green-700 disabled:opacity-50"
                                 >
                                   {busy ? "…" : "Delivered"}
                                 </button>
@@ -404,7 +404,7 @@ export default function AdminOrdersPage() {
                                 <button
                                   onClick={() => { setCancelModal(order); setCancelReason(""); setError(""); }}
                                   disabled={busy}
-                                  className="rounded bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
+                                  className="rounded bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700 hover:bg-red-200 disabled:opacity-50"
                                 >
                                   Cancel
                                 </button>
