@@ -461,6 +461,11 @@ export default function ClientDashboardPage() {
                         <div>
                           <p className="text-xs text-gray-700 font-bold uppercase">Order Reference</p>
                           <p className="font-mono text-lg font-bold text-black">#{order.order_number || order.order_code || `ORD-${order.id}`}</p>
+                          {order.created_at && (
+                            <p className="text-xs text-gray-600 font-semibold mt-0.5">
+                              Date: {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            </p>
+                          )}
                         </div>
                         <div className="mt-2 sm:mt-0 text-left sm:text-right">
                           <p className="text-xs text-gray-700 font-bold uppercase">Status</p>
