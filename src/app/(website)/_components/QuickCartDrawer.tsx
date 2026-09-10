@@ -19,8 +19,8 @@ export default function QuickCartDrawer() {
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - totalAmount);
   const progressPercent = Math.min(100, Math.max(0, Math.round((totalAmount / FREE_SHIPPING_THRESHOLD) * 100)));
 
-  const estimatedShipping = totalAmount > 0 ? 39 : 0;
-  const finalTotal = totalAmount + estimatedShipping;
+  const estimatedShipping = 0;
+  const finalTotal = totalAmount;
 
   return (
     <AnimatePresence>
@@ -206,12 +206,6 @@ export default function QuickCartDrawer() {
                   <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
                     <span>Subtotal</span>
                     <span className="font-bold text-black">₹{totalAmount.toFixed(2)}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
-                    <span>Carbon-Neutral Shipping</span>
-                    <span className="font-bold text-[#25784C]">
-                      ₹{estimatedShipping.toFixed(2)}
-                    </span>
                   </div>
                   <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-base font-bold text-black">
                     <span>Total Amount</span>
