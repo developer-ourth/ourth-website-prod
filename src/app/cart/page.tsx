@@ -815,8 +815,8 @@ export default function CartPage() {
                         const prefix3 = pin.substring(0, 3);
                         const prefix2 = pin.substring(0, 2);
 
-                        // Zone A: Delhi NCR -> ₹39
-                        if (["110", "111", "112", "121", "122", "201"].includes(prefix3)) return 39;
+                        // Zone A: Delhi NCR (All 11xxxx Delhi pincodes, 121, 122, 201) -> ₹39
+                        if (prefix2 === "11" || ["121", "122", "201"].includes(prefix3)) return 39;
                         // Zone E: Special Zone (NE, J&K, Islands) -> ₹69
                         if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) return 69;
                         // Zone B: North Zone -> ₹49
@@ -874,7 +874,7 @@ export default function CartPage() {
                         if (pin && pin.length >= 3) {
                           const prefix3 = pin.substring(0, 3);
                           const prefix2 = pin.substring(0, 2);
-                          if (["110", "111", "112", "121", "122", "201"].includes(prefix3)) fee = 39;
+                          if (prefix2 === "11" || ["121", "122", "201"].includes(prefix3)) fee = 39;
                           else if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) fee = 69;
                           else if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) fee = 49;
                           else fee = 59;
