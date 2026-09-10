@@ -183,9 +183,11 @@ export default function ClientDashboardPage() {
     }
   };
 
-  const activeOrders = orders.filter(o => o.status !== "delivered" && o.status !== "cancelled");
-  const completedOrders = orders.filter(o => o.status === "delivered");
-  const canceledOrders = orders.filter(o => o.status === "cancelled");
+  const getOrderStatus = (o: any) => String(o?.order_status || o?.status || "").toLowerCase();
+
+  const activeOrders = orders.filter(o => getOrderStatus(o) !== "delivered" && getOrderStatus(o) !== "cancelled");
+  const completedOrders = orders.filter(o => getOrderStatus(o) === "delivered");
+  const canceledOrders = orders.filter(o => getOrderStatus(o) === "cancelled");
 
   return (
     <>
@@ -458,12 +460,16 @@ export default function ClientDashboardPage() {
                       <div className="flex flex-col sm:flex-row justify-between border-b border-black/10 pb-4">
                         <div>
                           <p className="text-xs text-gray-700 font-bold uppercase">Order Reference</p>
-                          <p className="font-mono text-lg font-bold text-black">#{order.order_code || `ORD-${order.id}`}</p>
+                          <p className="font-mono text-lg font-bold text-black">#{order.order_number || order.order_code || `ORD-${order.id}`}</p>
                         </div>
                         <div className="mt-2 sm:mt-0 text-left sm:text-right">
                           <p className="text-xs text-gray-700 font-bold uppercase">Status</p>
-                          <span className="inline-block px-3 py-1 bg-yellow-100 border border-yellow-500 text-yellow-800 text-xs font-bold rounded-full uppercase mt-1">
-                            {order.status}
+                          <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full uppercase mt-1 ${
+                            getOrderStatus(order) === 'pending_payment' ? 'bg-orange-100 border border-orange-500 text-orange-800' :
+                            getOrderStatus(order) === 'confirmed' || getOrderStatus(order) === 'delivered' ? 'bg-green-100 border border-green-500 text-green-800' :
+                            'bg-yellow-100 border border-yellow-500 text-yellow-800'
+                          }`}>
+                            {getOrderStatus(order).replace(/_/g, ' ')}
                           </span>
                         </div>
                       </div>
@@ -620,7 +626,7 @@ export default function ClientDashboardPage() {
                     {completedOrders.map((order) => (
                       <div key={order.id} className="p-4 border border-black/10 rounded bg-white flex justify-between items-center">
                         <div>
-                          <p className="font-bold text-black font-mono">#{order.order_code || `ORD-${order.id}`}</p>
+                          <p className="font-bold text-black font-mono">#{order.order_number || order.order_code || `ORD-${order.id}`}</p>
                           <p className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</p>
                         </div>
                         <div className="flex items-center gap-4">
@@ -644,7 +650,7 @@ export default function ClientDashboardPage() {
                     {canceledOrders.map((order) => (
                       <div key={order.id} className="p-4 border border-black/10 rounded bg-white flex justify-between items-center">
                         <div>
-                          <p className="font-bold text-black font-mono">#{order.order_code || `ORD-${order.id}`}</p>
+                          <p className="font-bold text-black font-mono">#{order.order_number || order.order_code || `ORD-${order.id}`}</p>
                           <p className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</p>
                         </div>
                         <div className="flex items-center gap-4">
@@ -814,7 +820,7 @@ export default function ClientDashboardPage() {
             <div className="flex justify-between items-center mb-6 pb-4 border-b border-black/10">
               <div>
                 <h3 className="text-2xl font-bold text-black">Order Details</h3>
-                <p className="text-sm font-mono text-gray-600 mt-1">#{selectedOrder.order_code || `ORD-${selectedOrder.id}`}</p>
+                <p className="text-sm font-mono text-gray-600 mt-1">#{selectedOrder.order_number || selectedOrder.order_code || `ORD-${selectedOrder.id}`}</p>
               </div>
               <button 
                 onClick={() => setIsOrderModalOpen(false)} 
