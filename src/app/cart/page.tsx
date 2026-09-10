@@ -804,28 +804,37 @@ export default function CartPage() {
                   </div>
 
                   {/* Carbon-Neutral Shipping (Shadowfax Rate) pill */}
-                  <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
-                    <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Carbon-Neutral Shipping</span>
-                    <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      ₹{(() => {
-                        const activeAddress = addresses.find((a) => a.id === selectedAddressId);
-                        const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
-                        if (!pin || pin.length < 3) return 49;
-                        
-                        const prefix3 = pin.substring(0, 3);
-                        const prefix2 = pin.substring(0, 2);
+                  {(() => {
+                    const activeAddress = addresses.find((a) => a.id === selectedAddressId);
+                    const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
+                    let fee = 49;
+                    if (pin && pin.length >= 3) {
+                      const prefix3 = pin.substring(0, 3);
+                      const prefix2 = pin.substring(0, 2);
+                      if (prefix2 === "11" || ["121", "122", "201"].includes(prefix3)) fee = 39;
+                      else if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) fee = 69;
+                      else if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) fee = 49;
+                      else fee = 59;
+                    }
 
-                        // Zone A: Delhi NCR (All 11xxxx Delhi pincodes, 121, 122, 201) -> ₹39
-                        if (prefix2 === "11" || ["121", "122", "201"].includes(prefix3)) return 39;
-                        // Zone E: Special Zone (NE, J&K, Islands) -> ₹69
-                        if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) return 69;
-                        // Zone B: North Zone -> ₹49
-                        if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) return 49;
-                        // Zone C/D: Rest of India -> ₹59
-                        return 59;
-                      })()}
-                    </span>
-                  </div>
+                    return (
+                      <>
+                        <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                          <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Delivery Charges (Shadowfax)</span>
+                          <span className="text-[24px] font-semibold text-gray-400 line-through" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{fee}</span>
+                        </div>
+                        <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
+                          <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Free Delivery Discount</span>
+                          <span className="text-[24px] font-semibold text-[#25784C]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>-₹{fee}</span>
+                        </div>
+                        <div className="w-full bg-[#E8F5E9] border border-[#A5D6A7] rounded-[15px] p-2.5 text-center">
+                          <span className="text-[14px] font-semibold text-[#2E7D32]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                            🎉 You are eligible for Free Delivery on this order!
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })()}
 
                   {/* Discount pill */}
                   <div className="w-full min-h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 py-2 flex flex-col justify-center ">
@@ -868,18 +877,7 @@ export default function CartPage() {
                     <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Final Payment</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       ₹{(() => {
-                        const activeAddress = addresses.find((a) => a.id === selectedAddressId);
-                        const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
-                        let fee = 49;
-                        if (pin && pin.length >= 3) {
-                          const prefix3 = pin.substring(0, 3);
-                          const prefix2 = pin.substring(0, 2);
-                          if (prefix2 === "11" || ["121", "122", "201"].includes(prefix3)) fee = 39;
-                          else if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) fee = 69;
-                          else if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) fee = 49;
-                          else fee = 59;
-                        }
-                        const netBeforePoints = Math.max(0, subtotal - discountAmount + fee);
+                        const netBeforePoints = Math.max(0, subtotal - discountAmount);
                         const pointsDiscount = useGreenPoints ? Math.min(greenPointsBalance, netBeforePoints) : 0;
                         return Math.max(0, netBeforePoints - pointsDiscount).toFixed(0);
                       })()}
