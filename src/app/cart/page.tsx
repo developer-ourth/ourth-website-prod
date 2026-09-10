@@ -803,20 +803,26 @@ export default function CartPage() {
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>₹{subtotal.toFixed(0)}</span>
                   </div>
 
-                  {/* Est Delivery pill */}
+                  {/* Carbon-Neutral Shipping (Shadowfax Rate) pill */}
                   <div className="w-full h-[47px] rounded-[30px] bg-[#FAF8F3] px-6 flex items-center justify-between ">
-                    <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Est. Delivery</span>
+                    <span className="text-[24px] text-[#444444]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>Carbon-Neutral Shipping</span>
                     <span className="text-[24px] font-semibold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       ₹{(() => {
                         const activeAddress = addresses.find((a) => a.id === selectedAddressId);
                         const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
-                        if (!pin || pin.length < 3) return 40;
+                        if (!pin || pin.length < 3) return 49;
+                        
                         const prefix3 = pin.substring(0, 3);
                         const prefix2 = pin.substring(0, 2);
-                        if (prefix3 >= "400" && prefix3 <= "404") return 35;
-                        const metros = ["110", "111", "112", "700", "600", "560", "500", "411", "412"];
-                        if (metros.includes(prefix3) || (prefix2 >= "40" && prefix2 <= "44")) return 50;
-                        return 70;
+
+                        // Zone A: Delhi NCR -> ₹39
+                        if (["110", "111", "112", "121", "122", "201"].includes(prefix3)) return 39;
+                        // Zone E: Special Zone (NE, J&K, Islands) -> ₹69
+                        if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) return 69;
+                        // Zone B: North Zone -> ₹49
+                        if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) return 49;
+                        // Zone C/D: Rest of India -> ₹59
+                        return 59;
                       })()}
                     </span>
                   </div>
@@ -864,13 +870,14 @@ export default function CartPage() {
                       ₹{(() => {
                         const activeAddress = addresses.find((a) => a.id === selectedAddressId);
                         const pin = (activeAddress?.postal_code || addrPostalCode || "").replace(/\D/g, "");
-                        let fee = 40;
+                        let fee = 49;
                         if (pin && pin.length >= 3) {
                           const prefix3 = pin.substring(0, 3);
                           const prefix2 = pin.substring(0, 2);
-                          if (prefix3 >= "400" && prefix3 <= "404") fee = 35;
-                          else if (["110", "111", "112", "700", "600", "560", "500", "411", "412"].includes(prefix3) || (prefix2 >= "40" && prefix2 <= "44")) fee = 50;
-                          else fee = 70;
+                          if (["110", "111", "112", "121", "122", "201"].includes(prefix3)) fee = 39;
+                          else if (["18", "19", "78", "79", "74", "68"].includes(prefix2)) fee = 69;
+                          else if (["12", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24", "25", "26", "27", "28", "30", "31", "32", "33", "34"].includes(prefix2)) fee = 49;
+                          else fee = 59;
                         }
                         const netBeforePoints = Math.max(0, subtotal - discountAmount + fee);
                         const pointsDiscount = useGreenPoints ? Math.min(greenPointsBalance, netBeforePoints) : 0;
