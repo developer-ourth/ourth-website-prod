@@ -1008,6 +1008,12 @@ export function updateProfileApi(data: any) {
   });
 }
 
+export function deleteAccountApi() {
+  return request<{ success: boolean; message: string }>("/me/account", {
+    method: "DELETE",
+  });
+}
+
 export function getConsumerOrdersApi() {
   return request<{ success: boolean; data: any[] }>("/me/orders");
 }

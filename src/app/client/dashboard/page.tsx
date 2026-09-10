@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { 
   getProfileApi, 
   updateProfileApi, 
+  deleteAccountApi,
   getConsumerOrdersApi,
   getConsumerWishlistApi,
   getAddresses,
@@ -180,6 +181,25 @@ export default function ClientDashboardPage() {
       setUpdateError(err?.message || "Failed to update profile settings.");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const [deletingAccount, setDeletingAccount] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone.");
+    if (!confirmed) return;
+
+    setDeletingAccount(true);
+    try {
+      await deleteAccountApi();
+      toast.success("Your account has been deleted successfully.");
+      await logout();
+      router.push("/");
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to delete account. Please try again.");
+    } finally {
+      setDeletingAccount(false);
     }
   };
 
@@ -380,11 +400,20 @@ export default function ClientDashboardPage() {
                         </div>
                       </div>
 
-                      <div className="flex justify-end pt-4">
+                      <div className="flex justify-between items-center pt-6 border-t border-black/10 mt-6">
+                        <button
+                          type="button"
+                          onClick={handleDeleteAccount}
+                          disabled={deletingAccount}
+                          className="px-4 py-2.5 rounded-[5px] bg-red-50 hover:bg-red-100 text-red-700 text-sm font-bold border border-red-300 transition-colors"
+                        >
+                          {deletingAccount ? "Deleting Account..." : "🗑️ Delete Account"}
+                        </button>
+
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-[200px] h-[50px] rounded-[30px] bg-[#E8A33A] text-black font-bold text-lg flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
+                          className="w-[180px] h-[50px] rounded-[30px] bg-[#E8A33A] text-black font-bold text-lg flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000000]"
                         >
                           {submitting ? "Saving..." : "Save"}
                         </button>
