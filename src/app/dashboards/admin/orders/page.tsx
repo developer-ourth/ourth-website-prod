@@ -456,26 +456,26 @@ export default function AdminOrdersPage() {
             {/* Overview Row */}
             <div className="grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4 dark:bg-dark-2 sm:grid-cols-4">
               <div>
-                <span className="text-xs text-dark-4 block uppercase font-medium">Status</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 block uppercase font-medium">Status</span>
                 <span className={`inline-block mt-1 rounded px-2 py-0.5 text-xs font-semibold capitalize ${STATUS_BADGE[viewDetailModal.order_status]}`}>
                   {viewDetailModal.order_status.replace(/_/g, " ")}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-dark-4 block uppercase font-medium">Payment</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 block uppercase font-medium">Payment</span>
                 <span className={`inline-block mt-1 rounded px-2 py-0.5 text-xs font-semibold capitalize ${PAYMENT_BADGE[viewDetailModal.payment_status]}`}>
                   {viewDetailModal.payment_status}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-dark-4 block uppercase font-medium">Platform / Type</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 block uppercase font-medium">Platform / Type</span>
                 <span className="font-semibold uppercase text-xs">
                   {viewDetailModal.source ?? "website"} ({viewDetailModal.order_type ?? "b2c"})
                 </span>
               </div>
               <div>
-                <span className="text-xs text-dark-4 block uppercase font-medium">Total Amount</span>
-                <span className="text-base font-bold text-primary">
+                <span className="text-xs text-gray-500 dark:text-gray-400 block uppercase font-medium">Total Amount</span>
+                <span className="text-base font-bold text-teal-600 dark:text-teal-400">
                   ₹{Number(viewDetailModal.total_amount).toLocaleString("en-IN")}
                 </span>
               </div>
@@ -491,7 +491,7 @@ export default function AdminOrdersPage() {
                   <p className="font-semibold">{viewDetailModal.delivery.address_line1}</p>
                   {viewDetailModal.delivery.address_line2 && <p>{viewDetailModal.delivery.address_line2}</p>}
                   <p>{viewDetailModal.delivery.city}, {viewDetailModal.delivery.state} - {viewDetailModal.delivery.postal_code}</p>
-                  <p className="text-xs text-dark-4 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery.phone}</span></p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery.phone}</span></p>
                   {viewDetailModal.delivery.awb_number && (
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-mono">
                       AWB: {viewDetailModal.delivery.awb_number} ({viewDetailModal.delivery.courier_partner ?? "Shadowfax"})
@@ -503,10 +503,10 @@ export default function AdminOrdersPage() {
                   <p className="font-semibold">{viewDetailModal.delivery_address_line1}</p>
                   {viewDetailModal.delivery_address_line2 && <p>{viewDetailModal.delivery_address_line2}</p>}
                   <p>{viewDetailModal.delivery_city}, {viewDetailModal.delivery_state} - {viewDetailModal.delivery_postal_code}</p>
-                  <p className="text-xs text-dark-4 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery_phone}</span></p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Phone: <span className="font-mono text-dark dark:text-white font-medium">{viewDetailModal.delivery_phone}</span></p>
                 </div>
               ) : (
-                <p className="text-dark-4 italic">No shipping details provided</p>
+                <p className="text-gray-500 dark:text-gray-400 italic">No shipping details provided</p>
               )}
             </div>
 
@@ -521,7 +521,7 @@ export default function AdminOrdersPage() {
                     <div key={item.id} className="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-white/5">
                       <div>
                         <p className="font-semibold text-sm">{item.product_name}</p>
-                        <p className="text-xs text-dark-4">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           Qty: {item.quantity} × ₹{Number(item.unit_price).toLocaleString("en-IN")}
                         </p>
                       </div>
@@ -532,7 +532,7 @@ export default function AdminOrdersPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-dark-4 italic">No item list available</p>
+                <p className="text-gray-500 dark:text-gray-400 italic">No item list available</p>
               )}
             </div>
 
@@ -544,10 +544,10 @@ export default function AdminOrdersPage() {
                 </h4>
                 <p className="font-semibold">{viewDetailModal.user?.name ?? viewDetailModal.customer_name ?? "Guest / Consumer"}</p>
                 {(viewDetailModal.user?.email ?? viewDetailModal.customer_email) && (
-                  <p className="text-xs text-dark-4 mt-0.5">{viewDetailModal.user?.email ?? viewDetailModal.customer_email}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{viewDetailModal.user?.email ?? viewDetailModal.customer_email}</p>
                 )}
                 {viewDetailModal.user?.phone && (
-                  <p className="text-xs font-mono text-dark-4 mt-0.5">Ph: {viewDetailModal.user.phone}</p>
+                  <p className="text-xs font-mono text-gray-500 dark:text-gray-400 mt-0.5">Ph: {viewDetailModal.user.phone}</p>
                 )}
               </div>
               <div>
@@ -556,7 +556,7 @@ export default function AdminOrdersPage() {
                 </h4>
                 <p className="font-medium">{viewDetailModal.vendor?.business_name ?? viewDetailModal.vendor_name ?? "Direct / Healing Ourth"}</p>
                 {viewDetailModal.buyer_gstin && (
-                  <p className="text-xs font-mono text-dark-4 mt-1">GSTIN: {viewDetailModal.buyer_gstin}</p>
+                  <p className="text-xs font-mono text-gray-500 dark:text-gray-400 mt-1">GSTIN: {viewDetailModal.buyer_gstin}</p>
                 )}
               </div>
               <div>
@@ -565,7 +565,7 @@ export default function AdminOrdersPage() {
                 </h4>
                 <p className="font-medium uppercase">{viewDetailModal.payment_method ?? viewDetailModal.payment?.payment_method ?? "—"}</p>
                 {viewDetailModal.payment?.transaction_id && (
-                  <p className="text-xs font-mono text-dark-4 mt-1">Txn ID: {viewDetailModal.payment.transaction_id}</p>
+                  <p className="text-xs font-mono text-gray-500 dark:text-gray-400 mt-1">Txn ID: {viewDetailModal.payment.transaction_id}</p>
                 )}
               </div>
             </div>
