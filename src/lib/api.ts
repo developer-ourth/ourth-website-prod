@@ -278,6 +278,28 @@ export function getAdminUsers(params?: { user_type?: string; status?: string; se
   return request<Record<string, unknown>>(`/dashboard/admin/users?${qs}`);
 }
 
+export function getUsersApi(params?: { role?: string; search?: string; page?: number; per_page?: number }) {
+  const qs = new URLSearchParams();
+  if (params?.role && params.role !== "all") qs.set("role", params.role);
+  if (params?.search) qs.set("search", params.search);
+  qs.set("page", String(params?.page ?? 1));
+  qs.set("per_page", String(params?.per_page ?? 50));
+  return request<{ success: boolean; data: any[]; meta?: any }>(`/users?${qs.toString()}`);
+}
+
+export function deleteUserApi(userId: number) {
+  return request<{ success: boolean; message: string }>(`/users/${userId}`, {
+    method: "DELETE",
+  });
+}
+
+export function bulkDeleteUsersApi(userIds: number[]) {
+  return request<{ success: boolean; message: string; deleted_count?: number }>("/users/bulk-delete", {
+    method: "POST",
+    body: JSON.stringify({ user_ids: userIds }),
+  });
+}
+
 export function getAdminCities() {
   return request<Record<string, unknown>>(`/dashboard/admin/cities`);
 }
