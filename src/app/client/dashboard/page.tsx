@@ -474,12 +474,18 @@ export default function ClientDashboardPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        {order.items?.map((item: any) => (
-                          <div key={item.id} className="flex justify-between items-center text-sm">
-                            <span className="text-gray-800 font-semibold">{item.product?.name} x {item.quantity}</span>
-                            <span className="font-bold">₹{item.price * item.quantity}</span>
-                          </div>
-                        ))}
+                        {order.items?.map((item: any) => {
+                          const unitP = parseFloat(item.unit_price || item.price || item.product?.discounted_price || item.product?.base_price || "0");
+                          const totalP = parseFloat(item.total_price || "0");
+                          const qty = parseInt(item.quantity || 1, 10);
+                          const itemTotal = !isNaN(totalP) && totalP > 0 ? totalP : (!isNaN(unitP) ? unitP * qty : 0);
+                          return (
+                            <div key={item.id} className="flex justify-between items-center text-sm">
+                              <span className="text-gray-800 font-semibold">{item.product?.name || item.product_name} x {qty}</span>
+                              <span className="font-bold">₹{itemTotal.toFixed(0)}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                       <div className="flex justify-between items-center border-t border-black/10 pt-4 font-bold text-lg text-black mt-2">
                         <div>
