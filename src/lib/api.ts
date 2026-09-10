@@ -374,6 +374,7 @@ export interface AdminOrder {
   order_type?: "b2c" | "b2b";
   buyer_gstin?: string | null;
   source?: "app" | "website";
+  agent_code?: string | null;
   payment_method?: string;
 }
 
@@ -752,6 +753,7 @@ export interface Cart {
   discount_amount?: string;
   coupon_id?: number | null;
   coupon?: Coupon | null;
+  agent_code?: string | null;
   items: CartItem[];
 }
 
@@ -794,6 +796,19 @@ export function applyCoupon(code: string) {
 
 export function removeCoupon() {
   return request<{ success: boolean; message: string; data: Cart }>("/me/cart/coupon", {
+    method: "DELETE",
+  });
+}
+
+export function setAgentCode(agent_code: string) {
+  return request<{ success: boolean; message: string; data: Cart }>("/me/cart/agent-code", {
+    method: "POST",
+    body: JSON.stringify({ agent_code }),
+  });
+}
+
+export function removeAgentCode() {
+  return request<{ success: boolean; message: string; data: Cart }>("/me/cart/agent-code", {
     method: "DELETE",
   });
 }

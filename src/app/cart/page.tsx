@@ -27,7 +27,7 @@ import {
 export default function CartPage() {
   const router = useRouter();
   const { user, login } = useAuth();
-  const { cart, loading, fetchCart, updateQty, removeFromCart, clearCart, applyCouponToCart, removeCouponFromCart } = useCart();
+  const { cart, loading, fetchCart, updateQty, removeFromCart, clearCart, applyCouponToCart, removeCouponFromCart, setAgentCodeToCart, removeAgentCodeFromCart } = useCart();
 
   // Auth Form states
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
@@ -64,6 +64,11 @@ export default function CartPage() {
   const [promoCode, setPromoCode] = useState("");
   const [applyingCoupon, setApplyingCoupon] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
+
+  // Agent Code states
+  const [showAgentCodeInput, setShowAgentCodeInput] = useState(false);
+  const [agentCodeInput, setAgentCodeInput] = useState("");
+  const [applyingAgentCode, setApplyingAgentCode] = useState(false);
 
   // Green Points states
   const [greenPointsBalance, setGreenPointsBalance] = useState(0);
@@ -283,6 +288,30 @@ export default function CartPage() {
       // toast already handled in context
     } finally {
       setApplyingCoupon(false);
+    }
+  };
+
+  const handleApplyAgentCode = async () => {
+    if (!agentCodeInput.trim()) return;
+    setApplyingAgentCode(true);
+    try {
+      await setAgentCodeToCart(agentCodeInput.trim().toUpperCase());
+      setAgentCodeInput("");
+    } catch (e) {
+      // toast already handled in context
+    } finally {
+      setApplyingAgentCode(false);
+    }
+  };
+
+  const handleRemoveAgentCode = async () => {
+    setApplyingAgentCode(true);
+    try {
+      await removeAgentCodeFromCart();
+    } catch (e) {
+      // toast already handled in context
+    } finally {
+      setApplyingAgentCode(false);
     }
   };
 
@@ -855,6 +884,75 @@ export default function CartPage() {
                     <span className="text-[14px] font-medium text-[#2B4D0E]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       🎁 You earn <strong className="text-[#25784C] font-bold">₹{Math.floor((subtotal - discountAmount) / 100) * 5} Cashback ({Math.floor((subtotal - discountAmount) / 100) * 5} Green Points)</strong> on this order!
                     </span>
+                  </div>
+
+                  {/* Agent Code Toggle Section */}
+                  <div className="w-full bg-[#FAF8F3] rounded-[20px] p-4 border border-black/10 flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">🏷️</span>
+                        <span className="text-[16px] font-bold text-black" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                          Have an Agent Code?
+                        </span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={showAgentCodeInput || Boolean(cart?.agent_code)}
+                          onChange={(e) => {
+                            setShowAgentCodeInput(e.target.checked);
+                            if (!e.target.checked && cart?.agent_code) {
+                              handleRemoveAgentCode();
+                            }
+                          }}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#25784C]"></div>
+                      </label>
+                    </div>
+
+                    {(showAgentCodeInput || Boolean(cart?.agent_code)) && (
+                      <div className="mt-1 pt-3 border-t border-black/10">
+                        {cart?.agent_code ? (
+                          <div className="flex items-center justify-between bg-[#E8F5E9] px-4 py-2.5 rounded-[15px] border border-[#A5D6A7]">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[#2E7D32] font-bold text-[16px]">
+                                Code: {cart.agent_code}
+                              </span>
+                              <span className="text-xs bg-[#2E7D32] text-white px-2 py-0.5 rounded-full font-medium">Applied</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={handleRemoveAgentCode}
+                              disabled={applyingAgentCode}
+                              className="text-red-600 hover:text-red-800 text-[14px] font-semibold underline disabled:opacity-50"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-between gap-2">
+                            <input
+                              type="text"
+                              value={agentCodeInput}
+                              onChange={(e) => setAgentCodeInput(e.target.value.toUpperCase())}
+                              placeholder="e.g. SA001"
+                              className="bg-white border border-gray-300 rounded-[15px] px-4 py-2 text-[16px] font-bold text-black placeholder-gray-400 w-full outline-none focus:border-[#25784C]"
+                              style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+                              disabled={applyingAgentCode}
+                            />
+                            <button
+                              type="button"
+                              onClick={handleApplyAgentCode}
+                              disabled={applyingAgentCode || !agentCodeInput.trim()}
+                              className="px-5 py-2 rounded-[15px] bg-[#25784C] text-white font-semibold text-[15px] flex items-center justify-center hover:bg-[#1E603C] transition disabled:opacity-50 whitespace-nowrap"
+                            >
+                              Apply
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Promo Code Input */}

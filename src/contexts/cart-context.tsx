@@ -37,6 +37,8 @@ interface CartContextValue {
   clearCart: () => Promise<void>;
   applyCouponToCart: (code: string) => Promise<void>;
   removeCouponFromCart: () => Promise<void>;
+  setAgentCodeToCart: (code: string) => Promise<void>;
+  removeAgentCodeFromCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -191,6 +193,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const setAgentCodeToCart = useCallback(async (code: string) => {
+    const { setAgentCode: setAgentApi } = await import("@/lib/api");
+    setLoading(true);
+    try {
+      const res = await setAgentApi(code);
+      setCart(res.data);
+      toast.success(res.message || "Agent code linked!");
+    } catch (err: any) {
+      toast.error(err.message || "Invalid Agent Code (Format: SA001, SA002...)");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const removeAgentCodeFromCart = useCallback(async () => {
+    const { removeAgentCode: removeAgentApi } = await import("@/lib/api");
+    setLoading(true);
+    try {
+      const res = await removeAgentApi();
+      setCart(res.data);
+      toast.success(res.message || "Agent code removed!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to remove agent code");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <CartContext.Provider
       value={{
@@ -209,6 +241,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         applyCouponToCart,
         removeCouponFromCart,
+        setAgentCodeToCart,
+        removeAgentCodeFromCart,
       }}
     >
       {children}
