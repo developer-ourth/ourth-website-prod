@@ -38,7 +38,8 @@ async function request<T>(
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw { status: res.status, message: body?.message ?? res.statusText, body };
+    const message = body?.message || body?.error || (res.status >= 500 ? "Server Error" : res.statusText);
+    throw { status: res.status, message, body };
   }
 
   return res.json() as Promise<T>;
