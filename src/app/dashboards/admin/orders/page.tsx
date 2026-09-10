@@ -260,23 +260,23 @@ export default function AdminOrdersPage() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-stroke bg-gray-50/80 dark:border-dark-3 dark:bg-gray-dark/80">
-                    <th className="pl-5 pr-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Order #</th>
-                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Customer</th>
-                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-dark-4">Vendor</th>
-                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Platform</th>
-                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Type</th>
-                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Status</th>
-                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Payment</th>
-                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-dark-4">Items</th>
-                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Total</th>
-                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Date</th>
-                    <th className="pl-4 pr-5 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-dark-4">Actions</th>
+                    <th className="pl-5 pr-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Order #</th>
+                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Customer</th>
+                    <th className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Vendor</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Platform</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Type</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Status</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Payment</th>
+                    <th className="px-3 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Items</th>
+                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Total</th>
+                    <th className="px-4 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Date</th>
+                    <th className="pl-4 pr-5 py-3.5 text-right text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stroke dark:divide-dark-3">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={11} className="px-6 py-12 text-center text-sm text-dark-4">
+                      <td colSpan={11} className="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
                         No orders found
                       </td>
                     </tr>
@@ -289,7 +289,7 @@ export default function AdminOrdersPage() {
                           <td className="pl-5 pr-4 py-3.5 whitespace-nowrap">
                             <button
                               onClick={() => handleOpenDetail(order.id)}
-                              className="font-mono text-xs font-bold text-primary hover:underline"
+                              className="font-mono text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline"
                             >
                               {order.order_number}
                             </button>
@@ -298,7 +298,7 @@ export default function AdminOrdersPage() {
                             <div className="truncate">
                               <span className="font-semibold text-sm">{order.customer_name ?? "Guest / Consumer"}</span>
                               {order.customer_email && (
-                                <div className="text-[11px] text-dark-4 truncate">
+                                <div className="text-[11px] text-gray-500 dark:text-gray-400 truncate">
                                   {order.customer_email}
                                 </div>
                               )}
@@ -308,7 +308,7 @@ export default function AdminOrdersPage() {
                             <div className="truncate">
                               <span className="font-medium">{order.vendor_name ?? "—"}</span>
                               {orderType === "b2b" && order.buyer_gstin && (
-                                <div className="text-[11px] text-dark-4 font-mono truncate">
+                                <div className="text-[11px] text-gray-500 dark:text-gray-400 font-mono truncate">
                                   GST: {order.buyer_gstin}
                                 </div>
                               )}
@@ -343,17 +343,17 @@ export default function AdminOrdersPage() {
                                 {order.payment_status}
                               </span>
                               {order.payment_method && (
-                                <span className="text-[10px] font-bold text-dark-4 dark:text-dark-6 uppercase tracking-wider">
+                                <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                   {order.payment_method}
                                 </span>
                               )}
                             </div>
                           </td>
-                          <td className="px-3 py-3.5 text-center text-xs font-medium text-dark-4">{order.items_count}</td>
+                          <td className="px-3 py-3.5 text-center text-xs font-medium text-gray-700 dark:text-gray-300">{order.items_count}</td>
                           <td className="px-4 py-3.5 text-right text-sm font-bold text-dark dark:text-white whitespace-nowrap">
                             ₹{Number(order.total_amount).toLocaleString("en-IN")}
                           </td>
-                          <td className="px-4 py-3.5 text-right text-xs text-dark-4 whitespace-nowrap">
+                          <td className="px-4 py-3.5 text-right text-xs text-gray-700 dark:text-gray-300 whitespace-nowrap">
                             {new Date(order.created_at).toLocaleDateString("en-IN")}
                           </td>
                           <td className="pl-4 pr-5 py-3.5 text-right whitespace-nowrap">
