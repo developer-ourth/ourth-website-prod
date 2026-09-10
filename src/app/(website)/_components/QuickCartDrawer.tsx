@@ -19,7 +19,7 @@ export default function QuickCartDrawer() {
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - totalAmount);
   const progressPercent = Math.min(100, Math.max(0, Math.round((totalAmount / FREE_SHIPPING_THRESHOLD) * 100)));
 
-  const estimatedShipping = totalAmount > 0 ? 49 : 0;
+  const estimatedShipping = totalAmount > 0 ? 39 : 0;
   const finalTotal = totalAmount + estimatedShipping;
 
   return (
