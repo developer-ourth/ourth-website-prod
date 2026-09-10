@@ -986,19 +986,35 @@ export default function ClientDashboardPage() {
                   <div className="bg-white p-4 rounded-[5px] border border-black/10 shadow-sm space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal</span>
-                      <span className="font-semibold">₹{selectedOrder.subtotal}</span>
+                      <span className="font-semibold">₹{parseFloat(selectedOrder.subtotal || "0").toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Tax</span>
-                      <span className="font-semibold">₹{selectedOrder.tax_amount}</span>
-                    </div>
-                    <div className="flex justify-between">
+
+                    {selectedOrder.tax_amount && parseFloat(selectedOrder.tax_amount) > 0 ? (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Tax</span>
+                        <span className="font-semibold">₹{parseFloat(selectedOrder.tax_amount).toFixed(2)}</span>
+                      </div>
+                    ) : null}
+
+                    <div className="flex justify-between items-center">
                       <span className="text-gray-600">Shipping</span>
-                      <span className="font-semibold">₹{selectedOrder.delivery_charge}</span>
+                      {selectedOrder.delivery_charge && parseFloat(selectedOrder.delivery_charge) > 0 ? (
+                        <span className="font-semibold">₹{parseFloat(selectedOrder.delivery_charge).toFixed(2)}</span>
+                      ) : (
+                        <span className="font-bold text-[#25784C]">FREE</span>
+                      )}
                     </div>
+
+                    {selectedOrder.discount_amount && parseFloat(selectedOrder.discount_amount) > 0 ? (
+                      <div className="flex justify-between text-green-700 font-semibold">
+                        <span>Discount</span>
+                        <span>-₹{parseFloat(selectedOrder.discount_amount).toFixed(2)}</span>
+                      </div>
+                    ) : null}
+
                     <div className="flex justify-between pt-2 border-t border-black/10 text-base font-bold text-black">
                       <span>Total</span>
-                      <span>₹{selectedOrder.total_amount}</span>
+                      <span>₹{parseFloat(selectedOrder.total_amount || "0").toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
