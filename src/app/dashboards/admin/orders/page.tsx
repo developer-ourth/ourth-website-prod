@@ -180,7 +180,7 @@ export default function AdminOrdersPage() {
     const headers = ["Order ID", "Customer", "Type", "Platform", "Amount", "Status", "Payment", "Date"];
     const rows = filteredOrders.map(o => [
       `#${o.id}`,
-      `"${o.user?.name ?? "Unknown"}"`,
+      `"${o.customer_name ?? "Unknown"}"`,
       o.order_type === "b2b" ? "Business" : "Consumer",
       o.source === "app" ? "App" : "Website",
       `Rs. ${o.total_amount}`,
