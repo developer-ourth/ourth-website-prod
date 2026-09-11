@@ -657,6 +657,8 @@ export default function CartPage() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Jane Doe"
+                          minLength={3}
+                          maxLength={50}
                           className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
@@ -685,7 +687,10 @@ export default function CartPage() {
                           type="text"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+91 9876543210"
+                          placeholder="9876543210"
+                          maxLength={10}
+                          pattern="[0-9]{10}"
+                          title="Please enter a valid 10-digit mobile number"
                           className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
