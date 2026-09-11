@@ -36,6 +36,8 @@ export default function CartPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [authError, setAuthError] = useState("");
   const [authSubmitting, setAuthSubmitting] = useState(false);
   const [isBusiness, setIsBusiness] = useState(false);
@@ -654,7 +656,7 @@ export default function CartPage() {
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          placeholder="Asteria Xing"
+                          placeholder="Jane Doe"
                           className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#25784C] transition"
                         />
                       </div>
@@ -735,33 +737,66 @@ export default function CartPage() {
                       </>
                     )}
 
-                    <div>
-                      <label className="mb-1.5 block text-xs font-bold text-gray-500 uppercase">
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Min. 8 characters"
-                        className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
-                      />
+                    <div className="mb-4">
+                      <div className="flex justify-between items-center mb-1.5">
+                        <label className="text-xs font-bold text-gray-500 uppercase">
+                          Password
+                        </label>
+                        {authMode === "login" && (
+                          <Link href="/forgot-password" className="text-xs font-bold text-[#25784C] hover:underline">
+                            Forgot Password?
+                          </Link>
+                        )}
+                      </div>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="Min. 8 characters"
+                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black transition"
+                        >
+                          {showPassword ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     {authMode === "register" && (
-                      <div>
+                      <div className="mb-4">
                         <label className="mb-1.5 block text-xs font-bold text-gray-500 uppercase">
                           Confirm Password
                         </label>
-                        <input
-                          type="password"
-                          required
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          placeholder="Repeat password"
-                          className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="Repeat password"
+                            className="w-full rounded-[5px] border-[1.5px] border-black bg-[#FAF8F3] px-4 py-3 text-[16px] font-bold text-black placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#25784C] transition"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black transition"
+                          >
+                            {showConfirmPassword ? (
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            ) : (
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     )}
 

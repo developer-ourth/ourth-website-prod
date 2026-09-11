@@ -175,6 +175,30 @@ export default function AdminOrdersPage() {
     return type === typeFilter;
   });
 
+  function exportToCSV() {
+    if (filteredOrders.length === 0) return;
+    const headers = ["Order ID", "Customer", "Type", "Platform", "Amount", "Status", "Payment", "Date"];
+    const rows = filteredOrders.map(o => [
+      `#${o.id}`,
+      `"${o.user?.name ?? "Unknown"}"`,
+      o.order_type === "b2b" ? "Business" : "Consumer",
+      o.source === "app" ? "App" : "Website",
+      `Rs. ${o.total_amount}`,
+      o.order_status,
+      o.payment_status,
+      `"${new Date(o.created_at).toLocaleString()}"`,
+    ]);
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `orders_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <DashboardGuard requiredRole="admin">
       <div className="space-y-6">
@@ -223,6 +247,12 @@ export default function AdminOrdersPage() {
                 {pendingCount} Pending
               </span>
             )}
+            <button
+              onClick={exportToCSV}
+              className="rounded-lg bg-[#25784C] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
+            >
+              Export CSV
+            </button>
           </div>
         </div>
 
