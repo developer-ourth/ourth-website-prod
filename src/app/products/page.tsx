@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getMarketplaceProducts, getCategories, getProductImageUrl, type MarketProduct } from "@/lib/api";
+import { getMarketplaceProducts, getCategories, getProductImageUrl, getWebsiteSettingsApi, type MarketProduct } from "@/lib/api";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -131,6 +131,7 @@ function ProductsPageContent() {
 
   const [products, setProducts] = useState<MarketProduct[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [marketplaceBannerUrl, setMarketplaceBannerUrl] = useState<string>("/images/hero/MARKETPLACE_BANNER.gif");
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState(searchParam);
@@ -144,12 +145,17 @@ function ProductsPageContent() {
   useEffect(() => {
     Promise.all([
       getMarketplaceProducts({ per_page: 40 }),
-      getCategories()
+      getCategories(),
+      getWebsiteSettingsApi().catch(() => null)
     ])
-      .then(([prodRes, catRes]) => {
+      .then(([prodRes, catRes, settingsRes]) => {
         const prods = prodRes.data || [];
         setProducts(prods);
         setCategories(catRes.data || []);
+
+        if (settingsRes?.data?.website_marketplace_banner_url) {
+          setMarketplaceBannerUrl(settingsRes.data.website_marketplace_banner_url);
+        }
 
         const initialPacks: Record<number, number> = {};
         prods.forEach(p => {
@@ -223,7 +229,7 @@ function ProductsPageContent() {
       {/* 1. Header Hero Banner */}
       <section className="relative w-full mt-[70px] lg:mt-[95px] overflow-hidden bg-[#7c5835]">
         <Image
-          src="/images/hero/MARKETPLACE_BANNER.gif"
+          src={marketplaceBannerUrl}
           alt="Marketplace Banner"
           width={1920}
           height={650}

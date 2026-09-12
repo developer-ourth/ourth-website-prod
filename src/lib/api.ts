@@ -961,6 +961,10 @@ export function getProductImageUrl(url: string | null | undefined, productName?:
   return url;
 }
 
+export function getWebsiteSettingsApi() {
+  return request<Record<string, string>>("/website-settings");
+}
+
 export function uploadKycDocumentFileApi(
   vendorId: number,
   documentType: string,
