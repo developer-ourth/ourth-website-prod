@@ -158,11 +158,20 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
           ) : (
-            <form onSubmit={handleResetPassword} className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-black font-['IBM_Plex_Sans']">
-                  6-Digit OTP Code
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-sm font-bold text-black font-['IBM_Plex_Sans']">
+                    6-Digit OTP Code
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={submitting}
+                    className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']"
+                  >
+                    Resend OTP
+                  </button>
+                </div>
                 <input
                   type="text"
                   required
