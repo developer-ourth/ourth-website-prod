@@ -141,15 +141,17 @@ export function forgotPasswordApi(email: string) {
   });
 }
 
-export function resetPasswordApi(
-  token: string,
-  email: string,
-  password: string,
-  password_confirmation: string,
-) {
-  return request<{ success: boolean; message: string }>("/auth/reset-password", {
+export function verifyOtpApi(identifier: string, otp: string, type: "email" | "phone") {
+  return request<any>("/auth/otp/verify", {
     method: "POST",
-    body: JSON.stringify({ token, email, password, password_confirmation }),
+    body: JSON.stringify({ identifier, otp, type }),
+  });
+}
+
+export function resetPasswordOtpApi(identifier: string, type: "email" | "phone", otp: string, password: string) {
+  return request<any>("/auth/reset-password-otp", {
+    method: "POST",
+    body: JSON.stringify({ identifier, type, otp, password }),
   });
 }
 
