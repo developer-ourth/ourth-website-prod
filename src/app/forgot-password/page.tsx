@@ -18,6 +18,25 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const handleResendOtp = async () => {
+    const trimmed = identifier.trim();
+    if (!trimmed) return;
+    const isEmail = trimmed.includes("@");
+    setSubmitting(true);
+    try {
+      if (isEmail) {
+        await sendEmailOtp(trimmed.toLowerCase());
+      } else {
+        await sendPhoneOtp(trimmed.replace(/\D/g, ""));
+      }
+      toast.success("OTP resent!");
+    } catch {
+      toast.error("Failed to resend OTP.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = identifier.trim();
@@ -158,6 +177,7 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
           ) : (
+            <form onSubmit={handleResetPassword} className="space-y-5">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block text-sm font-bold text-black font-['IBM_Plex_Sans']">
@@ -165,7 +185,7 @@ export default function ForgotPasswordPage() {
                   </label>
                   <button
                     type="button"
-                    onClick={handleSendOtp}
+                    onClick={handleResendOtp}
                     disabled={submitting}
                     className="text-xs font-bold text-[#2B4D0E] hover:underline font-['IBM_Plex_Sans']"
                   >
