@@ -970,8 +970,16 @@ export function getProductImageUrl(url: string | null | undefined, productName?:
   return url;
 }
 
+export interface WebsiteSettings {
+  website_marketplace_banner_url?: string;
+  website_hero_banner_url?: string;
+  website_logo_url?: string;
+  website_announcement_text?: string;
+  [key: string]: string | undefined;
+}
+
 export function getWebsiteSettingsApi() {
-  return request<Record<string, string>>("/website-settings");
+  return request<WebsiteSettings>("/website-settings");
 }
 
 export function uploadKycDocumentFileApi(
