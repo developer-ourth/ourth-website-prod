@@ -155,6 +155,13 @@ export function resetPasswordOtpApi(identifier: string, type: "email" | "phone",
   });
 }
 
+export function resetPasswordApi(token: string, email: string, password: string, password_confirmation: string) {
+  return request<{ success: boolean; message: string }>("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, email, password, password_confirmation }),
+  });
+}
+
 // ── Dashboard endpoints ──────────────────────────────────────────────────────
 
 export function getFounderDashboard() {
