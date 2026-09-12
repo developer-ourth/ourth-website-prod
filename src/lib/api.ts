@@ -979,7 +979,7 @@ export interface WebsiteSettings {
 }
 
 export function getWebsiteSettingsApi() {
-  return request<WebsiteSettings>("/website-settings");
+  return request<{ success: boolean; data: WebsiteSettings }>("/website-settings");
 }
 
 export function uploadKycDocumentFileApi(
