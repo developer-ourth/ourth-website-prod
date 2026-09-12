@@ -131,7 +131,7 @@ function ProductsPageContent() {
 
   const [products, setProducts] = useState<MarketProduct[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const [marketplaceBannerUrl, setMarketplaceBannerUrl] = useState<string>("/images/hero/MARKETPLACE_BANNER.gif");
+  const [marketplaceBannerUrl, setMarketplaceBannerUrl] = useState<string>("/images/hero/MARKETPLACE_BANNER_3.gif");
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState(searchParam);
