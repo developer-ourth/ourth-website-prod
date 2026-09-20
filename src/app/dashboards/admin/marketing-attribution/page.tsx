@@ -116,7 +116,7 @@ export default function MarketingAttributionDashboard() {
                     rows={4}
                     value={broadcastMessage}
                     onChange={(e) => setBroadcastMessage(e.target.value)}
-                    placeholder="Hi {name}! 🌿 Enjoy 10% OFF on 100% natural Areca Leaf Tableware. Use code GREEN10 at https://ourth.in/cart"
+                    placeholder="Hi {name}! 🌿 Enjoy 10% OFF on 100% natural Areca Leaf Tableware. Use code GREEN10 at https://www.healingourth.com/cart"
                     className="w-full rounded-lg border border-stroke bg-transparent p-3 text-sm text-dark dark:border-dark-3 dark:text-white"
                     required
                   />
