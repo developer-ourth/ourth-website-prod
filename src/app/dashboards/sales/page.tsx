@@ -3,7 +3,7 @@
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { StatCard } from "@/components/ui/stat-card";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
+import { getSalesLeadsApi, updateSalesLeadApi } from "@/lib/api";
 
 export default function SalesTeamDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
@@ -12,9 +12,9 @@ export default function SalesTeamDashboard() {
 
   const fetchSalesLeads = async () => {
     try {
-      const res = await api.get("/v1/admin/sales-leads");
-      if (res.data?.status === "success") {
-        setLeads(res.data.data?.data || []);
+      const res = await getSalesLeadsApi();
+      if (res?.status === "success") {
+        setLeads(res.data?.data || []);
       }
     } catch (e) {
       console.error("Failed to load sales leads", e);
@@ -30,7 +30,7 @@ export default function SalesTeamDashboard() {
   const handleUpdateStatus = async (user: any, newType: string) => {
     setUpdatingId(user.id);
     try {
-      await api.put(`/v1/admin/sales-leads/${user.id}`, { user_type: newType });
+      await updateSalesLeadApi(user.id, { user_type: newType });
       fetchSalesLeads();
     } catch (e) {
       console.error("Failed to update lead status", e);

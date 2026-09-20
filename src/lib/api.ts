@@ -1100,3 +1100,27 @@ export function verifyRazorpayPayment(orderId: number, data: { razorpay_order_id
     body: JSON.stringify(data),
   });
 }
+
+// ── Marketing Attribution & Sales ──────────────────────────────────────────
+
+export function getMarketingAttributionApi() {
+  return request<any>("/admin/marketing-attribution");
+}
+
+export function sendWhatsAppBroadcastApi(data: { segment: string; message: string }) {
+  return request<any>("/admin/whatsapp-broadcast", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function getSalesLeadsApi() {
+  return request<any>("/admin/sales-leads");
+}
+
+export function updateSalesLeadApi(id: number, data: { user_type: string }) {
+  return request<any>(`/admin/sales-leads/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}

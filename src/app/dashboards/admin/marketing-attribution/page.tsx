@@ -3,7 +3,7 @@
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { StatCard } from "@/components/ui/stat-card";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
+import { getMarketingAttributionApi, sendWhatsAppBroadcastApi } from "@/lib/api";
 
 export default function MarketingAttributionDashboard() {
   const [data, setData] = useState<any>(null);
@@ -15,9 +15,9 @@ export default function MarketingAttributionDashboard() {
 
   const fetchAttributionData = async () => {
     try {
-      const res = await api.get("/v1/admin/marketing-attribution");
-      if (res.data?.status === "success") {
-        setData(res.data.data);
+      const res = await getMarketingAttributionApi();
+      if (res?.status === "success") {
+        setData(res.data);
       }
     } catch (e) {
       console.error("Failed to load marketing attribution data", e);
@@ -38,19 +38,19 @@ export default function MarketingAttributionDashboard() {
     setBroadcastAlert(null);
 
     try {
-      const res = await api.post("/v1/admin/whatsapp-broadcast", {
+      const res = await sendWhatsAppBroadcastApi({
         segment,
         message: broadcastMessage,
       });
 
-      if (res.data?.status === "success") {
-        setBroadcastAlert({ type: "success", text: res.data.message });
+      if (res?.status === "success") {
+        setBroadcastAlert({ type: "success", text: res.message });
         setBroadcastMessage("");
       } else {
         setBroadcastAlert({ type: "error", text: "Failed to send WhatsApp broadcast." });
       }
     } catch (err: any) {
-      setBroadcastAlert({ type: "error", text: err.response?.data?.message || "Error dispatching broadcast." });
+      setBroadcastAlert({ type: "error", text: err?.message || "Error dispatching broadcast." });
     } finally {
       setSendingBroadcast(false);
     }
