@@ -1124,3 +1124,10 @@ export function updateSalesLeadApi(id: number, data: { user_type: string }) {
     body: JSON.stringify(data),
   });
 }
+
+export function discoverGoogleLeadsApi(data: { keyword: string; city: string }) {
+  return request<any>("/admin/discover-leads", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

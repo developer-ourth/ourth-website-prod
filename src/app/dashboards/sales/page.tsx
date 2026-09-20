@@ -3,12 +3,18 @@
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { StatCard } from "@/components/ui/stat-card";
 import { useEffect, useState } from "react";
-import { getSalesLeadsApi, updateSalesLeadApi } from "@/lib/api";
+import { getSalesLeadsApi, updateSalesLeadApi, discoverGoogleLeadsApi } from "@/lib/api";
 
 export default function SalesTeamDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+
+  // Auto-Discovery form state
+  const [keyword, setKeyword] = useState("Caterers");
+  const [city, setCity] = useState("Mumbai");
+  const [discovering, setDiscovering] = useState(false);
+  const [discoverResult, setDiscoverResult] = useState<{ success: boolean; message: string } | null>(null);
 
   const fetchSalesLeads = async () => {
     try {
@@ -26,6 +32,26 @@ export default function SalesTeamDashboard() {
   useEffect(() => {
     fetchSalesLeads();
   }, []);
+
+  const handleDiscoverLeads = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setDiscovering(true);
+    setDiscoverResult(null);
+
+    try {
+      const res = await discoverGoogleLeadsApi({ keyword, city });
+      if (res?.success) {
+        setDiscoverResult({ success: true, message: res.message });
+        fetchSalesLeads();
+      } else {
+        setDiscoverResult({ success: false, message: res?.message || "Failed to discover leads." });
+      }
+    } catch (err: any) {
+      setDiscoverResult({ success: false, message: err?.message || "Error discovering leads." });
+    } finally {
+      setDiscovering(false);
+    }
+  };
 
   const handleUpdateStatus = async (user: any, newType: string) => {
     setUpdatingId(user.id);
@@ -72,6 +98,63 @@ export default function SalesTeamDashboard() {
               <StatCard label="Total Active Leads" value={leads.length} trend="up" icon="📞" iconBg="bg-blue-100" />
               <StatCard label="B2B Wholesale Leads" value={b2bCount} trend="up" icon="🏢" iconBg="bg-orange-100" />
               <StatCard label="Retail Consumers" value={b2cCount} icon="🛒" iconBg="bg-green-100" />
+            </div>
+
+            {/* Google Places Auto-Discover B2B Leads Control Panel */}
+            <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
+              <h2 className="mb-2 text-lg font-bold text-dark dark:text-white">🔍 Auto-Discover B2B Leads (Google Places API)</h2>
+              <p className="mb-4 text-xs text-dark-4 dark:text-dark-6">
+                Automatically query Google business directories for caterers, event planners, and disposable tableware wholesalers across target cities and import them into your sales pipeline.
+              </p>
+
+              {discoverResult && (
+                <div className={`mb-4 rounded-lg p-3 text-sm font-medium ${discoverResult.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                  {discoverResult.message}
+                </div>
+              )}
+
+              <form onSubmit={handleDiscoverLeads} className="grid grid-cols-1 gap-4 sm:grid-cols-3 items-end">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-dark dark:text-white">Business Category</label>
+                  <select
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    className="w-full rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
+                  >
+                    <option value="Caterers">Caterers & Food Suppliers</option>
+                    <option value="Event Planners">Event Planners & Wedding Organizers</option>
+                    <option value="Disposable Tableware Wholesalers">Disposable Tableware Wholesalers</option>
+                    <option value="Hotels & Restaurants">Hotels & Restaurants</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-dark dark:text-white">Target City</label>
+                  <select
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="w-full rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
+                  >
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi NCR">Delhi NCR</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Jaipur">Jaipur</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={discovering}
+                  className="rounded-lg bg-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {discovering ? "Finding & Importing Leads..." : "🚀 Auto-Discover Leads"}
+                </button>
+              </form>
             </div>
 
             {/* Sales Lead Pipeline Table */}
