@@ -2,10 +2,11 @@
 
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { useAuth } from "@/contexts/auth-context";
-import { sendWhatsAppBroadcastApi } from "@/lib/api";
+import { sendWhatsAppBroadcastApi, importCsvLeadsApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 export default function DedicatedMarketingDashboard() {
   const { user, logout } = useAuth();
@@ -21,6 +22,25 @@ export default function DedicatedMarketingDashboard() {
   const [ctaType, setCtaType] = useState<"none" | "shop_now" | "get_quote">("shop_now");
   const [sending, setSending] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ text: string; success: boolean } | null>(null);
+
+  // CSV Bulk Upload state
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+
+  const handleAutoImportCsv = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("csv_file", file);
+      const res = await importCsvLeadsApi(formData);
+      if (res?.status === "success") {
+        setStatusMsg({
+          text: `📂 ${res.message || "CSV contacts ingested successfully!"} Ready for broadcast.`,
+          success: true,
+        });
+      }
+    } catch (e: any) {
+      console.error("CSV Auto Import failed", e);
+    }
+  };
 
   // Stats state
   const [stats, setStats] = useState({
@@ -184,21 +204,97 @@ export default function DedicatedMarketingDashboard() {
               )}
 
               <form onSubmit={handleSendBroadcast} className="space-y-6">
-                {/* Target Audience */}
+                {/* Target Audience Mode Selector */}
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">
-                    Target Audience / Single Recipient
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Target Audience / Broadcast Mode
                   </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                    <button
+                      type="button"
+                      onClick={() => { setRecipientPhone(""); }}
+                      className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
+                        !recipientPhone && !csvFile
+                          ? "bg-[#0D3A27] text-white border-[#0D3A27]"
+                          : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="font-bold">📢 All CRM Leads</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Broadcast to all database contacts</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { document.getElementById("marketing_csv_input")?.click(); }}
+                      className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
+                        csvFile
+                          ? "bg-[#0D3A27] text-white border-[#0D3A27]"
+                          : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="font-bold">📂 Bulk CSV Upload</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">
+                        {csvFile ? `Selected: ${csvFile.name}` : "Upload phone list CSV"}
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setCsvFile(null); }}
+                      className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
+                        recipientPhone && !csvFile
+                          ? "bg-[#0D3A27] text-white border-[#0D3A27]"
+                          : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="font-bold">📱 Single Number</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Enter individual recipient phone</div>
+                    </button>
+                  </div>
+
+                  {/* Hidden CSV Input & File Status */}
                   <input
-                    type="text"
-                    value={recipientPhone}
-                    onChange={(e) => setRecipientPhone(e.target.value)}
-                    placeholder="Leave empty for ALL leads or enter phone (e.g. 918700209752)"
-                    className="w-full p-3 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#2B4D0E] outline-none"
+                    id="marketing_csv_input"
+                    type="file"
+                    accept=".csv,text/csv,application/vnd.ms-excel"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setCsvFile(file);
+                        setRecipientPhone("");
+                        handleAutoImportCsv(file);
+                      }
+                    }}
+                    className="hidden"
                   />
-                  <p className="text-[11px] text-gray-500 mt-1">
-                    Format: Country code + 10 digit number (e.g. 918700209752)
-                  </p>
+
+                  {csvFile && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl flex items-center justify-between text-xs text-emerald-900 font-semibold mb-3">
+                      <span>📄 Loaded CSV: {csvFile.name} (Ready for Broadcast)</span>
+                      <button
+                        type="button"
+                        onClick={() => setCsvFile(null)}
+                        className="text-red-600 hover:underline font-bold text-[11px]"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+
+                  {!csvFile && (
+                    <div>
+                      <input
+                        type="text"
+                        value={recipientPhone}
+                        onChange={(e) => setRecipientPhone(e.target.value)}
+                        placeholder="Leave empty for ALL leads, or enter phone (e.g. 918700209752)"
+                        className="w-full p-3 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#2B4D0E] outline-none"
+                      />
+                      <p className="text-[11px] text-gray-500 mt-1">
+                        Format: Country code + 10 digit number (e.g. 918700209752)
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Message Body & Dynamic Tags */}
@@ -275,14 +371,28 @@ export default function DedicatedMarketingDashboard() {
                   </div>
 
                   {mediaType !== "none" && (
-                    <div className="mt-3">
+                    <div className="mt-4 space-y-3">
+                      <label className="block text-xs font-bold text-gray-700">
+                        Upload {mediaType === 'video' ? 'Video (MP4 / MOV / WEBM)' : 'Image (PNG / JPG / WEBP)'}
+                      </label>
+                      <ImageUpload
+                        value={mediaUrl}
+                        onChange={(url) => setMediaUrl(url)}
+                        aspectHint={mediaType === 'video' ? "MP4, MOV, WEBM (max 10 MB)" : "PNG, JPG, WEBP (max 5 MB)"}
+                      />
+                      <div className="relative flex items-center my-2">
+                        <div className="flex-grow border-t border-gray-200"></div>
+                        <span className="flex-shrink mx-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                          Or enter direct URL below
+                        </span>
+                        <div className="flex-grow border-t border-gray-200"></div>
+                      </div>
                       <input
                         type="url"
                         value={mediaUrl}
                         onChange={(e) => setMediaUrl(e.target.value)}
                         placeholder={`Enter direct ${mediaType} URL (e.g. https://www.healingourth.com/promo.${mediaType === 'video' ? 'mp4' : 'jpg'})`}
                         className="w-full p-3 rounded-xl border border-gray-300 text-sm font-mono focus:ring-2 focus:ring-[#2B4D0E] outline-none"
-                        required
                       />
                     </div>
                   )}
