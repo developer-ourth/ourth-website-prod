@@ -16,6 +16,7 @@ export function DashboardGuard({ requiredRole, children }: DashboardGuardProps) 
   const router = useRouter();
 
   const isAllowed = (role: UserRole) => {
+    if (role === "admin" || role === "founder") return true;
     if (Array.isArray(requiredRole)) {
       return requiredRole.includes(role);
     }
