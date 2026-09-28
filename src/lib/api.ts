@@ -1108,7 +1108,8 @@ export function getMarketingAttributionApi() {
 }
 
 export function sendWhatsAppBroadcastApi(data: {
-  segment: string;
+  segment?: string;
+  recipient_phone?: string;
   message: string;
   media_type?: string;
   media_url?: string;
