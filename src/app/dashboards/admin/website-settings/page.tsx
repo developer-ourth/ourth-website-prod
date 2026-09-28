@@ -28,6 +28,13 @@ export default function AdminWebsiteSettings() {
     pickup_city: "New Delhi",
     pickup_state: "Delhi",
     pickup_pincode: "110012",
+
+    // Meta & WhatsApp API Credentials
+    whatsapp_phone_number_id: "1324153160783991",
+    whatsapp_access_token: "",
+    meta_pixel_id: "",
+    meta_capi_token: "",
+    google_places_api_key: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -68,6 +75,12 @@ export default function AdminWebsiteSettings() {
           pickup_city: data.pickup_city ?? "New Delhi",
           pickup_state: data.pickup_state ?? "Delhi",
           pickup_pincode: data.pickup_pincode ?? "110012",
+
+          whatsapp_phone_number_id: data.whatsapp_phone_number_id ?? "1324153160783991",
+          whatsapp_access_token: data.whatsapp_access_token ?? "",
+          meta_pixel_id: data.meta_pixel_id ?? "",
+          meta_capi_token: data.meta_capi_token ?? "",
+          google_places_api_key: data.google_places_api_key ?? "",
         });
       }
     } catch (e) {
@@ -419,6 +432,63 @@ export default function AdminWebsiteSettings() {
                   placeholder="110012"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Section 6: Meta WhatsApp, Conversions API (CAPI) & Google Places Integration */}
+          <div className="bg-white p-6 rounded-[12px] shadow-sm border border-gray-200 space-y-5">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 border-b pb-2">6. Meta WhatsApp, Conversions API (CAPI) & Google Places</h2>
+              <p className="text-xs text-gray-500 mt-1">
+                Configure your active Meta Access Token, WhatsApp Phone Number ID, Pixel ID, and Google Places API Key.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">WhatsApp Phone Number ID</label>
+                <input
+                  type="text"
+                  value={settings.whatsapp_phone_number_id}
+                  onChange={(e) => setSettings({ ...settings, whatsapp_phone_number_id: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm font-mono"
+                  placeholder="1324153160783991"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Meta Pixel / Dataset ID</label>
+                <input
+                  type="text"
+                  value={settings.meta_pixel_id}
+                  onChange={(e) => setSettings({ ...settings, meta_pixel_id: e.target.value })}
+                  className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm font-mono"
+                  placeholder="e.g. 10982347109283"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">WhatsApp & Meta Access Token (EAA...)</label>
+              <textarea
+                rows={2}
+                value={settings.whatsapp_access_token}
+                onChange={(e) => setSettings({ ...settings, whatsapp_access_token: e.target.value, meta_capi_token: e.target.value })}
+                className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-xs font-mono"
+                placeholder="EAAgcT1zUx8ABSqBiSKss0..."
+              />
+              <p className="text-[11px] text-gray-500 mt-0.5">Applies to both Meta Cloud WhatsApp API & Conversions API (CAPI).</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Google Places API Key (B2B Lead Discovery)</label>
+              <input
+                type="text"
+                value={settings.google_places_api_key}
+                onChange={(e) => setSettings({ ...settings, google_places_api_key: e.target.value })}
+                className="w-full rounded-md border-gray-300 shadow-sm p-2.5 border text-sm font-mono"
+                placeholder="AIzaSy..."
+              />
             </div>
           </div>
 
