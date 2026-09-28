@@ -10,6 +10,9 @@ export default function MarketingAttributionDashboard() {
   const [loading, setLoading] = useState(true);
   const [segment, setSegment] = useState("all");
   const [broadcastMessage, setBroadcastMessage] = useState("");
+  const [mediaType, setMediaType] = useState("none");
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [ctaType, setCtaType] = useState("none");
   const [sendingBroadcast, setSendingBroadcast] = useState(false);
   const [broadcastAlert, setBroadcastAlert] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -30,6 +33,10 @@ export default function MarketingAttributionDashboard() {
     fetchAttributionData();
   }, []);
 
+  const handleInsertTag = (tag: string) => {
+    setBroadcastMessage((prev) => prev + " " + tag);
+  };
+
   const handleSendBroadcast = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!broadcastMessage.trim()) return;
@@ -41,11 +48,15 @@ export default function MarketingAttributionDashboard() {
       const res = await sendWhatsAppBroadcastApi({
         segment,
         message: broadcastMessage,
+        media_type: mediaType,
+        media_url: mediaUrl,
+        cta_type: ctaType,
       });
 
       if (res?.status === "success") {
         setBroadcastAlert({ type: "success", text: res.message });
         setBroadcastMessage("");
+        setMediaUrl("");
       } else {
         setBroadcastAlert({ type: "error", text: "Failed to send WhatsApp broadcast." });
       }
@@ -65,7 +76,7 @@ export default function MarketingAttributionDashboard() {
           <div>
             <h1 className="text-2xl font-bold text-dark dark:text-white">🎯 Marketing Attribution & WhatsApp Automation</h1>
             <p className="text-sm text-dark-4 dark:text-dark-6">
-              Track Meta Ad ROAS, CAPI Event Match Quality, and 1-Click WhatsApp Broadcasts
+              Track Meta Ad ROAS, CAPI Event Match Quality, and 1-Click Rich Media WhatsApp Broadcasts
             </p>
           </div>
         </div>
@@ -85,9 +96,9 @@ export default function MarketingAttributionDashboard() {
 
             {/* 1-Click WhatsApp Broadcast Sender Section */}
             <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
-              <h2 className="mb-2 text-lg font-bold text-dark dark:text-white">📲 1-Click WhatsApp Broadcast Controller</h2>
+              <h2 className="mb-2 text-lg font-bold text-dark dark:text-white">📲 Rich Media WhatsApp Broadcast Controller</h2>
               <p className="mb-4 text-xs text-dark-4 dark:text-dark-6">
-                Send targeted promotional WhatsApp campaign messages to your customer segments via Meta Cloud API.
+                Send targeted promotional WhatsApp campaigns with 10-15s promo videos, static image banners, and interactive CTA buttons via Meta Cloud API.
               </p>
 
               {broadcastAlert && (
@@ -97,21 +108,78 @@ export default function MarketingAttributionDashboard() {
               )}
 
               <form onSubmit={handleSendBroadcast} className="space-y-4">
-                <div>
-                  <label className="mb-1 block text-sm font-semibold text-dark dark:text-white">Target Audience Segment</label>
-                  <select
-                    value={segment}
-                    onChange={(e) => setSegment(e.target.value)}
-                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
-                  >
-                    <option value="all">All Registered Customers</option>
-                    <option value="b2b">B2B Wholesale Buyers / Caterers</option>
-                    <option value="b2c">B2C Retail Customers</option>
-                  </select>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block text-sm font-semibold text-dark dark:text-white">Target Audience Segment</label>
+                    <select
+                      value={segment}
+                      onChange={(e) => setSegment(e.target.value)}
+                      className="w-full rounded-lg border border-stroke bg-transparent px-4 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
+                    >
+                      <option value="all">All Registered Customers</option>
+                      <option value="b2b">B2B Wholesale Buyers / Caterers</option>
+                      <option value="b2c">B2C Retail Customers</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-1 block text-sm font-semibold text-dark dark:text-white">Media Attachment</label>
+                    <select
+                      value={mediaType}
+                      onChange={(e) => setMediaType(e.target.value)}
+                      className="w-full rounded-lg border border-stroke bg-transparent px-4 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
+                    >
+                      <option value="none">Text Only (Standard)</option>
+                      <option value="image">🖼️ Static Banner Image</option>
+                      <option value="video">🎥 10-15s Promo Video</option>
+                    </select>
+                  </div>
                 </div>
 
+                {mediaType !== "none" && (
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-dark dark:text-white">
+                      {mediaType === "video" ? "Promo Video URL (10-15s MP4)" : "Image Banner URL"}
+                    </label>
+                    <input
+                      type="url"
+                      value={mediaUrl}
+                      onChange={(e) => setMediaUrl(e.target.value)}
+                      placeholder={mediaType === "video" ? "https://www.healingourth.com/promo-15s.mp4" : "https://www.healingourth.com/banner.jpg"}
+                      className="w-full rounded-lg border border-stroke bg-transparent p-2.5 text-sm text-dark dark:border-dark-3 dark:text-white"
+                      required
+                    />
+
+                    {mediaUrl && (
+                      <div className="mt-2 rounded-lg border border-stroke/50 bg-gray-2 p-2 dark:bg-dark-2">
+                        <span className="mb-1 block text-[10px] uppercase font-bold text-dark-4">Media Preview:</span>
+                        {mediaType === "image" ? (
+                          <img src={mediaUrl} alt="Preview" className="h-32 object-contain rounded border" />
+                        ) : (
+                          <video src={mediaUrl} controls className="h-32 rounded border" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div>
-                  <label className="mb-1 block text-sm font-semibold text-dark dark:text-white">Broadcast Message</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-sm font-semibold text-dark dark:text-white">Broadcast Message</label>
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <span className="text-dark-4">Insert Variable:</span>
+                      <button type="button" onClick={() => handleInsertTag("{name}")} className="rounded bg-gray-2 px-2 py-0.5 font-mono text-xs hover:bg-gray-3 dark:bg-dark-2 dark:hover:bg-dark-3">
+                        {"{name}"}
+                      </button>
+                      <button type="button" onClick={() => handleInsertTag("{business_name}")} className="rounded bg-gray-2 px-2 py-0.5 font-mono text-xs hover:bg-gray-3 dark:bg-dark-2 dark:hover:bg-dark-3">
+                        {"{business_name}"}
+                      </button>
+                      <button type="button" onClick={() => handleInsertTag("{phone}")} className="rounded bg-gray-2 px-2 py-0.5 font-mono text-xs hover:bg-gray-3 dark:bg-dark-2 dark:hover:bg-dark-3">
+                        {"{phone}"}
+                      </button>
+                    </div>
+                  </div>
+
                   <textarea
                     rows={4}
                     value={broadcastMessage}
@@ -120,7 +188,19 @@ export default function MarketingAttributionDashboard() {
                     className="w-full rounded-lg border border-stroke bg-transparent p-3 text-sm text-dark dark:border-dark-3 dark:text-white"
                     required
                   />
-                  <span className="text-xs text-dark-4">Tip: Use <strong>{"{name}"}</strong> to automatically insert the customer's name!</span>
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-dark dark:text-white">Interactive Call-To-Action (CTA) Button</label>
+                  <select
+                    value={ctaType}
+                    onChange={(e) => setCtaType(e.target.value)}
+                    className="w-full rounded-lg border border-stroke bg-transparent px-4 py-2 text-sm text-dark dark:border-dark-3 dark:text-white"
+                  >
+                    <option value="none">No Button (Standard Text Link)</option>
+                    <option value="shop_now">🛒 "Shop Now" Button (Redirects to https://www.healingourth.com/products)</option>
+                    <option value="get_quote">📞 "Get Quote / Call Us" Button (Direct Sales Call)</option>
+                  </select>
                 </div>
 
                 <button
@@ -128,7 +208,7 @@ export default function MarketingAttributionDashboard() {
                   disabled={sendingBroadcast}
                   className="rounded-lg bg-green-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
                 >
-                  {sendingBroadcast ? "Sending Broadcast..." : "🚀 Dispatch WhatsApp Broadcast"}
+                  {sendingBroadcast ? "Sending Rich Media Broadcast..." : "🚀 Dispatch WhatsApp Broadcast"}
                 </button>
               </form>
             </div>

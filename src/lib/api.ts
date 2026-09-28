@@ -1107,7 +1107,13 @@ export function getMarketingAttributionApi() {
   return request<any>("/admin/marketing-attribution");
 }
 
-export function sendWhatsAppBroadcastApi(data: { segment: string; message: string }) {
+export function sendWhatsAppBroadcastApi(data: {
+  segment: string;
+  message: string;
+  media_type?: string;
+  media_url?: string;
+  cta_type?: string;
+}) {
   return request<any>("/admin/whatsapp-broadcast", {
     method: "POST",
     body: JSON.stringify(data),
@@ -1130,4 +1136,24 @@ export function discoverGoogleLeadsApi(data: { keyword: string; city: string }) 
     method: "POST",
     body: JSON.stringify(data),
   });
+}
+
+export async function importCsvLeadsApi(formData: FormData) {
+  const token = getToken();
+  const res = await fetch(`${API_BASE}/admin/import-csv-leads`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const message = body?.message || body?.error || "Failed to import CSV";
+    throw { status: res.status, message, body };
+  }
+
+  return res.json();
 }

@@ -3,7 +3,7 @@
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { StatCard } from "@/components/ui/stat-card";
 import { useEffect, useState } from "react";
-import { getSalesLeadsApi, updateSalesLeadApi, discoverGoogleLeadsApi } from "@/lib/api";
+import { getSalesLeadsApi, updateSalesLeadApi, discoverGoogleLeadsApi, importCsvLeadsApi } from "@/lib/api";
 
 export default function SalesTeamDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
@@ -15,6 +15,11 @@ export default function SalesTeamDashboard() {
   const [city, setCity] = useState("Mumbai");
   const [discovering, setDiscovering] = useState(false);
   const [discoverResult, setDiscoverResult] = useState<{ success: boolean; message: string } | null>(null);
+
+  // CSV Import state
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [importingCsv, setImportingCsv] = useState(false);
+  const [csvResult, setCsvResult] = useState<{ success: boolean; message: string } | null>(null);
 
   const fetchSalesLeads = async () => {
     try {
@@ -32,6 +37,32 @@ export default function SalesTeamDashboard() {
   useEffect(() => {
     fetchSalesLeads();
   }, []);
+
+  const handleCsvImport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!csvFile) return;
+
+    setImportingCsv(true);
+    setCsvResult(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("csv_file", csvFile);
+
+      const res = await importCsvLeadsApi(formData);
+      if (res?.status === "success") {
+        setCsvResult({ success: true, message: res.message });
+        setCsvFile(null);
+        fetchSalesLeads();
+      } else {
+        setCsvResult({ success: false, message: res?.message || "Failed to import CSV." });
+      }
+    } catch (err: any) {
+      setCsvResult({ success: false, message: err?.message || "Error processing CSV upload." });
+    } finally {
+      setImportingCsv(false);
+    }
+  };
 
   const handleDiscoverLeads = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +188,40 @@ export default function SalesTeamDashboard() {
               </form>
             </div>
 
-            {/* Sales Lead Pipeline Table */}
+            {/* Bulk CSV Lead Importer Control Panel */}
+            <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
+              <h2 className="mb-2 text-lg font-bold text-dark dark:text-white">📂 Bulk CSV Contact Importer</h2>
+              <p className="mb-4 text-xs text-dark-4 dark:text-dark-6">
+                Upload a CSV contact file (e.g. from Justdial, IndiaMART, or offline event lists). Columns supported: <strong>Name, Phone, City, Segment</strong>.
+              </p>
+
+              {csvResult && (
+                <div className={`mb-4 rounded-lg p-3 text-sm font-medium ${csvResult.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                  {csvResult.message}
+                </div>
+              )}
+
+              <form onSubmit={handleCsvImport} className="flex flex-col gap-4 sm:flex-row sm:items-end">
+                <div className="flex-1">
+                  <label className="mb-1 block text-xs font-semibold text-dark dark:text-white">Select CSV File</label>
+                  <input
+                    type="file"
+                    accept=".csv,.txt"
+                    onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+                    className="w-full rounded-lg border border-stroke bg-transparent px-3 py-1.5 text-sm text-dark dark:border-dark-3 dark:text-white"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={importingCsv || !csvFile}
+                  className="rounded-lg bg-green-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
+                >
+                  {importingCsv ? "Importing CSV Contacts..." : "📥 Import CSV Leads"}
+                </button>
+              </form>
+            </div>
             <div className="rounded-[10px] bg-white p-6 shadow-1 dark:bg-gray-dark">
               <h2 className="mb-4 text-lg font-bold text-dark dark:text-white">📋 Lead Pipeline</h2>
               <div className="overflow-x-auto">
