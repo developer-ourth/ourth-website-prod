@@ -55,7 +55,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preload" as="image" href="/images/hero/hero.gif" />
+        <link rel="preload" as="image" href="/images/hero/Freedom isn’t just a celebration. It’s a responsibility..gif" />
       </head>
       <body className={`${ibmPlexSans.variable} ${poppins.variable}`}>
         {/* Meta Pixel Code */}
