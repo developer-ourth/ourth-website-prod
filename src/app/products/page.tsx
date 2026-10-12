@@ -131,7 +131,7 @@ function ProductsPageContent() {
 
   const [products, setProducts] = useState<MarketProduct[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const [marketplaceBannerUrl, setMarketplaceBannerUrl] = useState<string>("/images/hero/MARKETPLACE BANNER (2).gif");
+  const [marketplaceBannerUrl, setMarketplaceBannerUrl] = useState<string>("/images/hero/MARKETPLACE BANNER.gif");
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState(searchParam);
@@ -153,7 +153,11 @@ function ProductsPageContent() {
         setProducts(prods);
         setCategories(catRes.data || []);
 
-        if (settingsRes?.data?.website_marketplace_banner_url) {
+        if (
+          settingsRes?.data?.website_marketplace_banner_url &&
+          !settingsRes.data.website_marketplace_banner_url.includes("llLb4c91iHCAwdVRd4AddTMcL3bZsGIyrKBlnhGj") &&
+          !settingsRes.data.website_marketplace_banner_url.includes("MARKETPLACE BANNER (2)")
+        ) {
           setMarketplaceBannerUrl(settingsRes.data.website_marketplace_banner_url);
         }
 
