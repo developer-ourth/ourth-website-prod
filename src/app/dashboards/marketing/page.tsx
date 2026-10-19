@@ -2,7 +2,7 @@
 
 import { DashboardGuard } from "@/components/ui/dashboard-guard";
 import { useAuth } from "@/contexts/auth-context";
-import { sendWhatsAppBroadcastApi, importCsvLeadsApi } from "@/lib/api";
+import { sendWhatsAppBroadcastApi, importCsvLeadsApi, getMarketingAttributionApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -13,7 +13,10 @@ export default function DedicatedMarketingDashboard() {
   const router = useRouter();
 
   // Broadcast state
+  const [audienceMode, setAudienceMode] = useState<"segment" | "single">("segment");
+  const [segment, setSegment] = useState<"all" | "b2b" | "b2c" | "abandoned_cart">("all");
   const [recipientPhone, setRecipientPhone] = useState("");
+  const [templateName, setTemplateName] = useState("");
   const [broadcastMessage, setBroadcastMessage] = useState(
     "🌱 Hi {name}, check out our 100% compostable Areca Leaf tableware! Direct from nature to your table. 🌿"
   );
@@ -23,32 +26,62 @@ export default function DedicatedMarketingDashboard() {
   const [sending, setSending] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ text: string; success: boolean } | null>(null);
 
-  // CSV Bulk Upload state
-  const [csvFile, setCsvFile] = useState<File | null>(null);
+  // CSV import state
+  const [importingCsv, setImportingCsv] = useState(false);
 
-  const handleAutoImportCsv = async (file: File) => {
+  const handleImportCsv = async (file: File) => {
+    setImportingCsv(true);
+    setStatusMsg(null);
     try {
       const formData = new FormData();
       formData.append("csv_file", file);
       const res = await importCsvLeadsApi(formData);
-      if (res?.status === "success") {
-        setStatusMsg({
-          text: `📂 ${res.message || "CSV contacts ingested successfully!"} Ready for broadcast.`,
-          success: true,
-        });
-      }
+      setStatusMsg({
+        text: `📂 ${res.message} Imported contacts are now in the CRM and in their segment's audience.`,
+        success: true,
+      });
+      loadStats();
     } catch (e: any) {
-      console.error("CSV Auto Import failed", e);
+      setStatusMsg({ text: e?.message || "CSV import failed.", success: false });
+    } finally {
+      setImportingCsv(false);
     }
   };
 
-  // Stats state
-  const [stats, setStats] = useState({
-    totalBroadcasts: 1420,
-    metaCapiEvents: 8940,
-    leadsCaptured: 348,
-    conversionRate: "4.8%",
-  });
+  // Live stats from the backend
+  const [stats, setStats] = useState<any>(null);
+
+  const loadStats = async () => {
+    try {
+      const res = await getMarketingAttributionApi();
+      if (res?.status === "success") setStats(res.data);
+    } catch (e) {
+      console.error("Failed to load marketing stats", e);
+    }
+  };
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const fmt = (n: unknown) => (n != null ? Number(n).toLocaleString("en-IN") : "—");
+
+  const SOURCE_LABELS: Record<string, string> = {
+    meta_lead_ad: "Meta Lead Ads",
+    whatsapp_ctwa: "Click-to-WhatsApp Ads",
+    whatsapp_inbound: "WhatsApp (direct)",
+    google_places_lead: "Google Places B2B",
+    csv_bulk_import: "CSV Imports",
+  };
+  const leadsBySource: Record<string, number> = stats?.leads_by_source ?? {};
+  const totalBySource = Object.values(leadsBySource).reduce((sum, n) => sum + Number(n), 0);
+
+  const SEGMENT_LABELS: Record<typeof segment, string> = {
+    all: "all contacts",
+    b2b: "B2B wholesale leads",
+    b2c: "retail customers",
+    abandoned_cart: "customers with an abandoned cart (last 7 days)",
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -61,32 +94,36 @@ export default function DedicatedMarketingDashboard() {
 
   const handleSendBroadcast = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const single = audienceMode === "single";
+    if (single && !recipientPhone.trim()) {
+      setStatusMsg({ text: "Enter the recipient's phone number.", success: false });
+      return;
+    }
+    if (!single && !window.confirm(`Send this WhatsApp message to ${SEGMENT_LABELS[segment]}?`)) {
+      return;
+    }
+
     setSending(true);
     setStatusMsg(null);
 
     try {
       const res = await sendWhatsAppBroadcastApi({
-        recipient_phone: recipientPhone || undefined,
+        recipient_phone: single ? recipientPhone : undefined,
+        segment: single ? undefined : segment,
         message: broadcastMessage,
         media_type: mediaType,
         media_url: mediaUrl || undefined,
         cta_type: ctaType,
+        template_name: templateName.trim() || undefined,
       });
 
       setStatusMsg({
-        text: res.message || "WhatsApp broadcast launched successfully!",
+        text: res.message || "WhatsApp broadcast queued.",
         success: true,
       });
-
-      if (res.sent_count) {
-        setStats((prev) => ({
-          ...prev,
-          totalBroadcasts: prev.totalBroadcasts + res.sent_count,
-        }));
-      }
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to dispatch WhatsApp broadcast";
-      setStatusMsg({ text: msg, success: false });
+    } catch (err: any) {
+      setStatusMsg({ text: err?.message || "Failed to dispatch WhatsApp broadcast", success: false });
     } finally {
       setSending(false);
     }
@@ -125,46 +162,46 @@ export default function DedicatedMarketingDashboard() {
           </div>
         </div>
 
-        {/* Key Performance Indicators */}
+        {/* Key Performance Indicators (live) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">WhatsApp Sent</p>
-              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{stats.totalBroadcasts}</h3>
-              <p className="text-[11px] text-green-600 font-semibold mt-0.5">↑ 12% vs last week</p>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Leads This Month</p>
+              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{fmt(stats?.leads_this_month)}</h3>
+              <p className="text-[11px] text-green-600 font-semibold mt-0.5">{fmt(stats?.total_leads)} leads all time</p>
             </div>
             <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-2xl">
-              💬
-            </div>
-          </div>
-
-          <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
-            <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Meta CAPI Events</p>
-              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{stats.metaCapiEvents}</h3>
-              <p className="text-[11px] text-blue-600 font-semibold mt-0.5">Real-time Pixel Sync</p>
-            </div>
-            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-2xl">
-              🎯
-            </div>
-          </div>
-
-          <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
-            <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Meta Leads Captured</p>
-              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{stats.leadsCaptured}</h3>
-              <p className="text-[11px] text-purple-600 font-semibold mt-0.5">CTWA & Lead Ads</p>
-            </div>
-            <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-2xl">
               📥
             </div>
           </div>
 
           <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Campaign Conv. Rate</p>
-              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{stats.conversionRate}</h3>
-              <p className="text-[11px] text-amber-600 font-semibold mt-0.5">Attributed Sales</p>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Paid Orders This Month</p>
+              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{fmt(stats?.paid_orders_this_month)}</h3>
+              <p className="text-[11px] text-blue-600 font-semibold mt-0.5">Website & app checkout</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-2xl">
+              🛒
+            </div>
+          </div>
+
+          <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Ad &amp; Lead Touchpoints</p>
+              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{fmt(stats?.total_touchpoints)}</h3>
+              <p className="text-[11px] text-purple-600 font-semibold mt-0.5">Lead forms, CTWA, imports</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-2xl">
+              🎯
+            </div>
+          </div>
+
+          <div className="bg-white p-5 rounded-[14px] border border-gray-200 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Purchases Sent to Meta</p>
+              <h3 className="text-2xl font-black text-[#0D3A27] mt-1">{fmt(stats?.total_capi_synced)}</h3>
+              <p className="text-[11px] text-amber-600 font-semibold mt-0.5">Conversions API (CAPI)</p>
             </div>
             <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-2xl">
               📈
@@ -212,89 +249,94 @@ export default function DedicatedMarketingDashboard() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                     <button
                       type="button"
-                      onClick={() => { setRecipientPhone(""); }}
+                      onClick={() => setAudienceMode("segment")}
                       className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
-                        !recipientPhone && !csvFile
+                        audienceMode === "segment"
                           ? "bg-[#0D3A27] text-white border-[#0D3A27]"
                           : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
                       }`}
                     >
-                      <div className="font-bold">📢 All CRM Leads</div>
-                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Broadcast to all database contacts</div>
+                      <div className="font-bold">📢 Audience Segment</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">All, B2B, retail or abandoned carts</div>
                     </button>
 
                     <button
                       type="button"
-                      onClick={() => { document.getElementById("marketing_csv_input")?.click(); }}
+                      onClick={() => setAudienceMode("single")}
                       className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
-                        csvFile
-                          ? "bg-[#0D3A27] text-white border-[#0D3A27]"
-                          : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                      }`}
-                    >
-                      <div className="font-bold">📂 Bulk CSV Upload</div>
-                      <div className="text-[10px] font-normal opacity-80 mt-0.5">
-                        {csvFile ? `Selected: ${csvFile.name}` : "Upload phone list CSV"}
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => { setCsvFile(null); }}
-                      className={`p-3 text-xs font-bold rounded-xl border text-left transition ${
-                        recipientPhone && !csvFile
+                        audienceMode === "single"
                           ? "bg-[#0D3A27] text-white border-[#0D3A27]"
                           : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
                       }`}
                     >
                       <div className="font-bold">📱 Single Number</div>
-                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Enter individual recipient phone</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Test or send to one person</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={importingCsv}
+                      onClick={() => document.getElementById("marketing_csv_input")?.click()}
+                      className="p-3 text-xs font-bold rounded-xl border text-left transition bg-gray-50 text-gray-700 border-dashed border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+                    >
+                      <div className="font-bold">📂 {importingCsv ? "Importing…" : "Import CSV Contacts"}</div>
+                      <div className="text-[10px] font-normal opacity-80 mt-0.5">Name, Phone, City, Segment → added to CRM</div>
                     </button>
                   </div>
 
-                  {/* Hidden CSV Input & File Status */}
                   <input
                     id="marketing_csv_input"
                     type="file"
                     accept=".csv,text/csv,application/vnd.ms-excel"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) {
-                        setCsvFile(file);
-                        setRecipientPhone("");
-                        handleAutoImportCsv(file);
-                      }
+                      if (file) handleImportCsv(file);
+                      e.target.value = "";
                     }}
                     className="hidden"
                   />
 
-                  {csvFile && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl flex items-center justify-between text-xs text-emerald-900 font-semibold mb-3">
-                      <span>📄 Loaded CSV: {csvFile.name} (Ready for Broadcast)</span>
-                      <button
-                        type="button"
-                        onClick={() => setCsvFile(null)}
-                        className="text-red-600 hover:underline font-bold text-[11px]"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
-
-                  {!csvFile && (
+                  {audienceMode === "segment" ? (
+                    <select
+                      value={segment}
+                      onChange={(e) => setSegment(e.target.value as typeof segment)}
+                      className="w-full p-3 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#2B4D0E] outline-none bg-white"
+                    >
+                      <option value="all">All contacts with a phone number</option>
+                      <option value="b2b">B2B wholesale leads</option>
+                      <option value="b2c">Retail customers</option>
+                      <option value="abandoned_cart">Abandoned cart (last 7 days, not purchased)</option>
+                    </select>
+                  ) : (
                     <div>
                       <input
                         type="text"
                         value={recipientPhone}
                         onChange={(e) => setRecipientPhone(e.target.value)}
-                        placeholder="Leave empty for ALL leads, or enter phone (e.g. 918700209752)"
+                        placeholder="Phone number, e.g. 8700209752 or +91 87002 09752"
                         className="w-full p-3 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#2B4D0E] outline-none"
                       />
-                      <p className="text-[11px] text-gray-500 mt-1">
-                        Format: Country code + 10 digit number (e.g. 918700209752)
-                      </p>
                     </div>
                   )}
+                </div>
+
+                {/* Approved template (needed outside WhatsApp's 24-hour window) */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Approved Template Name <span className="font-normal text-gray-500">(recommended)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={templateName}
+                    onChange={(e) => setTemplateName(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "_"))}
+                    placeholder="e.g. diwali_offer_2026"
+                    className="w-full p-3 rounded-xl border border-gray-300 text-sm font-mono focus:ring-2 focus:ring-[#2B4D0E] outline-none"
+                  />
+                  <p className="text-[11px] text-gray-500 mt-1">
+                    WhatsApp only delivers free-form messages to people who messaged you in the last 24 hours. For everyone
+                    else, enter a template approved in WhatsApp Manager ({`{{1}}`} is filled with the contact&apos;s name).
+                    When a template is set, the message, media and button below are not used.
+                  </p>
                 </div>
 
                 {/* Message Body & Dynamic Tags */}
@@ -446,7 +488,7 @@ export default function DedicatedMarketingDashboard() {
                   disabled={sending}
                   className="w-full py-4 bg-[#2B4D0E] hover:bg-[#203b0a] text-white font-extrabold text-base rounded-xl shadow-md transition disabled:opacity-50"
                 >
-                  {sending ? "Sending WhatsApp Broadcast..." : "🚀 Launch WhatsApp Broadcast Now"}
+                  {sending ? "Queuing WhatsApp Broadcast..." : "🚀 Launch WhatsApp Broadcast Now"}
                 </button>
               </form>
             </div>
@@ -461,6 +503,40 @@ export default function DedicatedMarketingDashboard() {
               </h3>
 
               <div className="space-y-3">
+                {stats?.crm_url && (
+                  <a
+                    href={`${stats.crm_url}/admin/leads`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 hover:from-sky-100 hover:to-blue-100 border border-sky-200 rounded-xl transition"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-sm font-bold text-sky-900">🗂️ Open Sales CRM (Krayin)</h4>
+                        <p className="text-xs text-gray-600">Pipeline, follow-ups, notes & quotes</p>
+                      </div>
+                      <span className="text-lg">↗</span>
+                    </div>
+                  </a>
+                )}
+
+                {stats?.inbox_url && (
+                  <a
+                    href={stats.inbox_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-3.5 bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 border border-green-200 rounded-xl transition"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-sm font-bold text-green-900">💬 Open WhatsApp Inbox (Chatwoot)</h4>
+                        <p className="text-xs text-gray-600">Reply to customer chats as a team</p>
+                      </div>
+                      <span className="text-lg">↗</span>
+                    </div>
+                  </a>
+                )}
+
                 <Link
                   href="/dashboards/sales"
                   className="block p-3.5 bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 border border-emerald-200 rounded-xl transition"
@@ -505,39 +581,34 @@ export default function DedicatedMarketingDashboard() {
             {/* Campaign Channel Performance */}
             <div className="bg-white p-6 rounded-[16px] border border-gray-200 shadow-sm space-y-4">
               <h3 className="text-lg font-bold text-gray-900 border-b pb-3 flex items-center gap-2">
-                <span>🎯</span> Campaign Channel Breakdown
+                <span>🎯</span> Leads by Channel
               </h3>
 
               <div className="space-y-3 text-sm">
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-gray-700 mb-1">
-                    <span>Meta Click-to-WhatsApp (CTWA)</span>
-                    <span className="text-green-700">45%</span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div className="bg-green-600 h-2 rounded-full w-[45%]" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-gray-700 mb-1">
-                    <span>Google Search & Places B2B</span>
-                    <span className="text-blue-700">32%</span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div className="bg-blue-600 h-2 rounded-full w-[32%]" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-gray-700 mb-1">
-                    <span>Direct Website Orders</span>
-                    <span className="text-amber-700">23%</span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div className="bg-amber-500 h-2 rounded-full w-[23%]" />
-                  </div>
-                </div>
+                {totalBySource === 0 ? (
+                  <p className="text-xs text-gray-500">
+                    No leads yet. Lead forms, WhatsApp ad clicks, CSV imports and Google Places leads will appear here.
+                  </p>
+                ) : (
+                  Object.entries(leadsBySource)
+                    .sort(([, a], [, b]) => Number(b) - Number(a))
+                    .map(([source, count]) => {
+                      const pct = Math.round((Number(count) / totalBySource) * 100);
+                      return (
+                        <div key={source}>
+                          <div className="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                            <span>{SOURCE_LABELS[source] ?? source}</span>
+                            <span className="text-[#0D3A27]">
+                              {fmt(count)} · {pct}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-100 rounded-full h-2">
+                            <div className="bg-[#2B4D0E] h-2 rounded-full" style={{ width: `${pct}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })
+                )}
               </div>
             </div>
           </div>

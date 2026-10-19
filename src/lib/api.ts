@@ -1114,6 +1114,8 @@ export function sendWhatsAppBroadcastApi(data: {
   media_type?: string;
   media_url?: string;
   cta_type?: string;
+  template_name?: string;
+  template_language?: string;
 }) {
   return request<any>("/admin/whatsapp-broadcast", {
     method: "POST",
@@ -1121,11 +1123,15 @@ export function sendWhatsAppBroadcastApi(data: {
   });
 }
 
-export function getSalesLeadsApi() {
-  return request<any>("/admin/sales-leads");
+export function getSalesLeadsApi(params?: { page?: number; segment?: string }) {
+  const qs = new URLSearchParams();
+  if (params?.page) qs.set("page", String(params.page));
+  if (params?.segment) qs.set("segment", params.segment);
+  const query = qs.toString();
+  return request<any>(`/admin/sales-leads${query ? `?${query}` : ""}`);
 }
 
-export function updateSalesLeadApi(id: number, data: { user_type: string }) {
+export function updateSalesLeadApi(id: number, data: { segment: string }) {
   return request<any>(`/admin/sales-leads/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),

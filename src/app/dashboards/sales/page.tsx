@@ -7,6 +7,10 @@ import { getSalesLeadsApi, updateSalesLeadApi, discoverGoogleLeadsApi, importCsv
 
 export default function SalesTeamDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [totalLeads, setTotalLeads] = useState(0);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
@@ -21,11 +25,14 @@ export default function SalesTeamDashboard() {
   const [importingCsv, setImportingCsv] = useState(false);
   const [csvResult, setCsvResult] = useState<{ success: boolean; message: string } | null>(null);
 
-  const fetchSalesLeads = async () => {
+  const fetchSalesLeads = async (targetPage = page) => {
     try {
-      const res = await getSalesLeadsApi();
+      const res = await getSalesLeadsApi({ page: targetPage });
       if (res?.status === "success") {
         setLeads(res.data?.data || []);
+        setLastPage(res.data?.last_page || 1);
+        setTotalLeads(res.data?.total || 0);
+        setCounts(res.counts || {});
       }
     } catch (e) {
       console.error("Failed to load sales leads", e);
@@ -35,8 +42,9 @@ export default function SalesTeamDashboard() {
   };
 
   useEffect(() => {
-    fetchSalesLeads();
-  }, []);
+    fetchSalesLeads(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   const handleCsvImport = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,10 +92,10 @@ export default function SalesTeamDashboard() {
     }
   };
 
-  const handleUpdateStatus = async (user: any, newType: string) => {
+  const handleUpdateStatus = async (user: any, newSegment: string) => {
     setUpdatingId(user.id);
     try {
-      await updateSalesLeadApi(user.id, { user_type: newType });
+      await updateSalesLeadApi(user.id, { segment: newSegment });
       fetchSalesLeads();
     } catch (e) {
       console.error("Failed to update lead status", e);
@@ -103,19 +111,29 @@ export default function SalesTeamDashboard() {
     window.open(`https://wa.me/${formattedPhone}?text=${message}`, "_blank");
   };
 
-  const b2bCount = leads.filter((l) => l.user_type === "B2B_Distributor").length;
-  const b2cCount = leads.filter((l) => l.user_type === "B2C").length;
+  const b2bCount = counts.B2B_Distributor ?? 0;
+  const b2cCount = counts.B2C ?? 0;
 
   return (
-    <DashboardGuard requiredRole="admin">
+    <DashboardGuard requiredRole={["admin", "marketing"]}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-dark dark:text-white">💼 Sales Team Lead Pipeline & CRM</h1>
             <p className="text-sm text-dark-4 dark:text-dark-6">
-              Manage incoming B2B Wholesale Leads, Caterers, and 1-Click WhatsApp Sales Outreach
+              Bring in new leads here. Follow-ups, notes and quotes happen in the Sales CRM.
             </p>
           </div>
+          {process.env.NEXT_PUBLIC_CRM_URL && (
+            <a
+              href={`${process.env.NEXT_PUBLIC_CRM_URL}/admin/leads`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+            >
+              🗂️ Open Sales CRM ↗
+            </a>
+          )}
         </div>
 
         {loading ? (
@@ -126,7 +144,7 @@ export default function SalesTeamDashboard() {
           <>
             {/* Stat Cards */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 2xl:gap-7.5">
-              <StatCard label="Total Active Leads" value={leads.length} trend="up" icon="📞" iconBg="bg-blue-100" />
+              <StatCard label="Total Leads & Customers" value={totalLeads} trend="up" icon="📞" iconBg="bg-blue-100" />
               <StatCard label="B2B Wholesale Leads" value={b2bCount} trend="up" icon="🏢" iconBg="bg-orange-100" />
               <StatCard label="Retail Consumers" value={b2cCount} icon="🛒" iconBg="bg-green-100" />
             </div>
@@ -242,7 +260,7 @@ export default function SalesTeamDashboard() {
                           <td className="py-3 text-sm text-dark-4">{lead.phone_number || "—"}</td>
                           <td className="py-3 text-sm">
                             <select
-                              value={lead.user_type || "B2C"}
+                              value={lead.segment || "B2C"}
                               disabled={updatingId === lead.id}
                               onChange={(e) => handleUpdateStatus(lead, e.target.value)}
                               className="rounded border border-stroke bg-transparent px-2 py-1 text-xs font-semibold text-dark dark:border-dark-3 dark:text-white"
@@ -253,14 +271,26 @@ export default function SalesTeamDashboard() {
                             </select>
                           </td>
                           <td className="py-3 text-right">
-                            {lead.phone_number && (
-                              <button
-                                onClick={() => openWhatsAppChat(lead.phone_number, lead.name)}
-                                className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700"
-                              >
-                                💬 Chat on WhatsApp
-                              </button>
-                            )}
+                            <div className="flex flex-wrap justify-end gap-2">
+                              {lead.crm_lead_url && (
+                                <a
+                                  href={lead.crm_lead_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="rounded-lg border border-primary px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-primary/10"
+                                >
+                                  🗂️ View in CRM
+                                </a>
+                              )}
+                              {lead.phone_number && (
+                                <button
+                                  onClick={() => openWhatsAppChat(lead.phone_number, lead.name)}
+                                  className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700"
+                                >
+                                  💬 Chat on WhatsApp
+                                </button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))
@@ -274,6 +304,27 @@ export default function SalesTeamDashboard() {
                   </tbody>
                 </table>
               </div>
+              {lastPage > 1 && (
+                <div className="mt-4 flex items-center justify-between text-sm text-dark-4">
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page <= 1}
+                    className="rounded-lg border border-stroke px-3 py-1.5 font-semibold disabled:opacity-40 dark:border-dark-3"
+                  >
+                    ← Previous
+                  </button>
+                  <span>
+                    Page {page} of {lastPage}
+                  </span>
+                  <button
+                    onClick={() => setPage((p) => Math.min(lastPage, p + 1))}
+                    disabled={page >= lastPage}
+                    className="rounded-lg border border-stroke px-3 py-1.5 font-semibold disabled:opacity-40 dark:border-dark-3"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
             </div>
           </>
         )}
