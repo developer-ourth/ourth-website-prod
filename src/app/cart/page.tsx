@@ -58,7 +58,7 @@ export default function CartPage() {
   const [addressSubmitting, setAddressSubmitting] = useState(false);
 
   // Payment states
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
+  const [paymentMethod] = useState<"online">("online");
   const [checkoutSubmitting, setCheckoutSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
   
@@ -203,7 +203,7 @@ export default function CartPage() {
         delivery_state: activeAddress.state ?? "",
         delivery_postal_code: activeAddress.postal_code ?? "",
         delivery_phone: activeAddress.mobile ?? "",
-        payment_method: paymentMethod === "cod" ? "cod" : "upi",
+        payment_method: "upi",
         order_type: user?.role === "vendor" ? "b2b" : "b2c",
         source: "website",
         use_green_points: useGreenPoints,
@@ -211,57 +211,49 @@ export default function CartPage() {
 
       const orderId = res.data.id;
 
-      // 2. If it's online payment, initiate Razorpay flow
-      if (paymentMethod === "online") {
-        const rzpInit = await initiateRazorpayPayment(orderId);
-        
-        const options = {
-          key: rzpInit.data.key,
-          amount: rzpInit.data.amount,
-          currency: rzpInit.data.currency,
-          name: "Ourth",
-          description: "Order Payment",
-          order_id: rzpInit.data.razorpay_order_id,
-          handler: async function (response: any) {
-            try {
-              setCheckoutSubmitting(true);
-              await verifyRazorpayPayment(orderId, {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              });
-              
-              await clearCart();
-              toast.success("Payment successful! Order placed.");
-              router.replace("/client/dashboard");
-            } catch (err: any) {
-              setCheckoutError(err?.message ?? "Payment verification failed.");
-              setCheckoutSubmitting(false);
-            }
-          },
-          prefill: {
-            name: user?.name,
-            email: user?.email,
-            contact: activeAddress.mobile,
-          },
-          theme: {
-            color: "#25784C",
-          },
-        };
+      // 2. Initiate Razorpay online payment flow
+      const rzpInit = await initiateRazorpayPayment(orderId);
+      
+      const options = {
+        key: rzpInit.data.key,
+        amount: rzpInit.data.amount,
+        currency: rzpInit.data.currency,
+        name: "Ourth",
+        description: "Order Payment",
+        order_id: rzpInit.data.razorpay_order_id,
+        handler: async function (response: any) {
+          try {
+            setCheckoutSubmitting(true);
+            await verifyRazorpayPayment(orderId, {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            
+            await clearCart();
+            toast.success("Payment successful! Order placed.");
+            router.replace("/client/dashboard");
+          } catch (err: any) {
+            setCheckoutError(err?.message ?? "Payment verification failed.");
+            setCheckoutSubmitting(false);
+          }
+        },
+        prefill: {
+          name: user?.name,
+          email: user?.email,
+          contact: activeAddress.mobile,
+        },
+        theme: {
+          color: "#25784C",
+        },
+      };
 
-        const rzp = new (window as any).Razorpay(options);
-        rzp.on('payment.failed', function (response: any){
-           setCheckoutError(response.error.description || "Payment failed");
-           setCheckoutSubmitting(false);
-        });
-        rzp.open();
-        
-      } else {
-        // COD logic
-        await clearCart();
-        toast.success("Order placed successfully!");
-        router.replace("/client/dashboard");
-      }
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (response: any){
+         setCheckoutError(response.error.description || "Payment failed");
+         setCheckoutSubmitting(false);
+      });
+      rzp.open();
 
     } catch (err: any) {
       setCheckoutError(err?.message ?? "Checkout failed.");
@@ -573,34 +565,24 @@ export default function CartPage() {
 
                   {/* Payment Method Section */}
                   <div className="w-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg rounded-[5px] p-6">
-                    <h3 className="text-[32px] font-bold text-[#2B4D0E] mb-6" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                    <h3 className="text-[32px] font-bold text-[#2B4D0E] mb-4" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       Payment Method
                     </h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <button
-                        onClick={() => setPaymentMethod("cod")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] transition duration-200 ${
-                          paymentMethod === "cod"
-                            ? "bg-[#C7E08E] text-black font-semibold"
-                            : "bg-[#FAF8F3] text-gray-700"
-                        }`}
-                        style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "20px" }}
-                      >
-                        <span className="text-3xl mb-1">💵</span>
-                        <span>Cash on Delivery</span>
-                      </button>
-                      <button
-                        onClick={() => setPaymentMethod("online")}
-                        className={`flex flex-col items-center justify-center p-4 rounded-[5px] transition duration-200 ${
-                          paymentMethod === "online"
-                            ? "bg-[#C7E08E] text-black font-semibold"
-                            : "bg-[#FAF8F3] text-gray-700"
-                        }`}
-                        style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "20px" }}
-                      >
-                        <span className="text-3xl mb-1">💳</span>
-                        <span>UPI / Paytm</span>
-                      </button>
+                    <div className="flex items-center justify-between p-4 rounded-[5px] bg-[#C7E08E]/30 border-2 border-[#2B4D0E]/30 text-black">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl">💳</span>
+                        <div>
+                          <p className="text-lg font-bold text-[#2B4D0E]" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                            Online Payment (UPI, Cards, NetBanking)
+                          </p>
+                          <p className="text-xs text-gray-600 font-normal">
+                            100% Secure &amp; Instant Verification via Razorpay
+                          </p>
+                        </div>
+                      </div>
+                      <span className="px-3 py-1 bg-[#2B4D0E] text-white text-xs font-semibold rounded-full uppercase tracking-wider">
+                        Active
+                      </span>
                     </div>
                   </div>
                 </div>
