@@ -1123,6 +1123,20 @@ export function sendWhatsAppBroadcastApi(data: {
   });
 }
 
+// ── Zoho Inventory ─────────────────────────────────────────────────────────
+
+export function getZohoStatusApi() {
+  return request<any>("/admin/zoho/status");
+}
+
+export function syncZohoStockApi() {
+  return request<any>("/admin/zoho/sync-stock", { method: "POST" });
+}
+
+export function retryZohoOrderApi(orderId: number) {
+  return request<any>(`/admin/zoho/orders/${orderId}/retry`, { method: "POST" });
+}
+
 export function getSalesLeadsApi(params?: { page?: number; segment?: string }) {
   const qs = new URLSearchParams();
   if (params?.page) qs.set("page", String(params.page));
