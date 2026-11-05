@@ -105,6 +105,7 @@ const ROLE_NAV: Record<UserRole, NavSection[]> = {
         { title: "Campaigns", url: "/dashboards/admin/campaigns", icon: Icons.Calendar, items: [] },
         { title: "Alerts & System", url: "/dashboards/admin/alerts", icon: Icons.PieChart, items: [] },
         { title: "Products", url: "/dashboards/admin/products", icon: Icons.PieChart, items: [] },
+        { title: "Zoho Inventory", url: "/dashboards/admin/zoho", icon: Icons.Table, items: [] },
         { title: "Categories", url: "/dashboards/admin/categories", icon: Icons.FourCircle, items: [] },
         { title: "Coupons", url: "/dashboards/admin/coupons", icon: Icons.Table, items: [] },
         { title: "App Settings", url: "/dashboards/admin/settings", icon: Icons.Settings, items: [] },
